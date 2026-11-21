@@ -1,4 +1,4 @@
--- Heli: Rotorflight-Rahmen im Ethos-Simulator 26.2 (Makro). Speist Governor-Zustand (0x5125) und Arming-Flags
+-- Heli: Governor-Rahmen im Ethos-Simulator 26.2 (Makro). Speist Governor-Zustand (0x5125) und Arming-Flags
 -- (0x5122) auf Physical ID 0x1B ein, ohne Sensor im Modell. Danach muss das Widget AKTIV und SCHARF zeigen
 -- (Bild im Ablauf direkt nach dem Makro). Kein Teil des Widgets.
 local function frame(phys, app, v)

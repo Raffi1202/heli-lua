@@ -932,7 +932,7 @@ function M.infoSchritt(w, version, formate, H)
     .. ',\n "sensoren": [\n  ' .. table.concat(I.s, ",\n  ") .. '\n ]'
     .. ',\n "studioQuelle": ' .. jtext(w.studioQuelle or "") .. ',\n "studioWahl": ' .. jtext(w.studioWahl or "auto")
     .. ',\n "ansichtGenutzt": ' .. jtext(w.ansichtGenutzt or "") .. ',\n "angepasst": ' .. tostring(w.angepasst == true)
-    .. ',\n "hinweis": ' .. jtext(w.sFest or "") .. '\n}\n'
+    .. ',\n "hinweis": ' .. jtext(w.sFest or w.sInfo or "") .. '\n}\n'
   w.infoJob = nil
   if t == w.infoAlt then return true end               -- nichts geändert: nicht schreiben (SD-Karte schonen)
   pcall(os.mkdir, "SCRIPTS:/studio")

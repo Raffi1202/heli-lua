@@ -567,6 +567,14 @@ do
   pruefe(abw == nil, "11 p11: Bild gleich wie ohne Format-2-Felder (" .. #r.trace .. " Zeichenbefehle)" .. (abw and (": " .. abw) or ""))
 end
 
+-- 1.14.0 R3: Fenstergrössen ohne passende Ansicht, p12 wird umgerechnet (Befehle für wakeup und paint der umgerechneten Ansicht)
+for _, fe in ipairs({ { 640, 360, 640 }, { 480, 320, 480 }, { 630, 258, 640 }, { 472, 210, 480 } }) do
+  r = fall("p12_voll.heli.lua", { fe[1], fe[2] }, fe[3])
+  local name = string.format("R3 umgerechnet p12 %dx%d", fe[1], fe[2])
+  allgemein(name, r)
+  pruefe(r.zustand == "geladen" and (r.maxPStudio or 0) > 0, name .. ": umgerechnete Studio-Ansicht gezeichnet (paint " .. tostring(r.maxPStudio) .. ")")
+end
+
 -- Test 12 (p12) in beiden Fenstern, Lua-Speicher gemessen; Test 17 Teil 2: erstes paint nach S.start
 for _, fe in ipairs({ { 800, 480 }, { 784, 316 } }) do
   r = fall("p12_voll.heli.lua", fe, 800, { profil = (os.getenv("FORMAT2_PROFIL") and fe[1] == 800) and 120 or nil })

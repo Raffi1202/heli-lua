@@ -543,9 +543,9 @@ local function gasProzent(q)
   return v / 10.24
 end
 
--- Rotorflight: Governor-Zustand (AppID 0x5125, 0 aus … 9 Bypass) und Arming-Flags (0x5122, Bit 0 = scharf).
+-- Flybarless-System: Governor-Zustand (AppID 0x5125, 0 aus … 9 Bypass) und Arming-Flags (0x5122, Bit 0 = scharf).
 -- Ethos legt für diese AppIDs keine Sensoren an, und per Lua angelegte DIY-Sensoren bekamen am Sender keine Werte
--- (X18RS, 20.11.2026). Darum liest das Widget die S.Port-Rahmen direkt (wie Rotorflight selbst): ein Leser für
+-- (X18RS, 20.11.2026). Darum liest das Widget die S.Port-Rahmen direkt (wie das Flybarless-System selbst): ein Leser für
 -- 0x5120–0x512F, je Weckruf höchstens 16 Rahmen. Ein Wert gilt 5 s. Hat der Benutzer selbst Sensoren mit diesen
 -- AppIDs angelegt, gelten deren Werte, wenn keine Rahmen kommen.
 local RF_GOV, RF_ARM = 0x5125, 0x5122
@@ -648,7 +648,7 @@ local function lesen(w, now)
   local g, a = rfLesen(w, now)
   if not tele then g, a = nil, nil end
   v.gov = g and floor(g + 0.5) or nil
-  if a then v.scharf = floor(a + 0.5) % 2 == 1 else v.scharf = w.swAn end   -- ohne Rotorflight: Motorschalter
+  if a then v.scharf = floor(a + 0.5) % 2 == 1 else v.scharf = w.swAn end   -- ohne Governor-Telemetrie: Motorschalter
 
   -- Zellenzahl: eingestellt, sonst aus Akkuspannung und Zellensensor gerechnet. Aus der Gesamtspannung allein
   -- wird nicht geschätzt (46,4 V können 11 volle oder 12 halbleere Zellen sein).
@@ -844,7 +844,7 @@ local function toene(w, now)
       end
     end
   end
-  -- Governor «Drehzahl verloren» (Rotorflight-Fallback): einmal beim Wechsel Ton, Vibration und Ansage
+  -- Governor «Drehzahl verloren» (Governor-Fallback): einmal beim Wechsel Ton, Vibration und Ansage
   -- (ein kurzer Telemetrie-Ausfall zählt nicht als Wechsel; höchstens alle 10 s)
   if v.gov ~= nil and v.gov ~= w.govAlt then
     if v.gov == 6 and now - (w.tGov or -100) >= 10 then
@@ -1085,7 +1085,7 @@ local function studioUmrechnen(w, now)
   local S, wh = w.studio, w.fensterJetzt
   S.skaliert, S.keine = S.skaliert or {}, S.keine or {}
   if S.ansichten[wh] then
-    if w.ansichtGenutzt ~= wh then w.ansichtGenutzt, w.angepasst, w.infoOffen = wh, false, true end
+    if w.ansichtGenutzt ~= wh or w.angepasst then w.ansichtGenutzt, w.angepasst, w.sInfo, w.infoOffen = wh, false, nil, true end
     return
   end
   if S.skaliert[wh] or S.keine[wh] then return end
@@ -1109,7 +1109,7 @@ local function studioUmrechnen(w, now)
   local quelle = best.breite .. "x" .. best.hoehe
   w.ansichtGenutzt, w.angepasst, w.infoOffen = quelle, true, true
   local t = string.format(T.sAngepasst, best.breite .. "x" .. best.hoehe) .. (A.weg > 0 and string.format(T.sWeg, A.weg) or "")
-  w.sHinweis, w.sHinweisBis, w.sAusruf, w.sNurKurz = t, now + 5, true, true
+  w.sHinweis, w.sHinweisBis, w.sAusruf, w.sNurKurz, w.sInfo = t, now + 5, true, true, t
   print("Heli: " .. t .. " -> " .. wh)
 end
 
@@ -1161,7 +1161,7 @@ local function studioWecke(w, now)
     local J = STUDIO.schritt(w, STUDIO_H)
     if J == nil then return true end
     w.studioFertig, w.infoOffen, w.studioZustand, w.studioFehler = true, true, J.zustand, nil
-    w.sHinweis, w.sAusruf, w.sFest, w.sNurKurz = nil, nil, nil, nil
+    w.sHinweis, w.sAusruf, w.sFest, w.sNurKurz, w.sInfo = nil, nil, nil, nil, nil
     w.studioQuelle, w.studioWahl, w.ansichtGenutzt, w.angepasst = J.quelle, J.wahl, nil, false
     symFrei(w)
     local okL, eL = true, nil
@@ -1421,14 +1421,19 @@ local function kopf(w, W, s, T)
     lcd.color(C.rot)
     lcd.drawFilledRectangle(0, 0, W, floor(hk))
   end
-  local ok, name = pcall(model.name)
-  text(14 * s, hk / 2, (ok and type(name) == "string") and name or "", 6, C.weiss, LEFT, true, 300 * s)
+  local sz = w.sHinweis or w.sFest                     -- Studio-Hinweis steht anstelle des Modellnamens (verdeckt keine Werte)
+  if sz then
+    text(14 * s, hk / 2, sz, 3, C.orange, LEFT, true, W / 2 - 90 * s)
+  else
+    local ok, name = pcall(model.name)
+    text(14 * s, hk / 2, (ok and type(name) == "string") and name or "", 6, C.weiss, LEFT, true, 300 * s)
+  end
   local okd, zeit = pcall(os.date, "%H:%M")
   if okd and type(zeit) == "string" then text(W / 2, hk / 2, zeit, 6, C.weiss, CENTERED, false, 150 * s) end
 
   -- rechts: Senderakku, Empfangsbalken, Profil / Rate
   local x = W - 14 * s
-  if w.sAusruf and not w.sHinweis then x = x - 22 end   -- Platz für das «!» der Studio-Datei oben rechts
+  if w.sAusruf and not (w.sHinweis or w.sFest) then x = x - 22 end   -- Platz für das «!» der Studio-Datei oben rechts
   local bb, bh = 26 * s, 34 * s
   local lo, hi = 6.4, 8.4
   if system.voltageRange then
@@ -1560,7 +1565,10 @@ local function kompaktLeiste(w, W, H, T)
   local ym = y0 + hs / 2
   text(rd + 12 * k, ym, flugzeit(w.akt), 4, w.akt and not w.akt.pause and C.weiss or C.grau, LEFT, true, 90 * k)
   pille(rd + 220 * k, ym, k, v.scharf, T)                -- rechtsbündig, Platz für «SCHARF» / «ARMED»
-  if v.pid or v.rate then
+  local sz = w.sHinweis or w.sFest                     -- Studio-Hinweis anstelle von Profil / Rate (verdeckt keine Werte)
+  if sz then
+    text(rd + 236 * k, ym, sz, 2, C.orange, LEFT, true, 300 * k)
+  elseif v.pid or v.rate then
     text(rd + 236 * k, ym, T.profil .. " " .. fz(v.pid, 0) .. " / " .. T.rate .. " " .. fz(v.rate, 0), 2, C.weiss, LEFT, true, 240 * k)
   end
   local stufen = 0
@@ -1570,7 +1578,7 @@ local function kompaktLeiste(w, W, H, T)
     stufen = (r >= 75 and 4) or (r >= 55 and 3) or (r >= 40 and 2) or (r > 0 and 1) or 0
   end
   local xb = W - rd - 14 * k
-  if w.sAusruf and not w.sHinweis then xb = xb - 22 end   -- Platz für das «!» der Studio-Datei oben rechts
+  if w.sAusruf and not (w.sHinweis or w.sFest) then xb = xb - 22 end   -- Platz für das «!» der Studio-Datei oben rechts
   for i = 4, 1, -1 do
     local h = (4 + 4 * i) * k
     lcd.color(i <= stufen and C.gruen or C.linie)
@@ -1641,9 +1649,7 @@ end
 local function studioBand(w, W, H, oben)
   if not w.sAusruf then return end
   if w.sHinweis or w.sFest then
-    lcd.color(lcd.RGB(0, 0, 0))
-    lcd.drawFilledRectangle(0, H - 24, W, 24)
-    textPx(W / 2, H - 12, w.sHinweis or w.sFest, 17, C.orange, CENTERED, true, W - 8)
+    return                                              -- Text steht in der eigenen Kopfzeile (kopf / kompaktLeiste)
   else
     local r = 9
     lcd.color(C.orange)
@@ -1758,7 +1764,7 @@ local function zeichnen(w)
   local y1, h1 = 63 * s, 202 * s
   ringe(w, T, f, rd, lu, b4, y1, h1, s)
 
-  -- unten links: Governor-Zustand (Rotorflight) mit SCHARF/SICHER, darunter der Flugzähler
+  -- unten links: Governor-Zustand (Flybarless-System) mit SCHARF/SICHER, darunter der Flugzähler
   local y2 = y1 + h1 + lu
   local h2 = H - y2 - 6 * s
   local bl = 2 * b4 + lu

@@ -10,7 +10,7 @@
 --  3. Die Heli-Dateien aus test/studio (python3 test/studio_dateien.py) ebenso; voll.heli.lua unter 5000 Befehlen
 --     und unter der Speicherspitze des Grenzfalls g16_lang24.
 --  6. (1.10.1) Sender-Eigenheiten (getSources mit Tabelle leer, getSource mit appId ohne Wert): Studio-Sensoren,
---     Info-Datei, Rotorflight-Rückfall; Befehle im Betrieb mit 160 Grenzen und 100 Wert-Anpassungen; Alarm nie stumm.
+--     Info-Datei, Governor-Rückfall; Befehle im Betrieb mit 160 Grenzen und 100 Wert-Anpassungen; Alarm nie stumm.
 --  4. Nur wenn studio.lua da ist: einfache Textprüfungen (Kennung nach 2.1, kein read("a"), Pfad SCRIPTS:/studio/,
 --     remove vor rename) und, falls das Modul eine Funktion «kennung» hat, die Beispiele aus 2.1.
 -- Umgebung: STUDIO_REF = andere Referenzdatei (Standard: Ordner Lua-Studio format).
@@ -415,7 +415,7 @@ if studioText then
     -- ---------------------------------------------------------- 6. Heli 1.10.1 (Sendertest Elektro 0.3.2)
     -- a) Sender-Eigenheiten X18RS, Ethos 26.2.0: getSources mit Tabelle -> leere Liste, mit Zahl -> alle Sensoren;
     --    getSource mit appId -> Objekt ohne Wert, für fehlende Sensoren Kategorie «keine». Studio-Sensoren,
-    --    Info-Datei und der Rotorflight-Rückfall müssen trotzdem gehen.
+    --    Info-Datei und der Governor-Rückfall müssen trotzdem gehen.
     -- b) Befehlsgrenze im Betrieb: 160 Grenzen im Ring (höchstens rund 4000 Befehle je Aufruf), Alarm kommt trotzdem.
     -- c) Alarm nie ganz stumm: ansage = false und vibration = false -> Ton; auch bei Motorschalter «aus».
     print("\n6. Heli 1.10.1: Sender-Eigenheiten, Befehlsgrenze im Betrieb, Alarm nie stumm")
@@ -504,7 +504,7 @@ if studioText then
       pruefe(fertig and anz == 100, string.format("Info-Datei: %d Sensoren (Liste %d, höchstens 100), %d Aufrufe, höchstens %d Befehle",
         anz, #liste, k, hoechstI))
     end
-    -- Rotorflight-Rückfall in kern.lua (rfLesen): eigene Sensoren 0x5125/0x5122 über die Liste
+    -- Governor-Rückfall in kern.lua (rfLesen): eigene Sensoren 0x5125/0x5122 über die Liste
     local rf
     do
       local gesehen = {}
@@ -525,7 +525,7 @@ if studioText then
     if rf then
       local w, g, a = { }, nil, nil
       for i = 1, 20 do g, a = rf(w, 10 + i * 0.05) end
-      pruefe(g == 4 and a == 1, "Rotorflight-Rückfall: Governor " .. tostring(g) .. ", Arming " .. tostring(a) .. " aus eigenen Sensoren")
+      pruefe(g == 4 and a == 1, "Governor-Rückfall: Governor " .. tostring(g) .. ", Arming " .. tostring(a) .. " aus eigenen Sensoren")
     else
       hinweis("rfLesen nicht gefunden: Rückfall nicht geprüft")
     end

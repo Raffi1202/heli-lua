@@ -5,8 +5,8 @@
 --     Schlüssel, zu dem es einen Sensor gibt, gewinnt. Der Name zählt hier nicht (gleiche Namen bei verschiedenen Geräten).
 --  2. Mehrere Sensoren zum selben Schlüssel (Instanzen 0–F oder gleiche AppID auf mehreren Physical IDs): nicht
 --     raten, sondern a) Sensor mit gültigem Wert, b) tiefste Instanz, c) Standard-Physical-ID des Geräts. Hinweis im Menü.
---  3. Nur Sensoren ohne Kennung (Rotorflight-DIY 0x5xxx, berechnete Sensoren, ELRS/CRSF): Namen und Einheit als Rückfall.
--- Rotorflight belegt Standard-IDs teils anders: 0x0900 = Spannung der Steuerplatine (nicht Akku), 0x0910 = Ø-Zelle,
+--  3. Nur Sensoren ohne Kennung (eigene FBL-Sensoren 0x5xxx, berechnete Sensoren, ELRS/CRSF): Namen und Einheit als Rückfall.
+-- Flybarless-Systeme belegen Standard-IDs teils anders: 0x0900 = Spannung der Steuerplatine (nicht Akku), 0x0910 = Ø-Zelle,
 -- 0x0222/0x0229 = BEC-Strom (darum «strom2» nie als Akkustrom), 0x0600 = Akkuladung in %.
 -- Aufruf: local schritt = suche(w, kennung, gut); dann je Weckruf schritt() -> fertig, Zahl neu zugewiesener Felder.
 -- Verteilt über mehrere Aufrufe (höchstens SCHUB Sensoren je Aufruf): Ethos bricht einen Aufruf mit zu vielen Befehlen

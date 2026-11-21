@@ -1,5 +1,5 @@
 -- Heli: feste Fälle der automatischen Sensorzuordnung (suche.lua + kennung.lua) auf dem Mac, mit nachgebauten
--- Ethos-Quellen. Pflichtfälle laut «Vorgaben Sensorzuordnung» (a)–(g) und Rotorflight-Besonderheiten.
+-- Ethos-Quellen. Pflichtfälle laut «Vorgaben Sensorzuordnung» (a)–(g) und Flybarless-Besonderheiten.
 -- Aufruf (im Repo):  /opt/homebrew/opt/lua@5.4/bin/lua test/suche_test.lua
 local DIR = "src/heli/"
 UNIT_VOLT, UNIT_AMPERE, UNIT_RPM, UNIT_CELSIUS, UNIT_PERCENT, UNIT_MILLIAMPERE_HOUR, UNIT_DB = 1, 2, 3, 4, 5, 6, 7
@@ -48,7 +48,7 @@ local function pruef(name, bed, info)
 end
 local function nm(q) return q and (q._n .. string.format("@%04X/%s", q._a or 0, tostring(q._p))) or "nil" end
 
--- (a) gleichnamige Sensoren verschiedener Geräte: «Strom» 0x0200 (FAS) / 0x0220 (Rotorflight BEC-Strom)
+-- (a) gleichnamige Sensoren verschiedener Geräte: «Strom» 0x0200 (FAS) / 0x0220 (Flybarless-System BEC-Strom)
 do
   local fas, bec = S("Strom", 0x0200, 0, 2, UNIT_AMPERE, 12), S("Strom", 0x0222, 0, 0x10, UNIT_AMPERE, 1.5)
   local w = lauf({ bec, fas })
@@ -75,7 +75,7 @@ do
   pruef("(c) gleiche AppID, Physical ID 0x0A gewählt", w.cfg.qTemp == p0a, nm(w.cfg.qTemp))
   pruef("(c) Hinweis 2 Sensoren", w.hinweise.qTemp and w.hinweise.qTemp[1] == 2)
 end
--- (d) nur Gesamtspannung ohne Zellen; Rotorflight 0x0900 (Steuerplatine) nie als Akku
+-- (d) nur Gesamtspannung ohne Zellen; Flybarless-System 0x0900 (Steuerplatine) nie als Akku
 do
   local fbl, vfas = S("ADC3", 0x0900, 0, 0x10, UNIT_VOLT, 7.9), S("Spannung", 0x0210, 0, 0x10, UNIT_VOLT, 49.8)
   local w = lauf({ fbl, vfas })
@@ -83,16 +83,16 @@ do
   pruef("(d) kein Zellensensor, Steuerplatine nirgends", w.cfg.qZelle == nil and w.cfg.qBec ~= fbl)
   local zel = S("ADC4", 0x0910, 0, 0x10, UNIT_VOLT, 3.95)
   w = lauf({ fbl, vfas, zel })
-  pruef("(d) Rotorflight Ø-Zelle 0x0910 als Zellenspannung", w.cfg.qZelle == zel, nm(w.cfg.qZelle))
+  pruef("(d) FBL Ø-Zelle 0x0910 als Zellenspannung", w.cfg.qZelle == zel, nm(w.cfg.qZelle))
 end
--- (e) Betaflight-«Kraftstoff» = mAh (Wert über 100) ist kein Akku-%; Rotorflight 0x0600 mit % schon
+-- (e) Betaflight-«Kraftstoff» = mAh (Wert über 100) ist kein Akku-%; Flybarless-System 0x0600 mit % schon
 do
   local bf = S("Kraftstoff", 0x0600, 0, 0x10, UNIT_PERCENT, 1350)
   local w = lauf({ bf })
   pruef("(e) Betaflight-Kraftstoff 1350 nicht als Akku %", w.cfg.qProz == nil, nm(w.cfg.qProz))
   bf._v = 76
   w = lauf({ bf })
-  pruef("(e) Rotorflight-Kraftstoff 76 % als Akku %", w.cfg.qProz == bf, nm(w.cfg.qProz))
+  pruef("(e) FBL-Kraftstoff 76 % als Akku %", w.cfg.qProz == bf, nm(w.cfg.qProz))
 end
 -- per Lua angelegte Sensoren: subId() = nil, gepackte AppID über die Einheit
 do
@@ -124,7 +124,7 @@ do
   pruef("(g) BEC = Empf.-Batt., RSSI gefunden", w.cfg.qBec == rx and w.cfg.qRssi == rs)
   pruef("(g) Temp. 2 nicht als Reglertemperatur", w.cfg.qTemp == nil, nm(w.cfg.qTemp))
 end
--- Rotorflight: DIY-Sensoren 0x5xxx über den Namen; Headspeed vor ESC U/min; von Hand gesetzte Felder bleiben
+-- Flybarless-System: DIY-Sensoren 0x5xxx über den Namen; Headspeed vor ESC U/min; von Hand gesetzte Felder bleiben
 do
   local hs = S("Headspeed", 0x5100, 0, 0x10, UNIT_RPM, 2000)
   local esc = S("ESC U/min", 0x0B60, 0, 0x0A, UNIT_RPM, 9000)

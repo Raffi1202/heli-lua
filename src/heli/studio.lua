@@ -1,4 +1,4 @@
--- Heli: Studio-Datei je Modell lesen, prüfen und anwenden (Lua-Studio-Format v1 und 2, FrSky Koordination).
+-- Heli: Studio-Datei je Modell lesen, prüfen und anwenden (Lua-Studio-Format v1 und 2).
 -- Format 2 (1.11.0): Symbole, fette Einheit und Schmuck prüft und zeichnet studio_symbole.lua (Referenz, wörtlich);
 -- hier bleiben nur die Original-Tabellen (J.roh) dafür übrig.
 -- Wird nur geladen, solange ein Modell geladen wird, .funke.lua oder die Info-Datei geschrieben wird. Den laufenden

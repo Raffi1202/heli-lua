@@ -8,7 +8,7 @@ Aufruf (aus dem Repo-Ordner):
   python3 test/format2_sim.py --liste                              Fälle auflisten
 
 Optionen:  --port N (8803–8805; 8765/8766 sind tabu)   --basis DIR (Arbeitsordner, Standard: neuer Temp-Ordner)
-           --bilder DIR (Ablage der Bilder, Standard: <basis>/bilder)   --koord DIR (Ordner «FrSky Koordination»)
+           --bilder DIR (Ablage der Bilder, Standard: <basis>/bilder)   --koord DIR (Ordner mit den Format-Testdateien)
 
 Je Fall ein eigenes Dateisystem (wie test/studio_sim.py): Heli aus src/heli, die Symbole aus «Lua-Studio-Format 2 -
 Testdateien/symbole» direkt in den Root-Ordner nach scripts/studio/symbole/ (nicht über writeFile des Plugins, das kleine

@@ -1,6 +1,6 @@
 -- Heli: Heli-Fassungen der Testdateien zu Lua-Studio-Format 2 (Abschnitt 9) erzeugen, Lua 5.4.
 -- Aufruf aus dem Repo-Ordner:  /opt/homebrew/opt/lua@5.4/bin/lua test/format2_dateien.lua ["<Ordner Testdateien>"]
---   Ordner = «FrSky Koordination/Lua-Studio-Format 2 - Testdateien» (wird nur gelesen; Standard: im Ordner FrSky Koordination).
+--   Ordner = the folder with the Lua-Studio format 2 test files (wird nur gelesen; Standard: im Testordner).
 -- Schreibt test/format2/<Kennung>.heli.lua (Kennung = Name der Testdatei, z. B. p12_voll.heli.lua).
 --
 -- Heli zeichnet oben eine eigene Kopfzeile bzw. Leiste (studio/beschreibung.json «reserviert», z. B. 800 × 480: y 0–57,

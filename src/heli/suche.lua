@@ -1,5 +1,5 @@
 -- Heli: Sensoren automatisch zuweisen (nur während der Suche geladen, danach wieder freigegeben).
--- Ablauf nach «Vorgaben Sensorzuordnung» (FrSky Koordination, 20.11.2026):
+-- Ablauf nach «Vorgaben Sensorzuordnung» (20.11.2026):
 --  0. Von Hand gesetzte (volle) Felder bleiben.
 --  1. Kennung: AppID + Teilwert aus kennung.lua -> Schlüssel. Je Feld eine Rangfolge von Schlüsseln; der erste
 --     Schlüssel, zu dem es einen Sensor gibt, gewinnt. Der Name zählt hier nicht (gleiche Namen bei verschiedenen Geräten).

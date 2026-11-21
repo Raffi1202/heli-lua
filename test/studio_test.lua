@@ -13,7 +13,7 @@
 --     Info-Datei, Rotorflight-Rückfall; Befehle im Betrieb mit 160 Grenzen und 100 Wert-Anpassungen; Alarm nie stumm.
 --  4. Nur wenn studio.lua da ist: einfache Textprüfungen (Kennung nach 2.1, kein read("a"), Pfad SCRIPTS:/studio/,
 --     remove vor rename) und, falls das Modul eine Funktion «kennung» hat, die Beispiele aus 2.1.
--- Umgebung: STUDIO_REF = andere Referenzdatei (Standard: Ordner FrSky Koordination).
+-- Umgebung: STUDIO_REF = andere Referenzdatei (Standard: Ordner Lua-Studio format).
 local repo = arg[0]:gsub("test/studio_test%.lua$", "")
 if repo == "" then repo = "./" end
 local REF = os.getenv("STUDIO_REF") or ((os.getenv("FORMAT2_ORDNER") or error("Umgebungsvariable FORMAT2_ORDNER fehlt: Ordner mit den Unterlagen zum Lua-Studio-Format", 0))

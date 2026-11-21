@@ -15,5 +15,5 @@ src/*/daten/
 test/testmodell.json
 *.bin
 
-# lokale Notizen
+# local working notes
 STAND.md

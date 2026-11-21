@@ -1,7 +1,7 @@
--- Heli RF: feste Fälle der automatischen Sensorzuordnung (suche.lua + kennung.lua) auf dem Mac, mit nachgebauten
+-- Heli: feste Fälle der automatischen Sensorzuordnung (suche.lua + kennung.lua) auf dem Mac, mit nachgebauten
 -- Ethos-Quellen. Pflichtfälle laut «Vorgaben Sensorzuordnung» (a)–(g) und Rotorflight-Besonderheiten.
 -- Aufruf (im Repo):  /opt/homebrew/opt/lua@5.4/bin/lua test/suche_test.lua
-local DIR = "src/helirf/"
+local DIR = "src/heli/"
 UNIT_VOLT, UNIT_AMPERE, UNIT_RPM, UNIT_CELSIUS, UNIT_PERCENT, UNIT_MILLIAMPERE_HOUR, UNIT_DB = 1, 2, 3, 4, 5, 6, 7
 CATEGORY_TELEMETRY_SENSOR = 9
 local LISTE = {}

@@ -1,10 +1,10 @@
-# Testleitfaden Heli RF 1.12.0
+# Testleitfaden Heli 1.13.0
 
-Danke, dass du Heli RF testest! Arbeite die Testfälle der Reihe nach durch und hake ab, was so klappt wie beschrieben.
+Danke, dass du Heli testest! Arbeite die Testfälle der Reihe nach durch und hake ab, was so klappt wie beschrieben.
 Klappt etwas nicht, melde es (ganz unten steht, wie). Ein Testfall dauert meistens ein bis zwei Minuten.
 
 *English testers: the widget, the menu, the voice alerts and the manual are also in English
-(`docs/Heli RF - Manual.pdf`). Set the language in the widget menu (Display and flight count › Sprache / Language)
+(`docs/Heli - Manual.pdf`). Set the language in the widget menu (Display and flight count › Sprache / Language)
 or leave it «as the radio». The test cases below follow the chapters of the manual. Report problems with the issue
 template «Fehler / Bug»; English is fine.*
 
@@ -17,9 +17,9 @@ template «Fehler / Bug»; English is fine.*
   BEC-Spannung und Zellensensor sind willkommen, aber freiwillig.
 - Am Modell: die Sensoren schon gesucht (Modell › Telemetrie › Sensoren suchen).
 - Computer mit der FrSky Suite und das USB-Kabel des Senders.
-- Die Datei `Heli-RF-1.12.0-zum-Teilen.zip` aus dem GitHub-Release (Seite «Releases» rechts im Repo). Darin liegen das
-  Paket `Heli-RF-1.12.0.zip`, die Anleitung (deutsch und englisch) und eine Datei `LIES MICH.txt`.
-- Die Anleitung `Heli RF - Anleitung.pdf`. Die Testfälle verweisen auf ihre Kapitel.
+- Die Datei `Heli-1.13.0-share.zip` aus dem GitHub-Release (Seite «Releases» rechts im Repo). Darin liegen das
+  Paket `Heli-1.13.0.zip`, die Anleitung (deutsch und englisch) und eine Datei `LIES MICH.txt`.
+- Die Anleitung `Heli - Anleitung.pdf`. Die Testfälle verweisen auf ihre Kapitel.
 - Nur für Testfall 16 (Studio-Datei): die Testdateien aus diesem Repo, Ordner `test/studio/` (auf GitHub
   herunterladen), und den Sender als USB-Laufwerk (am Sender beim Anschliessen **USB-Laufwerk** bzw. «SD-Karte»
   wählen). Das PC-Programm Lua-Studio brauchst du dafür nicht. Für Teil h (Format 2) zusätzlich den Ordner
@@ -29,10 +29,10 @@ template «Fehler / Bug»; English is fine.*
 **Sicherheit:** Am Tisch immer **ohne Rotorblätter** oder mit abgestecktem Motor testen. Die Testfälle 7 und 8
 brauchen einen drehenden Motor: nur ohne Blätter. Der Flugtest (Testfall 14) ist freiwillig und gehört auf den Flugplatz.
 
-**Vorher sichern:** Erstelle in der FrSky Suite eine Sicherung deines Senders. Heli RF ändert am Modell nur seine
-eigenen Widget-Einstellungen und legt sonst nur Dateien im Ordner `scripts/helirf` an (Flugliste unter
-`scripts/helirf/daten/`). Seit 1.10.0 schreibt es dazu im Ordner `scripts/studio` die Info-Datei für Lua-Studio
-(`<Kennung>.helirf.info.json`) und, nur mit Studio-Datei, deine Menü-Änderungen (`<Kennung>.helirf.funke.lua`).
+**Vorher sichern:** Erstelle in der FrSky Suite eine Sicherung deines Senders. Heli ändert am Modell nur seine
+eigenen Widget-Einstellungen und legt sonst nur Dateien im Ordner `scripts/heli` an (Flugliste unter
+`scripts/heli/daten/`). Seit 1.10.0 schreibt es dazu im Ordner `scripts/studio` die Info-Datei für Lua-Studio
+(`<Kennung>.heli.info.json`) und, nur mit Studio-Datei, deine Menü-Änderungen (`<Kennung>.heli.funke.lua`).
 
 ## Testfälle
 
@@ -40,18 +40,18 @@ Notiere dir für die Meldung: Sender, Ethos-Version (System › Info) und welche
 
 ### 1. Installieren (Anleitung Kapitel 2)
 - [ ] Sender per USB anschliessen, am Sender **Ethos Suite** wählen. In der FrSky Suite: **Lua-Bibliothek** ›
-  **Von lokaler ZIP installieren** › `Heli-RF-1.12.0.zip` (nicht entpacken) › **Skripte installieren**. Sender neu starten.
-- **Erwartet:** Die Suite meldet keinen Fehler, «Heli RF» steht in der Liste der installierten Skripte. Nach dem
+  **Von lokaler ZIP installieren** › `Heli-1.13.0.zip` (nicht entpacken) › **Skripte installieren**. Sender neu starten.
+- **Erwartet:** Die Suite meldet keinen Fehler, «Heli» steht in der Liste der installierten Skripte. Nach dem
   Neustart erscheint keine Fehlermeldung.
 
 ### 2. Bildschirm einrichten (Kapitel 3)
-- [ ] Bildschirme › **+** › Layout **Vollbild** › ins Feld tippen › Widget **Heli RF**.
+- [ ] Bildschirme › **+** › Layout **Vollbild** › ins Feld tippen › Widget **Heli**.
 - **Erwartet:** Die Anzeige erscheint sofort: oben Modellname und Uhrzeit, darunter vier Tachos, unten links das Feld
   GOVERNOR mit dem Flugzähler und rechts vier Felder. Unten links steht **kein** roter Text.
-- [ ] Einen zweiten Bildschirm mit dem Layout **mit einem Feld und Kopf- und Fussleiste** anlegen und dort Heli RF wählen.
+- [ ] Einen zweiten Bildschirm mit dem Layout **mit einem Feld und Kopf- und Fussleiste** anlegen und dort Heli wählen.
 - **Erwartet:** Kompaktansicht: oben die Ethos-Leiste, darunter eine schmale Leiste (Flugzeit, SCHARF/SICHER,
   Profil/Rate, Empfang), vier Tachos und acht Felder. Nichts abgeschnitten. Antippen von FLÜGE öffnet die Flugliste.
-- [ ] Zum Vergleich Heli RF in eine kleine Zone legen (z. B. Layout 2×2) und wieder entfernen.
+- [ ] Zum Vergleich Heli in eine kleine Zone legen (z. B. Layout 2×2) und wieder entfernen.
 - **Erwartet:** In der kleinen Zone steht nur «Feld zu klein», kein abgeschnittenes Bild.
 
 ### 3. Ohne Telemetrie
@@ -138,25 +138,25 @@ Notiere dir für die Meldung: Sender, Ethos-Version (System › Info) und welche
 - **Erwartet:** Alles geht ohne Berührung, jede Löschung fragt nach, «ABBRECHEN» ist vorgewählt.
 
 ### 16. Studio-Datei aus Lua-Studio (neu in 1.10.0, g neu in 1.10.1, h neu in 1.11.0, Anleitung Kapitel 8 «Studio-Datei aus Lua-Studio»)
-Heli RF liest je Modell die Datei `scripts/studio/<Kennung>.helirf.lua`, und zwar dort, wo der Sender die Skripte
+Heli liest je Modell die Datei `scripts/studio/<Kennung>.heli.lua`, und zwar dort, wo der Sender die Skripte
 lädt (mit SD-Karte meist `SD:/scripts/studio/`). **Kennung** = Modellname, jedes Zeichen ausser A–Z, a–z und 0–9
 wird `_`, ein Umlaut ergibt `__` (aus «Logo 700» wird `Logo_700`). Die Datei wird beim **Laden des Modells** gelesen:
 Nach jedem Kopieren ein anderes Modell laden und wieder zurück (oder den Sender neu starten). Nimm für diesen
 Testfall ein Testmodell oder notiere dir vorher Akku- und Alarm-Einstellungen. Nach dem Test alle Dateien
-`<Kennung>.helirf.…` im Ordner `scripts/studio` löschen; dann gilt wieder alles wie vorher.
+`<Kennung>.heli.…` im Ordner `scripts/studio` löschen; dann gilt wieder alles wie vorher.
 
 **a) Keine Studio-Datei**
 - [ ] Modell ohne Studio-Datei laden, Widget-Menü öffnen.
 - **Erwartet:** Unter «Sensoren automatisch suchen» steht die Zeile «Studio-Datei: keine» mit dem Knopf **Zurück**.
   Kein Hinweis unten, kein «!» oben rechts, Anzeige wie in 1.9.1. Im Ordner `scripts/studio` liegt nach dem Laden
-  die Datei `<Kennung>.helirf.info.json`.
+  die Datei `<Kennung>.heli.info.json`.
 - [ ] **Zurück** antippen.
 - **Erwartet:** Frage «Zurück auf Standard?» («Einstellungen und Grenzwerte ab Werk; Sensoren und Flüge bleiben»).
   **ABBRECHEN** ändert nichts. Nur auf einem Testmodell: **JA, ZURÜCK** setzt Akku-, Alarm- und übrige Einstellungen
   auf die Werkswerte (Anleitung Kapitel 8); die Sensoren, der Flugzähler und die Flugliste bleiben.
 
 **b) Gültige Studio-Datei**
-- [ ] `test/studio/gueltig.helirf.lua` nach `scripts/studio/<Kennung>.helirf.lua` kopieren, Modell neu laden.
+- [ ] `test/studio/gueltig.heli.lua` nach `scripts/studio/<Kennung>.heli.lua` kopieren, Modell neu laden.
 - **Erwartet:** Im Vollbild zeigt Seite 1 die Kästchen der Datei (Ringe, Zahlen usw.) statt der eingebauten
   Anzeige; die Kopfzeile oben bleibt. Wischen nach links bzw. Drehrad öffnet weiter die Flugliste. Im Layout mit
   Leisten (784 × 316) erscheint die zweite Ansicht der Datei; auf anderen Fenstergrössen die eingebaute Anzeige.
@@ -165,28 +165,28 @@ Testfall ein Testmodell oder notiere dir vorher Akku- und Alarm-Einstellungen. N
 **c) Änderung an der Funke (`.funke.lua`)**
 - [ ] Mit der gültigen Datei im Menü › **Akku** die Kapazität ändern (z. B. 4500 mAh), Menü schliessen, ein paar
   Sekunden warten, Modell neu laden.
-- **Erwartet:** Die Kapazität bleibt 4500 mAh. In `scripts/studio` liegt neu `<Kennung>.helirf.funke.lua`; die
-  Studio-Datei `<Kennung>.helirf.lua` ist unverändert (gleiche Grösse und gleiches Änderungsdatum wie kopiert).
+- **Erwartet:** Die Kapazität bleibt 4500 mAh. In `scripts/studio` liegt neu `<Kennung>.heli.funke.lua`; die
+  Studio-Datei `<Kennung>.heli.lua` ist unverändert (gleiche Grösse und gleiches Änderungsdatum wie kopiert).
 - [ ] Menü › Zeile «Studio-Datei: geladen» › **Zurück**.
 - **Erwartet:** Frage «Zurück auf Studio-Stand?» («Deine Änderungen an der Funke werden gelöscht»). Nach
-  **JA, ZURÜCK** gilt wieder der Stand der Studio-Datei (5000 mAh), die Datei `….helirf.funke.lua` ist weg.
-- [ ] Freiwillig: Die `….helirf.funke.lua` mit einem Texteditor öffnen, ein Wort hineinschreiben, speichern, Modell
+  **JA, ZURÜCK** gilt wieder der Stand der Studio-Datei (5000 mAh), die Datei `….heli.funke.lua` ist weg.
+- [ ] Freiwillig: Die `….heli.funke.lua` mit einem Texteditor öffnen, ein Wort hineinschreiben, speichern, Modell
   neu laden.
 - **Erwartet:** Unten der Hinweis «Änderungen an der Funke verworfen», die Studio-Datei gilt weiter.
 
 **d) Kaputte Studio-Datei**
-- [ ] `test/studio/abgeschnitten.helirf.lua` als `<Kennung>.helirf.lua` kopieren (die alte ersetzen), Modell neu laden.
+- [ ] `test/studio/abgeschnitten.heli.lua` als `<Kennung>.heli.lua` kopieren (die alte ersetzen), Modell neu laden.
 - **Erwartet:** Die eingebaute Anzeige (Standard). Unten steht etwa 8 Sekunden lang ein dunkles Band «Studio-Datei
   kaputt - Standard», danach oben rechts ein oranges «!». Menü: «Studio-Datei: kaputt». Kein roter Text, das Widget
   läuft normal weiter.
 
 **e) Zu neue Studio-Datei**
-- [ ] `test/studio/format99.helirf.lua` als `<Kennung>.helirf.lua` kopieren, Modell neu laden.
+- [ ] `test/studio/format99.heli.lua` als `<Kennung>.heli.lua` kopieren, Modell neu laden.
 - **Erwartet:** Eingebaute Anzeige, Band «Studio-Datei zu neu - Lua aktualisieren», danach «!». Menü: «Studio-Datei:
   zu neu».
 
 **f) Alarme ohne Grenzen-Eintrag und mit Motorschalter aus** – ohne Rotorblätter!
-- [ ] `test/studio/grenzen_fehlt.helirf.lua` als `<Kennung>.helirf.lua` kopieren, Modell neu laden. Die Datei
+- [ ] `test/studio/grenzen_fehlt.heli.lua` als `<Kennung>.heli.lua` kopieren, Modell neu laden. Die Datei
   enthält nur einen Grenzwert für Akku %, keinen für Zellenspannung und Reglertemperatur.
 - **Erwartet:** Menü › **Alarm Zellenspannung** und **Alarm Reglertemperatur** stehen auf «Ein» mit den Werkswerten
   (LiPo 3,60 / 3,50 V bzw. 70 / 80 °C). Ein fehlender Eintrag schaltet keinen Alarm ab.
@@ -196,10 +196,10 @@ Testfall ein Testmodell oder notiere dir vorher Akku- und Alarm-Einstellungen. N
   «Zellenspannung …», wiederholt alle 10 s, obwohl der Motorschalter auf «Motor aus» steht. Danach die Zellenzahl
   zurückstellen oder im Menü «Zurück auf Studio-Stand» wählen.
 **g) Sensoren der Studio-Datei und Info-Datei (Korrektur in 1.10.1)** – mit Telemetrie (Heli oder Testgerät an)
-- [ ] `scripts/studio/<Kennung>.helirf.info.json` nach dem Laden des Modells mit einem Texteditor öffnen.
+- [ ] `scripts/studio/<Kennung>.heli.info.json` nach dem Laden des Modells mit einem Texteditor öffnen.
 - **Erwartet:** Unter `"sensoren"` stehen die Telemetriesensoren des Modells (je `appId`, `sub`, `phys`, `name`),
   nicht `[]`.
-- [ ] `test/studio/voll.helirf.lua` als `<Kennung>.helirf.lua` kopieren, Modell neu laden, Vollbild ansehen.
+- [ ] `test/studio/voll.heli.lua` als `<Kennung>.heli.lua` kopieren, Modell neu laden, Vollbild ansehen.
 - **Erwartet:** Plätze mit Sensoren, die das Modell hat (z. B. RPM 0500, VFAS 0210, Strom 0200, Fuel 0600, RSSI
   F101), zeigen Livewerte, nicht «---». Nur Sensoren, die das Modell nicht hat, zeigen «---»; dazu je eine Zeile
   «… nicht gefunden» im Debug-Log. Der Platz mit Physical ID (`0B50` mit Phys. ID 3) zeigt nur dann einen Wert,
@@ -211,21 +211,21 @@ Testfall ein Testmodell oder notiere dir vorher Akku- und Alarm-Einstellungen. N
 **h) Lua-Studio-Format 2: Symbole, fette Einheit, Schmuck (neu in 1.11.0)**
 - [ ] Den Ordner `symbole` nach `scripts/studio/symbole/` kopieren, in denselben Speicher wie die Studio-Datei (mit
   SD-Karte meist `SD:/scripts/studio/symbole/`). Danach liegen dort Dateien wie `akku_64.png`.
-- [ ] `test/format2/p12_voll.helirf.lua` als `<Kennung>.helirf.lua` kopieren, Modell neu laden, Vollbild ansehen.
+- [ ] `test/format2/p12_voll.heli.lua` als `<Kennung>.heli.lua` kopieren, Modell neu laden, Vollbild ansehen.
 - **Erwartet:** 16 Plätze (alle mit Akku %). Jeder Platz hat oben links ein Symbol in der Farbe des Werts, der Titel
   rückt ein, die Einheit steht fett oben links und nicht mehr neben dem Wert. Dazu waagrechte Linien und eine Reihe
   Symbole am unteren Rand. Die Symbole dürfen nach dem Laden ein paar Bilder später erscheinen. Kein Hinweis
   «Studio: n Symbole fehlen», kein roter Text, kein «Max instructions» im Debug-Log. Menü: «Studio-Datei: geladen».
-- [ ] **Prüfschritt Befehlsgrenze:** Mit `p12_voll.helirf.lua` und allen Symbolen das Vollbild mindestens eine Minute
+- [ ] **Prüfschritt Befehlsgrenze:** Mit `p12_voll.heli.lua` und allen Symbolen das Vollbild mindestens eine Minute
   laufen lassen, dabei einmal zur Flugliste und zurück wischen. Danach in der Suite das Debug-Log ansehen.
 - **Erwartet:** Kein «Max instructions» und kein roter Text. Hintergrund: Das Format setzt seit 21.11.2026 für das Zeichnen
-  das Ziel unter 10 000 Befehle je Bild (vorher 5 000); Heli RF braucht hier am Mac gezählt 6 407 (800 × 480). Belegt ist,
-  dass der X18RS das verträgt (Elektro 0.4.0 rund 13 000, Heli RF ohne Studio-Datei seit 1.9 schon 6 400 bis 7 500). Dieser Schritt
+  das Ziel unter 10 000 Befehle je Bild (vorher 5 000); Heli braucht hier am Mac gezählt 6 407 (800 × 480). Belegt ist,
+  dass der X18RS das verträgt (Elektro 0.4.0 rund 13 000, Heli ohne Studio-Datei seit 1.9 schon 6 400 bis 7 500). Dieser Schritt
   zeigt, ob das am Sender hält. Tritt «Max instructions» auf, bitte unbedingt melden.
 - [ ] Wenn möglich auch im Layout mit Leisten (784 × 316, Kompaktansicht): dieselbe Datei hat dort eine eigene
   Ansicht (am Mac gezählt 5 796 Befehle je Bild). Eine Minute laufen lassen, Debug-Log ansehen.
 - **Erwartet:** 16 Plätze mit Symbol und fetter Einheit, Linien und 4 Symbole unten, kein «Max instructions».
-- [ ] `test/format2/p00_bild.helirf.lua` als `<Kennung>.helirf.lua` kopieren, Modell neu laden.
+- [ ] `test/format2/p00_bild.heli.lua` als `<Kennung>.heli.lua` kopieren, Modell neu laden.
 - **Erwartet:** 5 Plätze, davon 4 mit Symbol in verschiedenen Grössen (Akku, Temperatur, Uhr, Höhe) und einer ohne
   Symbol. Die Einheit steht fett oben links, beim Platz «Flugzeit» gar keine Einheit. Dazu ein Rahmen, zwei Linien, zwei
   Texte und unten rechts die Symbole Segler und Thermik. Plätze mit Werten, die das Modell nicht hat, zeigen «---».
@@ -236,11 +236,11 @@ Testfall ein Testmodell oder notiere dir vorher Akku- und Alarm-Einstellungen. N
   `akku_64.png.weg`), Modell neu laden.
 - **Erwartet:** Der Platz «Akku» bleibt ohne Symbol, alles andere wie vorher. Unten steht etwa 8 Sekunden lang
   «Studio: 1 Symbole fehlen», danach oben rechts ein oranges «!». Kein roter Text. Danach die Datei zurück umbenennen.
-- [ ] Freiwillig: `test/format2/p11_format1_ohne.helirf.lua` (Format 1, ohne Symbole) als `<Kennung>.helirf.lua`
+- [ ] Freiwillig: `test/format2/p11_format1_ohne.heli.lua` (Format 1, ohne Symbole) als `<Kennung>.heli.lua`
   kopieren, Modell neu laden.
 - **Erwartet:** Dieselben Plätze wie `p11_format1`, ohne Symbole und ohne Schmuck, kein Hinweis.
 
-- [ ] Am Schluss alle Dateien `<Kennung>.helirf.…` in `scripts/studio` löschen und das Modell neu laden. Den Ordner
+- [ ] Am Schluss alle Dateien `<Kennung>.heli.…` in `scripts/studio` löschen und das Modell neu laden. Den Ordner
   `scripts/studio/symbole` nur löschen, wenn du Lua-Studio auf diesem Sender sonst nicht nutzt.
 - **Erwartet:** «Studio-Datei: keine», Anzeige und Einstellungen wie vor Testfall 16.
 
@@ -258,19 +258,22 @@ Voraussetzung: Motorschalter zugewiesen (Testfall 7), Zellenspannung kommt an (o
   «Max size reached» im Debug-Log. Danach Haken wieder ein und die Schwelle zurück auf 3,50 V.
 - [ ] Freiwillig mit Studio-Datei: In Lua-Studio bei einer Grenze «auch bei Motor aus» abwählen, Datei übertragen.
 - **Erwartet:** Im Menü ist der Haken dieser Gruppe aus; schaltest du ihn ein, steht in
-  `scripts/studio/<Kennung>.helirf.funke.lua` bei dieser Grenze `beiMotorAus = true`.
+  `scripts/studio/<Kennung>.heli.funke.lua` bei dieser Grenze `beiMotorAus = true`.
 
 ## Einen Fehler melden
 
 1. Im Repo auf GitHub: **Issues › New issue › «Fehler / Bug»**. Das Formular fragt alles Nötige ab.
-2. **Bildschirmfoto:** Ein Handyfoto vom Sender genügt. Wichtig ist roter Text unten links im Widget («Heli RF: …»).
+2. **Bildschirmfoto:** Ein Handyfoto vom Sender genügt. Wichtig ist roter Text unten links im Widget («Heli: …»).
 3. **Log:** Lua-Fehler stehen im Log des Senders. In der FrSky Suite (Sender per USB im Modus «Ethos Suite») unter
-   Lua das **Debug-Log** öffnen und die Zeilen mit «Heli RF» kopieren.
+   Lua das **Debug-Log** öffnen und die Zeilen mit «Heli» kopieren.
 4. Gib die **Nummer des Testfalls** an und was du erwartet hast.
 
 Ideen und Wünsche bitte mit der Vorlage **«Wunsch / Idee»**. Bitte keine Modelldateien anhängen.
 
-## Bekannte Grenzen von 1.12.0
+## Bekannte Grenzen von 1.13.0
+
+- 1.13.0: umbenannt von «Heli RF» (`helirf`) in «Heli» (`heli`). In vorhandenen Modellen das Widget neu auswählen;
+  eine alte Studio-Datei `<Kennung>.helirf.lua` wird noch gelesen (Hinweis im Log).
 
 - Am echten Sender getestet nur auf der **X18RS** (mit 1.8.1, Ethos 26.2.0, 20.11.2026): Installation, Sensorsuche (8 Felder
   zugewiesen) und Anzeige mit Livewerten. Die anderen Sender nur im Simulator.
@@ -290,7 +293,7 @@ Ideen und Wünsche bitte mit der Vorlage **«Wunsch / Idee»**. Bitte keine Mode
   Format-1-Dateien wie 1.10.1.
 - Befehle je Bild: Lua-Studio-Format 2 §9 setzt seit 21.11.2026 für `paint` das Ziel unter 10 000 Befehle (vorher 5 000; `wakeup` weiter unter 5 000). Am Mac gezählt braucht `p12_voll` 6 407 Befehle bei 800 × 480 und 5 796 bei
   784 × 316, die eingebaute Anzeige 6 400 bis 7 500. Begründung: Der X18RS verträgt nachweislich mehr (Elektro 0.4.0
-  rund 13 000 je Bild, Heli RF ohne Studio-Datei seit 1.9 schon 6 400 bis 7 500). Massgebend ist Testfall 16 h:
+  rund 13 000 je Bild, Heli ohne Studio-Datei seit 1.9 schon 6 400 bis 7 500). Massgebend ist Testfall 16 h:
   `p12_voll` mit Symbolen läuft am Sender im Vollbild und wenn möglich kompakt ohne «Max instructions».
 - Layout Vollbild oder ein Feld mit Leisten. In kleineren Zonen steht «Feld zu klein».
 - Speicher: rund 90 KB Lua-Speicher (gemessen mit 1.8.1). Auf Sendern mit sehr vielen Lua-Widgets kann

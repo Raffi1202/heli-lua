@@ -1,34 +1,35 @@
-# Heli RF – helicopter display for FrSky Ethos
+# Heli – helicopter display for FrSky Ethos
 
 🇩🇪 [Deutsch](README.de.md) · Documentation: [Wiki (English)](wiki/en/Installation.md) · [Wiki (Deutsch)](wiki/de/Installation.md)
 
 > **Configure on your PC with [Lua-Studio](https://github.com/Raffi1202/lua-studio)** – arrange the screen, choose values, alarms and symbols, then transfer to the radio. Download: [latest release](https://github.com/Raffi1202/lua-studio/releases/latest) · [Wiki](https://github.com/Raffi1202/lua-studio/tree/main/wiki)
 
-**Heli RF** is a Lua widget (full screen, or compact with the Ethos header and footer) for FrSky radios with Ethos
+**Heli** is a Lua widget (full screen, or compact with the Ethos header and footer) for FrSky radios with Ethos
 (26.1 or newer) and a colour display, for any helicopter with telemetry (Rotorflight, FrSky sensors or an ESC with
 telemetry). It shows battery %, head speed, current, ESC temperature, BEC, cell voltage and used capacity, watches five
 values with two thresholds each (orange display, red with tone, vibration and voice), announces head speed and
 «Autorotation», and keeps a flight list. Display, menu and voice alerts are in English or German.
 
-**Version 1.12.0** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
+**Version 1.13.0** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
 (Ethos 26.2.0); all other radios only in the Ethos simulator. Not yet flown. The alarms are an aid and do not replace
 your own checks.
 
 ## Quick start
 
-1. Download `Heli-RF-1.12.0-zum-Teilen.zip` from **Releases** and unzip it (but not the inner `Heli-RF-1.12.0.zip`).
+1. Download `Heli-1.13.0-share.zip` from **Releases** and unzip it (but not the inner `Heli-1.13.0.zip`).
 2. Connect the radio via USB (mode «Ethos Suite»), open the FrSky Suite.
-3. Suite › **Lua library** › **Install from local ZIP** › `Heli-RF-1.12.0.zip` › **Install scripts**. Restart the radio.
-4. Add a screen with layout **Full screen** (or one field with bars for the compact view) and the widget **Heli RF**.
+3. Suite › **Lua library** › **Install from local ZIP** › `Heli-1.13.0.zip` › **Install scripts**. Restart the radio.
+4. Add a screen with layout **Full screen** (or one field with bars for the compact view) and the widget **Heli**.
 5. In the widget menu tap **Search** («Find sensors automatically»), check the sensors, set cells, capacity and battery type.
 
-Manual: `docs/Heli RF - Manual.pdf` (German: `docs/Heli RF - Anleitung.pdf`). Test guide: `TESTLEITFADEN.md`
+Manual: `docs/Heli - Manual.pdf` (German: `docs/Heli - Anleitung.pdf`). Test guide: `TESTLEITFADEN.md`
 (German). Report bugs with the issue template «Fehler / Bug» (English is fine).
 
 ## What's new
 
+- **1.13.0:** **Renamed from «Heli RF» (`helirf`) – breaking:** old models must re-add the widget (its settings start from the factory values); Studio files must be renamed to `<ID>.heli.lua` or re-transferred with Lua-Studio. An old `<ID>.helirf.lua` is still read once, with the log note «old studio file found, please re-transfer». Flight count and flight list are taken over automatically from `scripts/helirf/daten/` (read only, never deleted), so keep the old folder until each model has been used once. If the widget key in the model file is switched from `helirf` to `heli` instead of re-adding the widget, all settings are kept as well. Rotorflight remains a supported source.
 - **1.12.0:** per alarm the setting «Also with motor off» (on by default, also in Lua-Studio): without the tick the
-  alarm stays silent while the motor switch is «off»; the display still turns orange/red. After a model change Heli RF
+  alarm stays silent while the motor switch is «off»; the display still turns orange/red. After a model change Heli
   frees almost all of its Lua memory (simulator: 4–5 KB stay). A Studio limit without thresholds no longer switches an
   alarm off. Not yet tested on the radio.
 - **1.11.0:** Lua-Studio format 2 – symbols in the boxes, bold unit, decoration. Ran on the X18RS with a full file.
@@ -41,9 +42,9 @@ Details: [CHANGELOG.md](CHANGELOG.md).
 
 | Content | Location |
 |---|---|
-| Manual (PDF English / German) | `docs/Heli RF - Manual.pdf`, `docs/Heli RF - Anleitung.pdf` |
+| Manual (PDF English / German) | `docs/Heli - Manual.pdf`, `docs/Heli - Anleitung.pdf` |
 | Wiki (English / German) | `wiki/` |
-| Script, exactly as it goes on the radio | `src/helirf/` |
+| Script, exactly as it goes on the radio | `src/heli/` |
 | Description for Lua-Studio | `studio/beschreibung.json` |
 | Simulator screenshots | `docs/bilder-simulator/` |
 | Sources of the manuals (HTML) | `docs/anleitung/` |
@@ -53,7 +54,7 @@ Details: [CHANGELOG.md](CHANGELOG.md).
 
 ## Development
 
-Lua 5.4 syntax check: `luac -p src/helirf/*.lua`. Mac tests: `lua test/studio_test.lua`, `lua test/format2_test.lua`,
+Lua 5.4 syntax check: `luac -p src/heli/*.lua`. Mac tests: `lua test/studio_test.lua`, `lua test/format2_test.lua`,
 `lua test/suche_test.lua`, `python3 test/update_test.py`. The simulator tests (`test/*_sim.py`, `test/zufallstest.py`,
 `test/bilder.py`) need the ethos-tools plugin (`ETHOS_PLUGIN`) and the helper tools folder (`ETHOS_LUA_WERKZEUGE`);
 the format test files come from the Lua-Studio format documentation (`FORMAT2_ORDNER`). Details (German) in

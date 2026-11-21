@@ -1,13 +1,13 @@
--- Heli RF: Studio-Datei laden (Lua-Studio-Format v1, Abschnitte 3, 4 und 12) auf dem Mac, Lua 5.4.
+-- Heli: Studio-Datei laden (Lua-Studio-Format v1, Abschnitte 3, 4 und 12) auf dem Mac, Lua 5.4.
 -- Aufruf aus dem Repo-Ordner:  /opt/homebrew/opt/lua@5.4/bin/lua test/studio_test.lua
 --
---  1. studioLaden aus src/helirf/studio.lua zwischen «-- ===== Referenz studioLaden» und «-- ===== Ende Referenz =====»
+--  1. studioLaden aus src/heli/studio.lua zwischen «-- ===== Referenz studioLaden» und «-- ===== Ende Referenz =====»
 --     herauslösen und Zeile für Zeile mit der Referenz vergleichen (wörtlich). Fehlt studio.lua noch, läuft alles
 --     Weitere mit der Referenzdatei selbst.
 --  2. Alle Angriffs- und Grenzfalldateien (test/studio-messen/dateien, Kopien aus «Lua-Studio-Format v1 -
 --     Testdateien») laden: Ergebnis wie im Format (geladen / kaputt / zuNeu), nie ein Absturz. Je Datei Befehle
 --     (debug.sethook) und Speicher (Aufräumen aus, Spitze und bleibend) wie im Messskript des Formats.
---  3. Die Heli-Dateien aus test/studio (python3 test/studio_dateien.py) ebenso; voll.helirf.lua unter 5000 Befehlen
+--  3. Die Heli-Dateien aus test/studio (python3 test/studio_dateien.py) ebenso; voll.heli.lua unter 5000 Befehlen
 --     und unter der Speicherspitze des Grenzfalls g16_lang24.
 --  6. (1.10.1) Sender-Eigenheiten (getSources mit Tabelle leer, getSource mit appId ohne Wert): Studio-Sensoren,
 --     Info-Datei, Rotorflight-Rückfall; Befehle im Betrieb mit 160 Grenzen und 100 Wert-Anpassungen; Alarm nie stumm.
@@ -18,7 +18,7 @@ local repo = arg[0]:gsub("test/studio_test%.lua$", "")
 if repo == "" then repo = "./" end
 local REF = os.getenv("STUDIO_REF") or ((os.getenv("FORMAT2_ORDNER") or error("Umgebungsvariable FORMAT2_ORDNER fehlt: Ordner mit den Unterlagen zum Lua-Studio-Format", 0))
   .. "/Lua-Studio-Format v1 - Referenz studio_laden.lua")
-local STUDIO = repo .. "src/helirf/studio.lua"
+local STUDIO = repo .. "src/heli/studio.lua"
 
 local fehlerZahl, hinweise = 0, 0
 local function pruefe(ok, text)
@@ -91,10 +91,10 @@ if studioText then
       end
     end
     pruefe(abw == nil, "studioLaden wörtlich wie die Referenz (" .. #kern .. " Zeilen)" .. (abw and (": " .. abw) or ""))
-    quelle, quellName = table.concat(aus, "\n") .. "\nreturn studioLaden\n", "Auszug aus src/helirf/studio.lua"
+    quelle, quellName = table.concat(aus, "\n") .. "\nreturn studioLaden\n", "Auszug aus src/heli/studio.lua"
   end
 else
-  hinweis("src/helirf/studio.lua fehlt noch: Auszug und Wortlaut nicht geprüft, Tests laufen mit der Referenz")
+  hinweis("src/heli/studio.lua fehlt noch: Auszug und Wortlaut nicht geprüft, Tests laufen mit der Referenz")
 end
 if not quelle then quelle, quellName = refText, "Referenzdatei" end
 local chunk, e = load(quelle, "=studioLaden", "t", _ENV)
@@ -155,11 +155,11 @@ for _, n in ipairs(dateien) do
 end
 pruefe(maxN < 5000, "Angriffe: höchstens " .. maxN .. " Befehle in einem Aufruf (< 5000)")
 -- fehlende Datei
-local erg = messe(repo .. "test/studio/gibt_es_nicht.helirf.lua")
+local erg = messe(repo .. "test/studio/gibt_es_nicht.heli.lua")
 pruefe(erg == "fehlt", "keine Datei: «fehlt» (" .. erg .. ")")
 
 -- ---------------------------------------------------------------- 3. Heli-Dateien
-local heli = liste(repo .. "test/studio/", "%.helirf%.")
+local heli = liste(repo .. "test/studio/", "%.heli%.")
 pruefe(#heli >= 12, #heli .. " Heli-Studio-Dateien in test/studio (python3 test/studio_dateien.py)")
 print(string.format("\n%-34s %6s  %-8s %-8s %8s %10s %10s", "Datei", "Byte", "Ergebnis", "erwartet", "Befehle", "Spitze KB", "bleibt KB"))
 for _, n in ipairs(heli) do
@@ -170,14 +170,14 @@ for _, n in ipairs(heli) do
   if not ok then fehlerZahl = fehlerZahl + 1 end
   print(string.format("%-34s %6d  %-8s %-8s %8d %10.1f %10.1f%s", n, #(lies(p) or ""), e2, soll, befehle, spitze,
     bleibend, ok and "" or "   FEHLER"))
-  if n == "voll.helirf.lua" then
+  if n == "voll.heli.lua" then
     pruefe(befehle < 5000, "voll: " .. befehle .. " Befehle in einem Aufruf (< 5000)")
     pruefe(spitzeG16 > 0 and spitze <= spitzeG16, string.format("voll: Spitze %.1f KB unter dem Grenzfall g16_lang24 (%.1f KB)", spitze, spitzeG16))
   end
 end
 -- Inhalt der vollen Datei nachzählen (Abschnitt 12.2)
 do
-  local d = laden(repo .. "test/studio/voll.helirf.lua", 1)
+  local d = laden(repo .. "test/studio/voll.heli.lua", 1)
   if d then
     local nP, kurven, arten, sens, phys = 0, {}, {}, {}, false
     for i, a in ipairs(d.ansichten) do
@@ -199,22 +199,22 @@ do
       string.format("voll: %d Plätze, Kurven %d/%d, %d Darstellungsarten, %d Sensoren, Physical ID %s", nP,
         kurven[1] or 0, kurven[2] or 0, nA, nS, tostring(phys)))
   else
-    pruefe(false, "voll.helirf.lua nicht geladen")
+    pruefe(false, "voll.heli.lua nicht geladen")
   end
 end
 
 -- ---------------------------------------------------------------- 4. Textprüfungen an studio.lua (nur wenn da)
 if studioText then
   local alle = studioText
-  for _, n in ipairs(liste(repo .. "src/helirf/", "%.lua$")) do
-    if n ~= "studio.lua" then alle = alle .. "\n" .. (lies(repo .. "src/helirf/" .. n) or "") end
+  for _, n in ipairs(liste(repo .. "src/heli/", "%.lua$")) do
+    if n ~= "studio.lua" then alle = alle .. "\n" .. (lies(repo .. "src/heli/" .. n) or "") end
   end
   pruefe(alle:find(':gsub("[^%w]", "_"):sub(1, 32)', 1, true) ~= nil, "Kennung nach 2.1: gsub(\"[^%w]\", \"_\"):sub(1, 32)")
   pruefe(alle:find('"modell"', 1, true) ~= nil, "Kennung: leer ergibt «modell»")
   pruefe(alle:find("SCRIPTS:/studio/", 1, true) ~= nil, "Pfad SCRIPTS:/studio/ benutzt")
   pruefe(not alle:find(':read%(%s*"%*?a"%s*%)') , "kein f:read(\"a\") im Lua (gibt es in Ethos nicht)")
   pruefe(not alle:find("%f[%w_]debug%."), "kein debug.* im ausgelieferten Lua")
-  pruefe(alle:find(".helirf.funke.lua", 1, true) ~= nil and alle:find(".helirf.funke.neu", 1, true) ~= nil
+  pruefe(alle:find(".heli.funke.lua", 1, true) ~= nil and alle:find(".heli.funke.neu", 1, true) ~= nil
     or (alle:find("funke.lua", 1, true) ~= nil and alle:find("funke.neu", 1, true) ~= nil), ".funke.lua und .funke.neu vorhanden")
   -- in der Schreibfunktion für .funke.lua: erst os.remove, dann os.rename (am Sender überschreibt rename nicht)
   local fs = alle:match("function [%w_.:]*[Ff]unke[Ss]chreiben.-\nend")
@@ -258,7 +258,7 @@ if studioText then
   local function pfad(p)
     if p:sub(1, 9) == "SCRIPTS:/" then return tmp .. "/SCRIPTS/" .. p:sub(10) end
     if p:sub(1, 1) == "/" then return p end
-    return repo .. "src/helirf/" .. p
+    return repo .. "src/heli/" .. p
   end
   local io_open, os_rename, os_remove, print_ = io.open, os.rename, os.remove, print
   local logZeilen = 0
@@ -267,9 +267,9 @@ if studioText then
   -- relative Pfade (daten/ usw.) beim Schreiben und Lesen in den Temp-Ordner, nie ins Repo
   local function pfadIo(p)
     if p:sub(1, 9) == "SCRIPTS:/" or p:sub(1, 1) == "/" then return pfad(p) end
-    return tmp .. "/helirf/" .. p
+    return tmp .. "/heli/" .. p
   end
-  os.execute("mkdir -p '" .. tmp .. "/helirf/daten'")
+  os.execute("mkdir -p '" .. tmp .. "/heli/daten'")
   G.io = setmetatable({ open = function(p, m) return io_open(pfadIo(p), m) end }, { __index = io })
   G.os = setmetatable({
     rename = function(a, b)
@@ -288,7 +288,7 @@ if studioText then
   G.CATEGORY_TELEMETRY_SENSOR = 4
   G._G = G
   local okM, M = pcall(function() return assert(load(studioText, "=studio.lua", "t", G))() end)
-  local okK, K = pcall(function() return assert(loadfile(repo .. "src/helirf/kern.lua", "t", G))() end)
+  local okK, K = pcall(function() return assert(loadfile(repo .. "src/heli/kern.lua", "t", G))() end)
   local H
   if okK and type(K) == "table" then
     local gesehen = {}
@@ -310,7 +310,7 @@ if studioText then
     hinweis("Ablauf im Lua nicht prüfbar (studio.lua: " .. tostring(okM and type(M)) .. ", STUDIO_H gefunden: " .. tostring(H ~= nil) .. ")")
   else
     print("\nAblauf im Lua (schritt + anwenden), Befehle je Aufruf:")
-    local ziel = tmp .. "/SCRIPTS/studio/TEST.helirf.lua"
+    local ziel = tmp .. "/SCRIPTS/studio/TEST.heli.lua"
     local function kopiere(von, nach)
       local a = assert(io_open(von, "rb")) local t = a:read("a") a:close()
       local b = assert(io_open(nach, "wb")) b:write(t) b:close()
@@ -366,14 +366,14 @@ if studioText then
         if J and (n:find("^falsche_typen") or n:find("^grenzen_richtung")) then
           pruefe(J.fehler > 0 and J.fehler == logZeilen - 0, n .. ": je Fehler eine Log-Zeile (" .. J.fehler .. " / " .. logZeilen .. ")")
         end
-        if J and (n:find("^gueltig") or n:find("^voll") or n == "grenzen_fehlt.helirf.lua") then
+        if J and (n:find("^gueltig") or n:find("^voll") or n == "grenzen_fehlt.heli.lua") then
           pruefe(J.fehler == 0, n .. ": 0 Fehler (" .. J.fehler .. ")")
         end
       end
     end
     -- .funke.lua: schreiben (erst .neu, prüfen, alte entfernen, umbenennen), Rest-Fälle nach «Strom weg»
-    kopiere(repo .. "test/studio/gueltig.helirf.lua", ziel)
-    local basis = tmp .. "/SCRIPTS/studio/TEST.helirf"
+    kopiere(repo .. "test/studio/gueltig.heli.lua", ziel)
+    local basis = tmp .. "/SCRIPTS/studio/TEST.heli"
     if M.funkeText and M.funkeSchreiben then
       local okT, text = pcall(M.funkeText, { kapaz = 4200 }, { ["lua:zelle"] = { warnung = 3.7, alarm = false } })
       pruefe(okT and type(text) == "string" and M.funkeSchreiben("TEST", text), ".funke.lua geschrieben")
@@ -387,7 +387,7 @@ if studioText then
       hinweis("funkeText/funkeSchreiben fehlen: Schreiben nicht geprüft")
     end
     local function datei(p, t) local f = io_open(p, "wb") f:write(t) f:close() end
-    local gf = (lies(repo .. "test/studio/gueltig.helirf.funke.lua"))
+    local gf = (lies(repo .. "test/studio/gueltig.heli.funke.lua"))
     os_remove(basis .. ".funke.lua")
     datei(basis .. ".funke.neu", gf)                                -- Strom weg nach remove, vor rename
     local J = ganz()
@@ -403,22 +403,22 @@ if studioText then
     os_remove(basis .. ".funke.lua")
     -- Modellwechsel zehnmal (12.3): voll und gueltig im Wechsel, Speicher wächst nicht
     local function wechsel(n) kopiere(repo .. "test/studio/" .. n, ziel) local a, b, c, w = ganz() return w end
-    wechsel("voll.helirf.lua") wechsel("gueltig.helirf.lua")
+    wechsel("voll.heli.lua") wechsel("gueltig.heli.lua")
     collectgarbage() collectgarbage()
     local m0 = collectgarbage("count")
-    for i = 1, 10 do wechsel(i % 2 == 0 and "gueltig.helirf.lua" or "voll.helirf.lua") end
-    wechsel("gueltig.helirf.lua")
+    for i = 1, 10 do wechsel(i % 2 == 0 and "gueltig.heli.lua" or "voll.heli.lua") end
+    wechsel("gueltig.heli.lua")
     collectgarbage() collectgarbage()
     local m1 = collectgarbage("count")
     pruefe(m1 - m0 < 4, string.format("zehn Modellwechsel: Speicher %.1f KB -> %.1f KB", m0, m1))
 
-    -- ---------------------------------------------------------- 6. Heli RF 1.10.1 (Sendertest Elektro 0.3.2)
+    -- ---------------------------------------------------------- 6. Heli 1.10.1 (Sendertest Elektro 0.3.2)
     -- a) Sender-Eigenheiten X18RS, Ethos 26.2.0: getSources mit Tabelle -> leere Liste, mit Zahl -> alle Sensoren;
     --    getSource mit appId -> Objekt ohne Wert, für fehlende Sensoren Kategorie «keine». Studio-Sensoren,
     --    Info-Datei und der Rotorflight-Rückfall müssen trotzdem gehen.
     -- b) Befehlsgrenze im Betrieb: 160 Grenzen im Ring (höchstens rund 4000 Befehle je Aufruf), Alarm kommt trotzdem.
     -- c) Alarm nie ganz stumm: ansage = false und vibration = false -> Ton; auch bei Motorschalter «aus».
-    print("\n6. Heli RF 1.10.1: Sender-Eigenheiten, Befehlsgrenze im Betrieb, Alarm nie stumm")
+    print("\n6. Heli 1.10.1: Sender-Eigenheiten, Befehlsgrenze im Betrieb, Alarm nie stumm")
     local KAT_SENSOR, KAT_KEINE, KAT_KANAL = 4, 0, 7
     G.CATEGORY_NONE, G.CATEGORY_CHANNEL = KAT_KEINE, KAT_KANAL
     local function sensor(app, sub, ph, wert, nm)
@@ -455,7 +455,7 @@ if studioText then
       return nil
     end
     G.system.getUnitName = function() return "V" end
-    local okL, LAUF = pcall(function() return assert(loadfile(repo .. "src/helirf/studiolauf.lua", "t", G))() end)
+    local okL, LAUF = pcall(function() return assert(loadfile(repo .. "src/heli/studiolauf.lua", "t", G))() end)
     pruefe(okL and type(LAUF) == "table", "studiolauf.lua geladen")
     local function befehle(f, ...)
       local n = 0
@@ -465,10 +465,10 @@ if studioText then
       if not r[1] then error(r[2], 0) end
       return n, table.unpack(r, 2, r.n)
     end
-    -- a) voll.helirf.lua: 8 Studio-Sensoren (einer mit Physical ID 3), dazu ein Kanal
-    kopiere(repo .. "test/studio/voll.helirf.lua", ziel)
+    -- a) voll.heli.lua: 8 Studio-Sensoren (einer mit Physical ID 3), dazu ein Kanal
+    kopiere(repo .. "test/studio/voll.heli.lua", ziel)
     local Jv, _, errV, wv = ganz()
-    pruefe(Jv and Jv.zustand == "geladen" and wv and wv.studio, "voll.helirf.lua geladen und angewendet " .. tostring(errV))
+    pruefe(Jv and Jv.zustand == "geladen" and wv and wv.studio, "voll.heli.lua geladen und angewendet " .. tostring(errV))
     if wv and wv.studio and okL then
       local S, hoechst, aufrufe = wv.studio, 0, 0
       wv.v = wv.v or {}
@@ -499,7 +499,7 @@ if studioText then
         if n > hoechstI then hoechstI = n end
         fertig, k = r, k + 1
       until fertig or k > 100
-      local info = lies(tmp .. "/SCRIPTS/studio/TEST.helirf.info.json") or ""
+      local info = lies(tmp .. "/SCRIPTS/studio/TEST.heli.info.json") or ""
       local _, anz = info:gsub('"appId"', "")
       pruefe(fertig and anz == 100, string.format("Info-Datei: %d Sensoren (Liste %d, höchstens 100), %d Aufrufe, höchstens %d Befehle",
         anz, #liste, k, hoechstI))
@@ -529,9 +529,9 @@ if studioText then
     else
       hinweis("rfLesen nicht gefunden: Rückfall nicht geprüft")
     end
-    -- b) gross_grenzen.helirf.lua: 48 Sensor-Grenzen (Alarm über 100), Betrieb im Ring (bis 1.10.1: 160; ab 1.11.0
+    -- b) gross_grenzen.heli.lua: 48 Sensor-Grenzen (Alarm über 100), Betrieb im Ring (bis 1.10.1: 160; ab 1.11.0
     --    gelten nach Format 2, Regel 7.2 höchstens 48 Einträge je Liste)
-    kopiere(repo .. "test/studio/gross_grenzen.helirf.lua", ziel)
+    kopiere(repo .. "test/studio/gross_grenzen.heli.lua", ziel)
     local Jg, _, errG, wg = ganz()
     pruefe(Jg and Jg.zustand == "geladen" and Jg.fehler == 0 and wg and wg.studio and #wg.studio.extra == 48,
       "gross_grenzen: 48 weitere Grenzen " .. tostring(errG))
@@ -566,10 +566,24 @@ if studioText then
       for _ = 1, 40 do LAUF.wecke(wg, now, H) now = now + 0.05 end
       pruefe(not S.alarmAn, "Alarm vorbei, wenn die Werte wieder gut sind")
     end
-    -- gross_werte.helirf.lua: 48 Wert-Anpassungen, Betrieb
-    kopiere(repo .. "test/studio/gross_werte.helirf.lua", ziel)
+    -- gross_werte.heli.lua: 48 Wert-Anpassungen, Betrieb
+    kopiere(repo .. "test/studio/gross_werte.heli.lua", ziel)
     local Jw, _, _, ww = ganz()
     pruefe(Jw and Jw.zustand == "geladen" and Jw.fehler == 0, "gross_werte: geladen, 0 Fehler")
+    -- 1.13.0: Übergang von «Heli RF» – nur eine alte <Kennung>.helirf.lua ist da: wird gelesen, Hinweis im Log
+    do
+      local alt = ziel:gsub("%.heli%.lua$", ".helirf.lua")
+      kopiere(repo .. "test/studio/gueltig.heli.lua", alt)
+      os.remove(ziel)
+      local zeilen, pAlt = {}, G.print
+      G.print = function(...) zeilen[#zeilen + 1] = table.concat({ ... }, " ") end
+      local Ja = ganz()
+      G.print = pAlt
+      local hinweis = false
+      for _, z in ipairs(zeilen) do if z:find("old studio file found", 1, true) then hinweis = true end end
+      pruefe(Ja and Ja.zustand == "geladen" and hinweis, "alte .helirf.lua gelesen, Hinweis im Log: " .. tostring(Ja and Ja.zustand) .. " / " .. tostring(hinweis))
+      os.remove(alt)
+    end
     if ww and ww.studio and okL then
       ww.v = ww.v or {}
       local hoechst = 0
@@ -577,7 +591,7 @@ if studioText then
       pruefe(hoechst <= 4000, "Betrieb 48 Wert-Anpassungen: höchstens " .. hoechst .. " Befehle je Aufruf")
     end
     -- 1.11.0, Format 2 Regel 7.2: je 60 Einträge in werte, grenzen, einstellungen -> je 48 gelten, 3 Hinweise
-    kopiere(repo .. "test/studio/ueber48.helirf.lua", ziel)
+    kopiere(repo .. "test/studio/ueber48.heli.lua", ziel)
     local Ju, nU, errU, wu = ganz()
     local nW, nG = 0, 0
     if wu and wu.studio then

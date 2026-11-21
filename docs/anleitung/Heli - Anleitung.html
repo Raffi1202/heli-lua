@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Heli – Anleitung</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 16mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.42; color: #1a1f2b; margin: 0; }
+  h1 { font-size: 24pt; margin: 0 0 2mm; }
+  h2 { font-size: 14.5pt; margin: 7mm 0 2.5mm; padding-bottom: 1mm; border-bottom: 1.5pt solid #1f4f96; color: #12305e; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 4mm 0 1.5mm; break-after: avoid; }
+  h3.gross { font-size: 13pt; color: #12305e; margin-top: 6mm; }
+  p { margin: 0 0 2.5mm; }
+  ol, ul { margin: 0 0 2.5mm; padding-left: 6mm; }
+  ol { break-inside: avoid; }
+  li { margin-bottom: 1.2mm; }
+  .unter { color: #56607a; font-size: 11pt; margin-bottom: 5mm; }
+  .bild { position: relative; width: 100%; margin: 3mm 0 3mm; break-inside: avoid; }
+  .bild img { width: 100%; display: block; border-radius: 2mm; border: 0.5pt solid #99a; }
+  .halb { display: flex; gap: 5mm; break-inside: avoid; margin: 3mm 0; }
+  .halb > div { flex: 1; }
+  .halb img { width: 100%; display: block; border-radius: 1.5mm; border: 0.5pt solid #99a; }
+  .halb .t { font-size: 9pt; color: #56607a; margin-top: 1mm; }
+  .nr { position: absolute; width: 6.2mm; height: 6.2mm; margin: -3.1mm 0 0 -3.1mm; border-radius: 50%; background: #e11d48; color: #fff;
+        font-weight: 700; font-size: 9.5pt; line-height: 6.2mm; text-align: center; border: 0.6pt solid #fff; }
+  .n { display: inline-block; min-width: 5mm; height: 5mm; border-radius: 50%; background: #e11d48; color: #fff; font-weight: 700;
+       font-size: 8.5pt; line-height: 5mm; text-align: center; margin-right: 1mm; }
+  table { border-collapse: collapse; width: 100%; margin: 2mm 0 3mm; font-size: 9.6pt; break-inside: avoid; }
+  th, td { border: 0.5pt solid #b6bccb; padding: 1.3mm 2mm; text-align: left; vertical-align: top; }
+  th { background: #e9eef8; }
+  .kasten { border: 1pt solid #d99a00; background: #fff7df; border-radius: 2mm; padding: 2.5mm 3.5mm; margin: 3mm 0; break-inside: avoid; }
+  .kasten.blau { border-color: #1f4f96; background: #eef3fb; }
+  code { font-family: Menlo, monospace; font-size: 9.3pt; background: #eef0f5; padding: 0 1mm; border-radius: 1mm; }
+  .legende { columns: 2; column-gap: 8mm; padding-left: 0; list-style: none; }
+  .legende li { break-inside: avoid; }
+  .neu { break-before: page; }
+  .klein { font-size: 9pt; color: #56607a; }
+</style>
+</head>
+<body>
+
+<h1>Heli</h1>
+<div class="unter">Anzeige für Helis auf FrSky-Sendern mit Ethos · Anleitung · Version 1.13.0 · Stand 21.11.2026</div>
+
+<div class="bild" style="width:80%;margin-left:auto;margin-right:auto">
+  <img src="../bilder-simulator/Heli - Sim 800x480 04 Normal.png" alt="Heli im Flug">
+</div>
+
+<p><b>Heli</b> ist ein Widget für Ethos. Es zeigt die wichtigsten Werte des Helis auf einem ganzen Bildschirm, überwacht fünf Werte mit je zwei einstellbaren Schwellen (orange und rot mit Ton), sagt in der Autorotation die Drehzahl an und führt auf einer zweiten Seite eine Liste der Flüge. Anzeige, Menü und Ansagen gibt es auf Deutsch und auf Englisch. Neu in 1.10.0: Mit dem PC-Programm Lua-Studio lässt sich die Anzeige je Modell frei gestalten (Kapitel 8, «Studio-Datei aus Lua-Studio»); ohne Studio-Datei arbeitet das Widget genau wie in 1.9.1. Neu in 1.11.0: Lua-Studio-Format 2 mit Symbolen, fetter Einheit und Schmuck; ohne Studio-Datei arbeitet das Widget wie 1.10.1. Neu in 1.12.0: je Alarm die Einstellung «Auch bei Motor aus» (Kapitel 6), und nach einem Modellwechsel gibt Heli seinen Speicher fast ganz frei.</p>
+
+<div class="kasten">
+  <b>Stand der Erprobung:</b> Das Widget ist im Ethos-Simulator getestet (Ethos 26.1.2, Drehrad, Wischen und PAGE auch mit Ethos 26.2.0), auch im Dauerlauf mit Zufalls- und Extremwerten: auf 800 × 480 direkt (Simulator der X18RS), auf 640 × 360, 480 × 320 und 480 × 272 nachgestellt. Am echten Sender (X18RS, Ethos 26.2.0, Empfänger Archer Plus SR10+, Telemetrie aus einem Testgerät mit 48 Sensoren) liefen am 20.11.2026 die Installation, die automatische Sensorsuche (8 Felder zugewiesen) und die Anzeige mit Livewerten. Nicht am Sender geprüft: jeder Menüpunkt einzeln, die Ansagen, die Flugliste mit echten Flügen, die Bedienung mit dem Drehrad und alle anderen Sender. Neu in 1.9.0 und erst im Simulator getestet: die Kompaktansicht, das Feld Governor mit SCHARF/SICHER (Ethos 26.2, Rotorflight-Werte per Simulator eingespeist). Am Sender (X18RS) ist die Kompaktansicht geprüft, Governor und SCHARF/SICHER noch nicht. Neu in 1.10.0 und bisher nur im Simulator getestet (Ethos 26.2): die Studio-Datei aus Lua-Studio mit <code>.funke.lua</code>, Info-Datei, Hinweisband und Menüzeile «Studio-Datei». Am Sender (X18RS, 20.11.2026) geprüft: ohne Studio-Datei wie bisher, eine volle Studio-Datei im Vollbild ohne Abbruch. Version 1.10.1 (Sensoren der Studio-Datei und Info-Datei am Sender, grosse Studio-Dateien in Stücken) ist erst im Simulator getestet; <code>.funke.lua</code>, Kompaktansicht mit Studio-Datei und Sprache Englisch sind am Sender noch offen. Version 1.11.0 (Lua-Studio-Format 2: Symbole, fette Einheit, Schmuck) ist am Sender (X18RS, 21.11.2026) mit einer vollen Format-2-Datei im Vollbild ohne Abbruch gelaufen; Kompaktansicht, <code>.funke.lua</code> und Englisch sind dort noch offen. Version 1.12.0 («Auch bei Motor aus», Speicher freigeben) ist auf dem Mac-Prüfstand und im Simulator getestet, <b>am Sender noch nicht</b>. Eine volle Format-2-Datei braucht am Mac gezählt rund 6&nbsp;400 Befehle je Bild, die eingebaute Anzeige 6&nbsp;400 bis 7&nbsp;500; das liegt im Ziel des Formats für das Zeichnen (seit 21.11.2026 unter 10&nbsp;000, vorher 5&nbsp;000). Im Flug ist das Widget noch nicht erprobt. Bitte zuerst am Boden ausprobieren und die Sensoren kontrollieren (Kapitel 4).
+</div>
+
+<h2>1. Was du brauchst</h2>
+<ul>
+  <li>FrSky-Sender mit Ethos (ab 26.1) und Farbbildschirm. Die Anzeige passt sich der Bildschirmgrösse an; welche Sender das sind und was getestet ist, steht in Kapitel 11. Die Bilder in dieser Anleitung zeigen 800 × 480.</li>
+  <li>Einen Computer mit der <b>FrSky Suite</b> (Programm von FrSky für Ethos-Sender) und das USB-Kabel des Senders.</li>
+  <li>Ein Heli mit Telemetrie über den FrSky-Empfänger. Das Widget ist für alle Helis gedacht: mit Flybarless-System wie Rotorflight, mit normalen FrSky-Sensoren über FBUS/S.Port oder mit einem Regler mit Telemetrie. Nur «Profil / Rate» oben rechts braucht ein System, das die Profile meldet (z. B. Rotorflight); sonst bleibt die Stelle leer.</li>
+  <li>Im Modell sind die Telemetrie-Sensoren bereits gesucht (Modell › Telemetrie › Sensoren suchen).</li>
+</ul>
+
+<h2>2. Installieren</h2>
+<p>Du hast die Datei <code>Heli-1.13.0-share.zip</code> bekommen. Das Widget kommt mit der FrSky Suite auf den Sender; so landet jede Datei am richtigen Ort.</p>
+<ol>
+  <li>Die ZIP zum Teilen entpacken. Darin liegen diese Anleitung, eine Datei <code>LIES MICH.txt</code> und das Paket <code>Heli-1.13.0.zip</code>. <b>Dieses Paket nicht entpacken.</b></li>
+  <li>Sender einschalten und per USB an den Computer anschliessen. Am Sender <b>Ethos Suite</b> wählen.</li>
+  <li>Auf dem Computer die FrSky Suite öffnen und warten, bis sie den Sender anzeigt.</li>
+  <li>In der Suite <b>Lua-Bibliothek</b> öffnen, <b>Von lokaler ZIP installieren</b> wählen, <code>Heli-1.13.0.zip</code> angeben und auf <b>Skripte installieren</b> klicken. Danach steht «Heli» in der Liste der installierten Skripte.</li>
+  <li>Sender vom Computer trennen und neu starten.</li>
+</ol>
+<div class="kasten"><b>Wichtig:</b> Der Sender muss per USB verbunden sein, bevor du «Skripte installieren» klickst; sonst bleibt die Suite bei «Beginnen Sie mit der Installation des Skripts …» stehen. Einen alten Ordner <code>heli</code> auf dem Sender nicht vorher löschen: Die Suite überschreibt ihn, und darin liegt die Flugliste. <b>Ohne Suite</b> geht es auch von Hand: <code>Heli-1.13.0.zip</code> entpacken, den Sender als USB-Laufwerk anschliessen und den Ordner <code>heli</code> samt Unterordner <code>audio</code> in den Ordner <code>scripts</code> des Senders kopieren (einen vorhandenen Ordner überschreiben, nicht löschen). Danach gibt es <code>scripts/heli/main.lua</code>. <b>Sender mit SD-Karte:</b> Ethos lädt die Skripte entweder aus dem internen Speicher oder von der SD-Karte, je nach Einstellung am Sender. Die Suite richtet sich danach. Von Hand: dorthin kopieren, wo die übrigen Lua-Skripte liegen; im Zweifel auf die SD-Karte (<code>SD:/scripts/heli</code>). Bei einer X18RS mit Ethos 26.2.0 lud nur die SD-Karte. Die Datei <code>ethos_lua_manifest.json</code> braucht der Sender nicht.</div>
+
+<h2>3. Bildschirm einrichten</h2>
+<ol>
+  <li>Unten in der Leiste <b>Bildschirme</b> öffnen (Bildschirm konfig.).</li>
+  <li>Oben rechts auf <b>+</b> tippen. In der Liste nach unten wischen und das Layout <b>Vollbild</b> wählen. Willst du die Kopf- und Fussleiste von Ethos behalten, nimm das Layout mit <b>einem Feld und Leisten</b>: Dann zeichnet das Widget von selbst die Kompaktansicht (Kapitel 5).</li>
+  <li>In das leere Feld tippen, bei <b>Widget</b> die Liste öffnen, ganz nach unten wischen und <b>Heli</b> wählen.</li>
+</ol>
+<p>Darunter erscheinen sofort die Einstellungen des Widgets. Später kommst du wieder dorthin über Bildschirme › den Bildschirm wählen › ins Widget tippen. Alarme, Ansagen und Flugliste brauchen keine weiteren Schalter-Funktionen oder Sonderfunktionen im Modell, das Widget macht alles selbst.</p>
+
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 02 Menue.png" alt="Einstellungen"><div class="t">Oben der Knopf «Suchen», darunter die Gruppen. Antippen klappt eine Gruppe auf, weitere Gruppen folgen beim Hinunterwischen.</div></div>
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 22 Menue Alarm.png" alt="Alarm-Gruppe"><div class="t">Eine Alarm-Gruppe: Ein, Schwelle Orange, Schwelle Rot mit Ton, Wiederholzeit.</div></div>
+</div>
+
+<h2 class="neu">4. Sensoren zuweisen und einrichten (einmal je Modell)</h2>
+<ol>
+  <li><b>Heli einschalten</b>, damit die Telemetrie läuft.</li>
+  <li>In der Zeile «Sensoren automatisch suchen» auf <b>Suchen</b> tippen. Ein Fenster «Suche läuft …» erscheint und schliesst sich am Ende von selbst. Das Widget füllt alle leeren Sensorfelder, die es erkennt; die Kennungen in Klammern erscheinen nach dem nächsten Öffnen des Menüs.</li>
+  <li>Gruppe <b>Sensoren</b> aufklappen und <b>jedes Feld kontrollieren</b>. Was leer oder falsch ist, von Hand wählen. Die Suche erkennt FrSky-Sensoren an ihrer Kennung (Application ID), nicht am Namen; so werden gleichnamige Sensoren verschiedener Geräte nicht verwechselt. Bei Rotorflight gilt die Spannung der Steuerplatine nie als Akkuspannung und der BEC-Strom nie als Akkustrom. Eigene Sensoren ohne Kennung (z. B. Rotorflight «Headspeed», PID- und Raten-Profil) findet sie über Name und Einheit. Neben dem Feldnamen stehen Kennung und Physical ID in Klammern, z. B. «Akkuspannung [0B50/0A]». Passen mehrere Sensoren, steht darunter «n Sensoren passen, gewählt: … – bitte prüfen». Die Suche kann trotzdem danebenliegen.</li>
+  <li><b>Nur mit Rotorflight:</b> In Rotorflight (Configurator › Telemetrie) die Werte <b>Governor State</b> und <b>Arming Flags</b> einschalten. Heli liest sie direkt aus der Telemetrie (AppID 0x5125 und 0x5122); in Ethos muss dafür kein Sensor angelegt werden.</li>
+  <li>Gruppe <b>Akku</b>: <b>Zellen</b> (z. B. 6 oder 12), <b>Kapazität</b> und <b>Akkutyp</b> (LiPo, LiHV oder Li-Ion) einstellen. Das braucht die %-Anzeige, wenn kein %-Sensor da ist. Beim Wechsel des Akkutyps folgen die Schwellen des Zellen-Alarms dem neuen Typ (Li-Ion 3,10 / 3,00 V, sonst 3,60 / 3,50 V), solange sie noch auf dem Werkswert stehen; selbst eingestellte Schwellen bleiben. Die Zeile «Akku % kommt von» zeigt, ob ein Sensor oder die eigene Schätzung gilt.</li>
+  <li>Gruppen <b>Alarm …</b>: die zwei Schwellen an den Heli anpassen oder einzelne Überwachungen ausschalten (Kapitel 6).</li>
+  <li>Gruppe <b>Drehzahlansage › Gaskanal</b>: den Kanal wählen, auf dem das Gas zum Heli geht. Ohne Gaskanal gibt es keine Drehzahlansage.</li>
+  <li>Gruppe <b>Flug und Motorschalter</b>: den Schalter wählen, mit dem du den Motor ausschaltest, und seine Stellung «Motor aus» (Kapitel 6 und 7). Ohne Schalter erkennt das Widget die Flüge an der Drehzahl, und es gibt keine Ansage «Autorotation».</li>
+  <li>Gruppe <b>Tachos: Endwert der Skala</b>: bei welchem Wert die Tachos von Drehzahl, Strom und Reglertemperatur voll sind.</li>
+</ol>
+
+<table>
+  <tr><th style="width:32%">Feld in «Sensoren»</th><th>Welcher Sensor gehört hinein</th></tr>
+  <tr><td>Akku %</td><td>Restladung des Flugakkus in Prozent. Gibt es keinen, leer lassen: das Widget rechnet dann selbst (Kapitel 7).</td></tr>
+  <tr><td>Akkuspannung</td><td>Gesamtspannung des Flugakkus</td></tr>
+  <tr><td>Drehzahl</td><td>Rotordrehzahl (Headspeed); gibt es keine, die Drehzahl des Reglers</td></tr>
+  <tr><td>Strom</td><td>Strom des Reglers</td></tr>
+  <tr><td>Reglertemperatur</td><td>Temperatur des Reglers (ESC)</td></tr>
+  <tr><td>BEC-Spannung</td><td>Spannung des BEC bzw. der Empfängerversorgung</td></tr>
+  <tr><td>Zellenspannung</td><td>Spannung pro Zelle. Ein Zellensensor (FLVSS, in Ethos «LiPo») geht auch: Das Widget nimmt dann die tiefste Zelle. Leer lassen geht: mit eingestellter Zellenzahl rechnet das Widget selbst (Gesamtspannung ÷ Zellenzahl, mit Alarm). Steht die Zellenzahl auf 0 (automatisch) und es gibt keinen Zellensensor, zeigt das Feld «Zelle» in Orange «ZELLEN? im Menü»: Dann unter Akku die Zellenzahl einstellen.</td></tr>
+  <tr><td>Verbrauch mAh</td><td>Verbrauchte Kapazität</td></tr>
+  <tr><td>RSSI</td><td>Empfangsstärke (für die Balken oben rechts)</td></tr>
+  <tr><td>PID-Profil, Raten-Profil</td><td>Aktive Profile des Flybarless-Systems (z. B. Rotorflight). Nicht nötig; ohne sie bleibt die Stelle leer.</td></tr>
+</table>
+
+<h2 class="neu">5. Die Anzeige</h2>
+<div class="bild">
+  <img src="../bilder-simulator/Heli - Sim 800x480 04 Normal.png" alt="Anzeige mit Nummern">
+  <span class="nr" style="left:24%;top:5.5%">1</span>
+  <span class="nr" style="left:41%;top:5.5%">2</span>
+  <span class="nr" style="left:64.5%;top:5.5%">3</span>
+  <span class="nr" style="left:3.6%;top:17.5%">4</span>
+  <span class="nr" style="left:28.1%;top:17.5%">5</span>
+  <span class="nr" style="left:52.6%;top:17.5%">6</span>
+  <span class="nr" style="left:77.1%;top:17.5%">7</span>
+  <span class="nr" style="left:8%;top:95%">8</span>
+  <span class="nr" style="left:71.5%;top:60.5%">9</span>
+  <span class="nr" style="left:96.3%;top:60.5%">10</span>
+  <span class="nr" style="left:71.5%;top:82.5%">11</span>
+  <span class="nr" style="left:96.3%;top:82.5%">12</span>
+</div>
+<ul class="legende">
+  <li><span class="n">1</span>Name des Modells (kommt von selbst aus Ethos)</li>
+  <li><span class="n">2</span>Uhrzeit</li>
+  <li><span class="n">3</span>Profil und Rate, Empfang, Senderakku</li>
+  <li><span class="n">4</span>Akku in %, darunter Zellenzahl und Spannung</li>
+  <li><span class="n">5</span>Rotordrehzahl, darunter MAX = höchste Drehzahl mit diesem Akku</li>
+  <li><span class="n">6</span>Strom, darunter MAX = höchster Strom mit diesem Akku</li>
+  <li><span class="n">7</span>Reglertemperatur, darunter MAX = höchste Temperatur mit diesem Akku</li>
+  <li><span class="n">8</span>Governor-Zustand von Rotorflight, rechts oben die Pille <b>SCHARF</b> (grün) oder <b>SICHER</b> (grau), unten die Kopfdrehzahl; darunter der Flugzähler. Antippen = Flugliste</li>
+  <li><span class="n">9</span>Flugmodus (aktive Flugphase aus Ethos)</li>
+  <li><span class="n">10</span>BEC-Spannung, TIEF = tiefster Wert mit diesem Akku</li>
+  <li><span class="n">11</span>Zellenspannung, TIEF = tiefster Wert mit diesem Akku</li>
+  <li><span class="n">12</span>Verbrauchte mAh mit Knopf «AUF 0» zum Zurücksetzen</li>
+</ul>
+<p>Die Tachos laufen von links unten über oben nach rechts unten; unten bleibt ein Viertel offen. Ein voller Tacho heisst: Endwert der Skala erreicht (im Menü einstellbar). MAX und TIEF sind gemessene Werte und beginnen mit jedem Akku neu. Fehlt ein Wert (keine Telemetrie oder kein Sensor zugewiesen), steht dort <b>--</b>.</p>
+<h3>Governor und SCHARF / SICHER</h3>
+<p>Das Feld <b>Governor</b> zeigt den Zustand des Rotorflight-Governors: <b>AUS</b>, <b>LEERLAUF</b> (grau), <b>HOCHLAUF</b>, <b>WIEDERANLAUF</b>, <b>BAILOUT</b>, <b>BYPASS</b> (orange), <b>AKTIV</b> (grün), <b>HOLD</b>, <b>AUTOROTATION</b> (hellblau) und <b>DREHZAHL VERLOREN</b> (rot mit Rahmen, dazu einmal Ton, Vibration und die Ansage «Achtung! Drehzahl verloren», höchstens alle 10 s). «Drehzahl verloren» ist der Rotorflight-Zustand «Fallback»: Dem Governor fehlt das Drehzahlsignal (z. B. Sensor oder Kabel), er regelt dann ohne Drehzahl mit dem Ersatz-Gas. Das heisst nicht unbedingt, dass der Rotor langsamer wird; trotzdem landen und den Drehzahlsensor prüfen. Ohne Rotorflight-Werte steht dort «--» und «nur mit Rotorflight». Die Pille SCHARF / SICHER kommt aus den Arming-Flags von Rotorflight; ohne sie folgt sie dem Motorschalter (Kapitel 7).</p>
+<h3>Kompaktansicht (Layout mit Kopf- und Fussleiste)</h3>
+<div class="bild"><img src="../bilder-simulator/Heli - Sim 784x316 30 Kompakt.png" alt="Kompaktansicht"></div>
+<p>Im Layout mit Leisten bleibt Ethos oben (Modellname, Senderakku) und unten (Uhr, Menüknöpfe) sichtbar. Das Widget zeigt dann oben eine schmale Leiste mit der <b>Flugzeit</b> des laufenden Flugs, der Pille SCHARF / SICHER, Profil / Rate und den Empfangsbalken, darunter die vier Tachos und acht Felder: Governor, Zelle, Verbraucht (antippen = auf 0), BEC, Flugmodus, Empfang, Leistung (Spannung × Strom) und Flüge (antippen = Flugliste). Das Widget merkt die Grösse selbst, ein Menüpunkt ist nicht nötig. Die Flugliste sieht in beiden Ansichten gleich aus.</p>
+<div class="kasten blau"><b>Tipp:</b> Gib den Flugphasen in Ethos kurze Namen (z. B. «Normal», «Idle 1», «Hold»). Dann steht der Flugmodus gross im Feld. Lange Namen werden automatisch kleiner geschrieben.</div>
+
+<h2 class="neu">6. Warnungen, Alarme und Ansagen</h2>
+<h3 class="gross">Überwachung: Grün, Orange, Rot</h3>
+<p>Fünf Werte werden überwacht, jeder mit <b>zwei Schwellen</b>:</p>
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 05 Warnung.png" alt="Orange"><div class="t"><b>Orange</b> (erste Schwelle): nur die Anzeige wird orange, also der Tacho oder die Zahl. Kein Ton, keine Umrandung.</div></div>
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 06 Alarm.png" alt="Rot"><div class="t"><b>Rot</b> (zweite Schwelle): Anzeige und Umrandung rot, die Kopfzeile blinkt rot, dazu Warnton, Vibration und Ansage.</div></div>
+</div>
+<p>Solange alles gut ist, sind die überwachten Anzeigen <b>grün</b>: die Tachos von Akku und Reglertemperatur und die Zahlen von Zelle, BEC und Verbrauch. Eine weisse Zahl heisst: dieser Wert wird nicht überwacht («Ein» ist aus). Die Ansage nennt zuerst, worum es geht, dann den Wert, z. B. «Reglertemperatur, 85 Grad Celsius» oder «Akku, 20 Prozent». Sie wiederholt sich im eingestellten Takt, solange der Wert im roten Bereich ist.</p>
+<table>
+  <tr><th style="width:27%">Gruppe im Menü</th><th>Orange ab Werk</th><th>Rot + Ton ab Werk</th><th style="width:12%">ab Werk</th><th style="width:12%">Takt</th></tr>
+  <tr><td>Alarm Reglertemperatur</td><td>ab 70 °C</td><td>ab 80 °C</td><td>ein</td><td>5 s</td></tr>
+  <tr><td>Alarm Akku %</td><td>unter 35 %</td><td>unter 25 %</td><td>ein</td><td>10 s</td></tr>
+  <tr><td>Alarm Zellenspannung</td><td>unter 3,60 V (Li-Ion 3,10 V)</td><td>unter 3,50 V (Li-Ion 3,00 V)</td><td>ein</td><td>10 s</td></tr>
+  <tr><td>Alarm BEC-Spannung</td><td>unter 7,2 V</td><td>unter 7,0 V</td><td>aus</td><td>10 s</td></tr>
+  <tr><td>Alarm Verbrauch</td><td>ab 3500 mAh</td><td>ab 4000 mAh</td><td>aus</td><td>20 s</td></tr>
+</table>
+<ul>
+  <li>In jeder Gruppe: <b>Ein</b>, <b>Orange ab/unter</b>, <b>Rot + Ton ab/unter</b>, <b>Wiederholen alle</b>, <b>Auch bei Motor aus</b>. Ist «Ein» aus, wird der Wert gar nicht überwacht (weder orange noch rot).</li>
+  <li><b>Auch bei Motor aus</b> (neu in 1.12.0, ab Werk ein): Ist der Haken weg und steht der Motorschalter auf «Motor aus», schweigt dieser Alarm: kein Ton, keine Vibration, keine Ansage. Die Anzeige wird trotzdem orange bzw. rot. Sobald der Motor wieder ein ist, kommt der Alarm wieder. Ohne Motorschalter gilt der Haken nicht, dann kommt der Alarm immer. «Drehzahl verloren» vom Governor kommt immer.</li>
+  <li>Rot beginnt erst, wenn der Wert eine Sekunde am Stück jenseits der Schwelle liegt, und endet mit etwas Abstand zur Schwelle. So flattert nichts.</li>
+  <li>Sind mehrere Alarme rot, kommen die Ansagen nacheinander. Laufen die Drehzahlansage oder «Autorotation», haben sie Vorrang: dann kommt höchstens alle 10 s ein Alarm.</li>
+  <li>Ohne Wert (kein Sensor, keine Telemetrie) bleibt eine Überwachung still.</li>
+</ul>
+<div class="kasten"><b>Schwellen an den eigenen Heli anpassen:</b> Unter Last sinkt die Zellenspannung kurz ab. Kommt der Alarm im normalen Flug, die Schwelle tiefer stellen. BEC und Verbrauch sind ab Werk aus, weil die passenden Schwellen von der Empfängerspannung (5 V, 6 V, 7,4 V, 8,4 V) und vom Akku abhängen.</div>
+
+<h3 class="gross">Drehzahlansage und «Autorotation»</h3>
+<p><b>Drehzahlansage:</b> Steht der Gaskanal auf <b>−25 % oder tiefer</b> und dreht der Rotor noch (über 300 U/min), sagt der Sender <b>jede Sekunde die Drehzahl</b> an. Am Boden mit stehendem Rotor bleibt es still. Solange die Ansage läuft, leuchtet links neben dem Flugzähler ein hellblauer Punkt.</p>
+<p><b>Ansage «Autorotation»:</b> Schaltest du den Motor mit dem <b>Motorschalter</b> aus, während der Rotor dreht, sagt der Sender «Autorotation» und wiederholt das alle 3 s, <b>bis der Rotor steht</b> (Drehzahl unter 30 U/min) oder du den Motor wieder einschaltest. Dazwischen kommt die Drehzahl. Dafür muss der Motorschalter im Menü unter «Flug und Motorschalter» gewählt sein; mit «Autorotation alle» = 0 ist die Ansage aus.</p>
+<div class="kasten"><b>Wenn die Ansagen nachhinken:</b> Eine vierstellige Zahl zu sprechen dauert länger als eine Sekunde. Dann unter Drehzahlansage › <b>Ansage alle</b> auf 2 s stellen.</div>
+
+<h2>7. Bedienen</h2>
+<h3 class="gross">Akku in % und Verbrauch zurücksetzen</h3>
+<p><b>Sendet der Heli die Restladung schon in %</b> (z. B. Rotorflight «Bat%»/«Fuel», in Ethos auch «Kraftstoff», oder ein Regler), zeigt das Widget diesen Wert direkt und rechnet nicht selbst. Die automatische Suche weist ihn zu; von Hand änderbar unter Sensoren › Akku %.</p>
+<p><b>So entsteht die %-Anzeige</b>, wenn kein %-Sensor zugewiesen ist:</p>
+<ul>
+  <li>Beim Anstecken des Akkus (2 s ohne Last, solange steht «--») liest das Widget die Zellenspannung und bestimmt daraus mit der Kennlinie des <b>Akkutyps</b> den Startwert. Beispiele (Richtwerte): LiPo 4,20 V = 100 %, 3,85 V = 55 %; LiHV 4,35 V = 100 %, 3,85 V = 38 %; Li-Ion 4,20 V = 100 %, 3,70 V = 47 %.</li>
+  <li>Im Flug zählt es mit den verbrauchten mAh herunter. Dafür müssen unter <b>Akku</b> die <b>Kapazität</b> und die <b>Zellen</b> stimmen.</li>
+  <li>Ist keine Kapazität eingetragen, zeigt es den Wert aus der Zellenspannung in Ruhe; im Flug bleibt dieser Wert stehen.</li>
+</ul>
+<div class="kasten"><b>Achtung %-Sensor:</b> Ist im Feld «Akku %» ein Sensor zugewiesen (die automatische Suche füllt es, wenn es einen gibt), zeigt das Widget dessen Wert und rechnet nicht selbst. Zeigt dieser Sensor nach dem Anstecken eines halbleeren Akkus 100 %, das Feld «Akku %» leeren.</div>
+<p><b>Verbrauch zurücksetzen</b> (wenn die mAh nach dem Akkuwechsel nicht von selbst bei 0 beginnen):</p>
+<ul>
+  <li>Auf den Knopf <b>AUF 0</b> im Feld «Verbraucht» tippen und die Rückfrage mit <b>JA, AUF 0</b> bestätigen. Oder</li>
+  <li>im Menü unter <b>Akku › Verbrauch zurücksetzen</b> den Knopf «Auf 0 mAh» drücken. Oder</li>
+  <li>in Ethos <b>Flug zurücksetzen</b> wählen, das Widget setzt dann mit zurück.</li>
+</ul>
+<p>Dabei beginnen auch MAX und TIEF neu, und Akku % wird in Ruhe neu aus der Spannung bestimmt. Zählt der Sensor nach dem Anstecken selbst wieder ab 0, merkt das Widget es und du musst nichts tun.</p>
+
+<h3 class="gross" style="break-before:page">Flüge: Motorschalter, Rückfrage und Flugliste</h3>
+<h3>Wann ein Flug beginnt und endet</h3>
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 23 Menue Flug und Motorschalter.png" alt="Gruppe Flug und Motorschalter"><div class="t">Gruppe «Flug und Motorschalter» im Menü (ab Werk, noch ohne Schalter).</div></div>
+  <div><p>Unter <b>Motorschalter</b> wählst du den Schalter, mit dem du den Motor ausschaltest, unter <b>Stellung Motor aus</b> seine Stellung für «aus» (oben, Mitte oder unten). Alle anderen Stellungen gelten als «Motor ein».</p></div>
+</div>
+<p><b>Mit Motorschalter:</b></p>
+<ul>
+  <li><b>Motor ein</b> beginnt einen Flug.</li>
+  <li><b>Motor aus</b> hält den Flug an und fragt <b>«Flug beendet?»</b>.
+    <b>JA, BEENDET</b> schliesst den Flug ab, er kommt in die Liste.
+    <b>NEIN, NUR PAUSE</b> lässt ihn offen; beim nächsten «Motor ein» läuft derselbe Flug weiter.</li>
+  <li>Schaltest du den Motor wieder ein, ohne zu antworten (z. B. nach einer Autorotation), verschwindet die Frage von selbst und der Flug läuft weiter.</li>
+  <li>Ein pausierter Flug gilt als beendet, wenn der Akku länger als 30 s abgesteckt ist. Er geht auch nicht verloren, wenn du den Sender ausschaltest. Auf Seite 2 kannst du die Zeile «Pause» antippen, dann kommt die Frage nochmals.</li>
+  <li>Steht der Schalter beim Einschalten des Senders schon auf «Motor ein», beginnt der Flug, sobald der Rotor dreht.</li>
+</ul>
+<p><b>Ohne Motorschalter:</b> Der Flug beginnt, sobald die Drehzahl über 500 U/min liegt, und endet 5 s nachdem sie darunter gefallen ist. Eine Rückfrage gibt es dann nicht.</p>
+<p>In beiden Fällen <b>zählt</b> ein Flug erst, wenn er 30 s gedauert hat. Kürzere Läufe (Test am Boden) werden verworfen.</p>
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 07 Rueckfrage Flug beendet.png" alt="Rückfrage"><div class="t">Rückfrage nach «Motor aus».</div></div>
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 20 Flugliste.png" alt="Flugliste"><div class="t">Seite 2 «Flüge»: Flug 11 ist angetippt, links stehen seine Werte, unten der Knopf zum Löschen dieses Flugs.</div></div>
+</div>
+<h3>Die Flugliste (Seite 2)</h3>
+<ul>
+  <li><b>Öffnen:</b> auf der Anzeige nach links wischen, auf den Flugzähler tippen oder das <b>Drehrad</b> nach rechts drehen. <b>Zurück:</b> nach rechts wischen, «ZURÜCK» oder das Drehrad nach links über den obersten Flug hinaus drehen.</li>
+  <li><b>Rechts</b> stehen die letzten 20 Flüge, der neueste oben, der laufende mit «läuft» oder «Pause». Passen nicht alle hin, in der Liste <b>auf und ab wischen</b> (rechts erscheint ein Rollbalken).</li>
+  <li><b>Flug antippen:</b> links erscheinen seine Werte: Flugdauer, Verbrauch, höchste Drehzahl, höchster Strom, höchste Reglertemperatur, tiefste Zellen- und BEC-Spannung, Akku am Ende. Auf das linke Feld tippen zeigt wieder den neuesten Flug.</li>
+  <li><b>Mit dem Drehrad:</b> nach rechts drehen wählt den nächsten Flug weiter unten, nach links den nächsten weiter oben; die Liste rollt mit. Gelöscht wird mit dem Knopf unten oder über das Menü (siehe «Ohne Berührung»).</li>
+  <li><b>Einen einzelnen Flug löschen</b> (z. B. ein kurzes Ein und Aus, das nicht zählen soll): den Flug antippen, dann unten in der Mitte <b>FLUG … LÖSCHEN</b> und die Rückfrage bestätigen. Der Flugzähler geht um eins zurück und die späteren Flüge rücken nach, die Nummern bleiben lückenlos. Das geht auch mit dem laufenden oder pausierten Flug: Tippst du den pausierten an, kommt zuerst nochmals «Flug beendet?» (mit dem Drehrad gewählt nicht), nach «NEIN, NUR PAUSE» erscheint der Knopf. Löschst du den laufenden Flug ohne Motorschalter, beginnt erst nach dem Stillstand des Rotors wieder ein neuer.</li>
+  <li><b>LISTE LÖSCHEN</b> leert die ganze Liste nach einer Rückfrage. Der Flugzähler bleibt dabei; er lässt sich im Menü unter «Anzeige und Flugzähler» von Hand setzen.</li>
+</ul>
+<p>Flugzähler und Liste werden je Modell auf dem Sender gespeichert (<code>scripts/heli/daten/</code>). Von der Anzeige aus kommst du mit zweimal Wischen nach links zum nächsten Ethos-Bildschirm. Das Drehrad gehört auf diesem Bildschirm dem Widget: Damit wechselst du nicht zu anderen Ethos-Bildschirmen. Alle anderen Tasten bleiben bei Ethos und wirken wie gewohnt; mit <b>PAGE</b> kommst du zum nächsten Bildschirm.</p>
+<h3>Ohne Berührung (z. B. X14, X10, X12)</h3>
+<p>Mit dem <b>Drehrad</b> blätterst du wie oben beschrieben zwischen Anzeige und Flugliste und wählst einen Flug. Alles Weitere geht über das Menü des Widgets, Gruppe <b>Flüge ohne Berührung</b>:</p>
+<ul>
+  <li><b>Seite:</b> «Anzeige» oder «Flüge» schaltet zwischen Seite 1 und Seite 2 um.</li>
+  <li><b>Flug wählen (0=neuester):</b> die Nummer des Flugs, dessen Werte links stehen sollen. Bei 0 gilt die oberste Zeile der Liste (laufender oder neuester Flug).</li>
+  <li><b>Gewählten Flug löschen</b>, <b>Laufenden Flug beenden</b> (statt der Frage «Flug beendet?») und <b>Flugliste löschen</b>: je ein Knopf mit Rückfrage. In der Rückfrage ist «ABBRECHEN» vorgewählt. Gibt es den gewählten Flug nicht, kommt ein Hinweis und nichts wird gelöscht.</li>
+  <li><b>Rückfrage: nur Pause</b> schliesst die Frage «Flug beendet?» auf der Seite; der Flug bleibt pausiert (wie «NEIN, NUR PAUSE»).</li>
+  <li>Den Verbrauch setzt du in der Gruppe <b>Akku › Verbrauch zurücksetzen</b> zurück.</li>
+</ul>
+
+<h3 class="gross">Sprache</h3>
+<p>Unter <b>Anzeige und Flugzähler › Sprache / Language</b> wählst du <b>wie der Sender</b>, <b>Deutsch</b> oder <b>English</b>. Das gilt für die Anzeige, die Rückfragen, das Menü (nach dem nächsten Öffnen) und die Ansagen der Alarme und von «Autorotation». Zahlen und Einheiten spricht Ethos in der Sprache des Senders.</p>
+
+<h2>8. Alle Einstellungen</h2>
+<table>
+  <tr><th style="width:27%">Gruppe</th><th>Einstellung</th><th style="width:25%">ab Werk</th></tr>
+  <tr><td>Sensoren</td><td>elf Felder, siehe Kapitel 4</td><td>leer, per Suche</td></tr>
+  <tr><td>Akku</td><td>Zellen (0 = automatisch, braucht einen Zellensensor) · Kapazität für %-Anzeige · Akkutyp (LiPo, LiHV, Li-Ion) · Akku % kommt von (Anzeige) · Verbrauch zurücksetzen (Knopf)</td><td>0 · 0 mAh · LiPo · – · –</td></tr>
+  <tr><td>Tachos: Endwert der Skala</td><td>Drehzahl · Strom · Reglertemperatur</td><td>2400 U/min · 250 A · 100 °C</td></tr>
+  <tr><td>Alarm Reglertemperatur</td><td>Ein · Orange ab · Rot + Ton ab · Wiederholen alle · Auch bei Motor aus</td><td>ein · 70 °C · 80 °C · 5 s · ein</td></tr>
+  <tr><td>Alarm Akku %</td><td>Ein · Orange unter · Rot + Ton unter · Wiederholen alle · Auch bei Motor aus</td><td>ein · 35 % · 25 % · 10 s · ein</td></tr>
+  <tr><td>Alarm Zellenspannung</td><td>Ein · Orange unter · Rot + Ton unter · Wiederholen alle · Auch bei Motor aus</td><td>ein · 3,60 V · 3,50 V · 10 s · ein (Li-Ion: 3,10 V · 3,00 V)</td></tr>
+  <tr><td>Alarm BEC-Spannung</td><td>Ein · Orange unter · Rot + Ton unter · Wiederholen alle · Auch bei Motor aus</td><td>aus · 7,2 V · 7,0 V · 10 s · ein</td></tr>
+  <tr><td>Alarm Verbrauch</td><td>Ein · Orange ab · Rot + Ton ab · Wiederholen alle · Auch bei Motor aus</td><td>aus · 3500 mAh · 4000 mAh · 20 s · ein</td></tr>
+  <tr><td>Drehzahlansage</td><td>Ein · Gaskanal · Ansagen bei Gas bis · Ansage alle · Nur über Drehzahl</td><td>ein · – · −25 % · 1 s · 300 U/min</td></tr>
+  <tr><td>Flug und Motorschalter</td><td>Motorschalter · Stellung Motor aus (oben, Mitte, unten) · Autorotation alle (0 = aus) · Flug zählt ab Dauer · Ohne Schalter: ab</td><td>– · oben · 3 s · 30 s · 500 U/min</td></tr>
+  <tr><td>Flüge ohne Berührung</td><td>Seite · Flug wählen (0=neuester) · Gewählten Flug löschen · Laufenden Flug beenden · Rückfrage: nur Pause · Flugliste löschen</td><td>Anzeige · 0 · Knöpfe</td></tr>
+  <tr><td>Anzeige und Flugzähler</td><td>Sprache / Language · Flugzähler</td><td>wie der Sender · 0</td></tr>
+</table>
+<p>Die Einstellungen werden mit dem Modell gespeichert und gelten nur für dieses Modell. Ganz oben im Menü stehen zudem die Zeilen «Sensoren automatisch suchen» (Kapitel 4) und «Studio-Datei» (nächster Abschnitt). Mit Studio-Datei gelten deren Einstellungen und Grenzwerte (siehe unten).</p>
+
+<h3>Studio-Datei aus Lua-Studio (neu in 1.10.0, Format 2 neu in 1.11.0)</h3>
+<p>Mit dem PC-Programm <b>Lua-Studio</b> gestaltest du die Anzeige je Modell frei und legst Einstellungen und Grenzwerte fest. Lua-Studio schreibt dafür die Datei <code>scripts/studio/Kennung.heli.lua</code> auf den Sender, in denselben Speicher, aus dem der Sender die Skripte lädt (mit SD-Karte meist <code>SD:/scripts/studio/</code>). <b>Kennung</b> ist der Modellname, in dem jedes Zeichen ausser A–Z, a–z und 0–9 zu <code>_</code> wird; ein Umlaut ergibt <code>__</code> (aus «Logo 700» wird <code>Logo_700</code>). Lua-Studio rechnet das selbst. Heli liest die Datei beim Laden des Modells.</p>
+<ul>
+  <li><b>Ohne diese Datei</b> arbeitet Heli genau wie in 1.9.1, ohne Hinweis. Im Menü steht «Studio-Datei: keine».</li>
+  <li><b>Eigene Ansichten:</b> Jede Ansicht gilt für genau eine Fenstergrösse (z. B. Vollbild 800 × 480 oder Kompaktansicht 784 × 316), höchstens zwei Ansichten je Datei. Eine Ansicht hat bis zu 16 Kästchen («Plätze»); für jedes legt Lua-Studio Wert, Darstellung (Zahl, Ring, Balken waagrecht oder senkrecht, Verlauf, Status wie Governor oder SCHARF/SICHER), Titel, Bereich, Farben und eine Zusatzzeile (MIN, MAX oder Ø) fest, höchstens zwei Verläufe je Ansicht. Die Kopfzeile bzw. die Leiste oben zeichnet Heli weiter selbst. Im Vollbild ersetzt die Ansicht nur Seite 1; die Flugliste öffnest du wie gewohnt. Für andere Fenstergrössen zeichnet Heli seine eingebaute Anzeige.</li>
+  <li><b>Wert-Anpassung:</b> Je Wert kann die Datei Faktor und Versatz, Einheit, Nachkommastellen und Namen festlegen. Das gilt in allen Kästchen der Studio-Ansicht, bei den Grenzen und in der Drehzahl- und Alarm-Ansage. Die eingebaute Anzeige (Fenstergrösse ohne Studio-Ansicht, Kopfzeile, Leiste, Flugliste) zeigt weiter den Sensorwert.</li>
+  <li><b>Grenzwerte</b> gelten je Wert, auch wenn er auf keinem Kästchen steht. Fehlt ein Wert in den Grenzen der Datei, gilt die Werkgrenze (Zellenspannung je nach Akkutyp). Ein Alarm geht nur aus, wenn die Datei das ausdrücklich so will. Passt bei Reglertemperatur, Akku %, Zellenspannung, BEC-Spannung oder Verbrauch die Richtung nicht zum Wert, gilt ebenfalls die Werkgrenze, mit Hinweis. Die Datei kann auch Grenzen für weitere Sensoren und Kanäle setzen: Diese melden sich mit Ton und Vibration, ohne Ansage, höchstens alle 10 s.</li>
+  <li><b>Änderst du an der Funke</b> Akku, Grenzwerte oder andere Einstellungen im Menü, schreibt Heli das in eine eigene Datei <code>Kennung.heli.funke.lua</code>. Die Datei von Lua-Studio bleibt unverändert, der Widget-Speicher auch. Lua-Studio zeigt die Unterschiede und übernimmt sie auf Wunsch. Die Zuordnung der Sensoren bleibt im Widget.</li>
+  <li><b>Menü › Studio-Datei › Zurück:</b> Die Zeile zeigt den Zustand (keine, geladen, geladen mit n Fehlern, kaputt, zu neu). Mit Datei fragt <b>Zurück</b> «Zurück auf Studio-Stand?» und löscht nach <b>JA, ZURÜCK</b> deine Änderungen an der Funke (die <code>.funke.lua</code>). Ohne gültige Datei fragt es «Zurück auf Standard?»: Einstellungen und Grenzwerte ab Werk, Sensoren und Flüge bleiben.</li>
+  <li><b>Hinweise:</b> Ist die Datei kaputt, für eine neuere Heli-Version gemacht oder enthält sie ungültige Angaben, steht 8 Sekunden lang unten ein dunkles Band («Studio-Datei kaputt - Standard», «Studio-Datei zu neu - Lua aktualisieren» oder «Studio-Datei: n Fehler»), danach oben rechts ein oranges «!» bis zum nächsten Modellwechsel. Eine kaputte <code>.funke.lua</code> wird verworfen («Änderungen an der Funke verworfen»), die Studio-Datei gilt weiter. Heli läuft immer weiter, im Zweifel mit der eingebauten Anzeige. Was genau falsch ist, steht im Log (je Fehler eine Zeile «Heli: Studio-Datei …»).</li>
+  <li><b>Format 2 (neu in 1.11.0):</b> Heli liest Studio-Dateien im Format 1 und 2; Format-1-Dateien gelten unverändert weiter. Mit Format 2 kann ein Kästchen oben links ein <b>Symbol</b> in der Farbe des Werts zeigen (der Titel rückt dann ein) und die <b>Einheit fett</b> oben links statt neben dem Wert, oder gar keine Einheit. Dazu kommt <b>Schmuck</b> je Ansicht: frei gesetzte Symbole, Texte, Linien und Rahmen, höchstens 24 je Ansicht. Lua-Studio bietet dafür die Vorlagen «Heutiges Aussehen» und «Mit Symbolen» (je für 800 × 480 und 784 × 316). Symbole und Schmuck ändern keine Grenze, keine Ansage und keinen Alarm.</li>
+  <li><b>«Auch bei Motor aus» (neu in 1.12.0):</b> In Lua-Studio lässt sich je Grenze wählen, ob der Alarm auch bei Motorschalter «aus» kommt (ab Werk ja). Das gilt für die fünf Alarme und für die weiteren Grenzen (Sensoren, Kanäle). Änderst du den Haken im Widget-Menü, landet das wie die Schwellen in der Datei <code>.funke.lua</code>.</li>
+  <li><b>Symbol-Dateien:</b> Die Symbole sind Graustufen-Bilder (PNG) im Ordner <code>scripts/studio/symbole/</code>, Name <code>name_px.png</code> (z. B. <code>akku_64.png</code>). Nur Lua-Studio schreibt sie; alle Luas und Modelle des Senders teilen sich den Ordner. Eine Studio-Datei nennt höchstens 20 Symbole. Heli lädt sie nach dem Modellwechsel in kleinen Schritten, darum erscheinen sie ein paar Bilder später. Fehlt eine Symbol-Datei oder ist sie kaputt, bleibt das Kästchen ohne Symbol und unten steht 8 Sekunden lang «Studio: n Symbole fehlen», danach oben rechts das orange «!».</li>
+  <li><b>Grenzen der Datei:</b> Wert-Anpassungen, Grenzwerte und Einstellungen gelten bis je 48 Einträge; weitere verwirft Heli mit Hinweis.</li>
+  <li>Für Lua-Studio schreibt Heli nach jedem Modellwechsel die Datei <code>Kennung.heli.info.json</code> (Modellname, Sender, Sensorliste, Fenstergrössen). Nur Lua-Studio liest sie; sie entsteht auch ohne Studio-Datei.</li>
+</ul>
+
+<h2>9. Wenn etwas nicht geht</h2>
+<table>
+  <tr><th style="width:36%">Was du siehst oder hörst</th><th>Was hilft</th></tr>
+  <tr><td>Überall steht <b>--</b></td><td>Heli eingeschaltet und Telemetrie da? Dann Sensoren zuweisen (Kapitel 4). Die Balken oben rechts zeigen erst etwas, wenn das Feld RSSI zugewiesen ist.</td></tr>
+  <tr><td>Ein einzelner Wert zeigt <b>--</b> oder Unsinn</td><td>In «Sensoren» das Feld von Hand auf den richtigen Sensor stellen.</td></tr>
+  <tr><td>Ein Alarm kommt zu oft oder zu früh</td><td>In der Gruppe «Alarm …» die Schwellen anpassen, «Wiederholen alle» verlängern oder die Überwachung ausschalten.</td></tr>
+  <tr><td>Alarm nur mit Ton und Zahl, ohne Wort</td><td>Der Ordner <code>scripts/heli/audio</code> fehlt oder ist unvollständig. Nochmals installieren.</td></tr>
+  <tr><td>Keine Drehzahlansage</td><td>Gaskanal gewählt? «Ein» aktiv? Drehzahl über 300 U/min? Gas wirklich auf −25 % oder tiefer? Lautstärke des Senders?</td></tr>
+  <tr><td>Keine Ansage «Autorotation»</td><td>Motorschalter und «Stellung Motor aus» gewählt? «Autorotation alle» nicht auf 0? Der Rotor muss beim Ausschalten drehen.</td></tr>
+  <tr><td>Ansagen hinken nach</td><td>«Ansage alle» auf 2 s stellen, «Autorotation alle» verlängern.</td></tr>
+  <tr><td>«12S» fehlt, Zellenspannung zeigt -- oder «ZELLEN?»</td><td>Unter Akku die Zellenzahl einstellen.</td></tr>
+  <tr><td>Akku % zeigt --</td><td>Unter Akku die Zellenzahl einstellen (ohne %-Sensor braucht das Widget die Zellenspannung) und die Kapazität eintragen.</td></tr>
+  <tr><td>Akku % stimmt nicht</td><td>Kapazität und Zellen unter Akku prüfen. Ist ein %-Sensor zugewiesen, zeigt das Widget dessen Wert; Feld «Akku %» leeren, dann rechnet es selbst (Kapitel 7).</td></tr>
+  <tr><td>Verbrauch beginnt nicht bei 0</td><td>Knopf «AUF 0» antippen und bestätigen (Kapitel 7).</td></tr>
+  <tr><td>«Flug beendet?» kommt gar nicht oder im falschen Moment</td><td>Unter «Flug und Motorschalter» den richtigen Schalter und die richtige «Stellung Motor aus» wählen.</td></tr>
+  <tr><td>Ein Flug steht in der Liste, der nicht zählen soll</td><td>Auf Seite 2 antippen und «FLUG … LÖSCHEN» wählen (Kapitel 7).</td></tr>
+  <tr><td>Ein Flug fehlt in der Liste</td><td>Er war kürzer als 30 s, oder die Frage «Flug beendet?» ist noch offen bzw. mit «Nur Pause» beantwortet.</td></tr>
+  <tr><td>Wischen nach links zeigt die Flüge statt den nächsten Bildschirm</td><td>So gewollt: nochmals nach links wischen.</td></tr>
+  <tr><td>Drehrad wechselt nicht zum nächsten Ethos-Bildschirm</td><td>So gewollt: Auf diesem Bildschirm blättert das Drehrad in der Flugliste. Zum nächsten Bildschirm wischen; oder die Taste <b>PAGE</b> drücken (auch auf Sendern ohne Berührung).</td></tr>
+  <tr><td>Reglertemperatur bleibt bei 100 °C stehen</td><td>Ethos legt Temperatursensoren mit dem Bereich −30 bis 100 °C an. In Ethos unter Telemetrie den Sensor öffnen und das Maximum erhöhen. Die Alarme bis 100 °C wirken auch so.</td></tr>
+  <tr><td>Flugmodus sehr klein geschrieben</td><td>Flugphase in Ethos kürzer benennen.</td></tr>
+  <tr><td>Im Feld steht nur «Feld zu klein»</td><td>Das Feld ist zu klein (z. B. eine Zone im Layout 2×2). Bildschirm mit dem Layout <b>Vollbild</b> oder mit einem Feld und Leisten anlegen (Kapitel 3).</td></tr>
+  <tr><td>Governor zeigt «--» und «nur mit Rotorflight»</td><td>In Rotorflight die Telemetrie-Werte Governor State und Arming Flags einschalten (Kapitel 4). Ohne Rotorflight bleibt das Feld leer, das ist normal.</td></tr>
+  <tr><td>Unten ein Band «Studio-Datei kaputt - Standard», «… zu neu - Lua aktualisieren» oder «Studio-Datei: n Fehler», danach oben rechts ein oranges «!»</td><td>Die Studio-Datei aus Lua-Studio ist kaputt, für eine neuere Heli-Version gemacht oder enthält ungültige Angaben. In Lua-Studio neu übertragen bzw. Heli aktualisieren. Was genau falsch ist, steht im Log (Kapitel 8, «Studio-Datei aus Lua-Studio»).</td></tr>
+  <tr><td>Unten «Studio: n Symbole fehlen», einzelne Kästchen ohne Symbol</td><td>Im Ordner <code>scripts/studio/symbole/</code> fehlen Symbol-Dateien oder sie sind kaputt. In Lua-Studio die Ansicht nochmals übertragen; Lua-Studio schreibt die Symbole mit. Die Werte und Alarme laufen auch ohne Symbol normal.</td></tr>
+  <tr><td>«Änderungen an der Funke verworfen» oder «Änderung nicht gespeichert»</td><td>Die Datei <code>….heli.funke.lua</code> war kaputt bzw. liess sich nicht schreiben. Die Studio-Datei gilt weiter. Die Änderung im Menü nochmals machen; kommt der Hinweis wieder, bitte mit Log melden.</td></tr>
+  <tr><td>Rote Zeile unten links «Heli: …»</td><td>Das Widget hat einen Fehler gemeldet. Der Sender läuft normal weiter. Bitte den Text abfotografieren und zurückmelden.</td></tr>
+  <tr><td>«Heli» fehlt in der Widget-Liste</td><td>Steht «Heli» in der Lua-Bibliothek der Suite? Sender neu gestartet? Von Hand kopiert: Liegt <code>main.lua</code> direkt in <code>scripts/heli/</code>, und zwar auf dem Laufwerk, von dem der Sender die Skripte lädt (mit SD-Karte meist <code>SD:/scripts</code>, siehe Kapitel 2)? Sind sehr viele andere Lua-Skripte installiert, kann der Lua-Speicher voll sein: nicht benutzte Skripte entfernen.</td></tr>
+</table>
+
+<div style="break-inside:avoid">
+<h2>10. Aktualisieren und entfernen</h2>
+<ul>
+  <li><b>Neue Version:</b> genau wie in Kapitel 2 mit der Suite installieren. Die Suite ersetzt Programm und Ansagen; der Ordner <code>daten</code> mit Flugzähler und Flugliste bleibt, ebenso deine Einstellungen. Von Hand: die Dateien in <code>scripts/heli/</code> samt Ordner <code>audio</code> überschreiben, den Unterordner <code>daten</code> stehen lassen.</li>
+  <li>Nach dem Aktualisieren von einer Version vor 1.4 wird die neue Schwelle «Orange» passend zur bisherigen roten Schwelle gesetzt, und die Sprache steht auf «wie der Sender» (bei Bedarf unter «Sprache / Language» umstellen).</li>
+  <li><b>Umstieg von «Heli RF» (bis 1.12.0) auf «Heli» 1.13.0:</b> Das Widget heisst jetzt «Heli», Ordner <code>scripts/heli</code>. In jedem Modell das Widget neu auswählen und einrichten (die Einstellungen beginnen mit den Werkswerten); Studio-Dateien mit Lua-Studio neu übertragen oder in <code><i>Kennung</i>.heli.lua</code> umbenennen. Eine alte <code>…helirf.lua</code> wird noch gelesen, mit Hinweis im Log. Flugzähler und Flugliste übernimmt Heli von selbst aus <code>scripts/helirf/daten/</code>; den alten Ordner erst löschen, wenn jedes Modell einmal lief.</li>
+  <li>Von 1.9.1 auf 1.10.x, 1.11.0 und 1.12.0 bleiben alle Einstellungen. 1.12.0 speichert in einem neuen Format (zusätzlich «Auch bei Motor aus», nach dem Update überall ein); zurück auf eine ältere Version gelten dort die Werkseinstellungen. Ohne Studio-Datei ändert sich an der Bedienung nichts; vorhandene Studio-Dateien (Format 1) gelten weiter.</li>
+  <li><b>Entfernen:</b> zuerst das Widget vom Bildschirm nehmen, dann in der Suite deinstallieren oder den Ordner <code>scripts/heli</code> löschen. Die Dateien <code>….heli.…</code> im Ordner <code>scripts/studio</code> gehören zu Lua-Studio; sie stören nicht und lassen sich von Hand löschen.</li>
+</ul>
+</div>
+
+<div style="break-inside:avoid">
+<h2>11. Welche Sender</h2>
+<p>Das Widget erkennt die Bildschirmgrösse selbst; es gibt nur ein Paket für alle Sender.</p>
+<table>
+  <tr><th style="width:24%">Bildschirm</th><th>Sender</th><th style="width:30%">Stand</th></tr>
+  <tr><td>800 × 480, Berührung</td><td>X20, X20S, X20HD, X20 Pro, X20R, X20RS, X18R, X18RS</td><td>X18RS am Sender getestet (Ethos 26.2.0), die übrigen im Simulator</td></tr>
+  <tr><td>640 × 360, ohne Berührung</td><td>Twin X14, X14S</td><td>im Simulator nachgestellt</td></tr>
+  <tr><td>480 × 320, Berührung</td><td>X18, X18S, X18SE, Twin X Lite, Twin X Lite S</td><td>im Simulator nachgestellt</td></tr>
+  <tr><td>480 × 272, ohne Berührung</td><td>X10, X10S, X10 Express, X12S (mit Ethos)</td><td>im Simulator nachgestellt</td></tr>
+</table>
+<p>Kompaktansicht (Layout mit Leisten, im Simulator 26.2 gemessen): 784 × 316 (X18R, X18RS, X20-Familie), 630 × 258 (X14), 472 × 210 (X18, Twin X Lite), alle im Simulator nachgestellt.</p>
+<p>«Nachgestellt» heisst: Die Aufteilung ist in dieser Grösse geprüft, aber mit den Schriften des grossen Simulators; am echten Gerät kann die Schrift etwas anders ausfallen. Auf Sendern ohne Berührung bedienst du alles über das Menü des Widgets (Kapitel 7).</p>
+<p class="klein">Speicherbedarf (Simulator, zusammen mit 44 weiteren Skripten): rund 90 KB Lua-Speicher (gemessen mit 1.8.1; seit 1.9.0 ohne Heli-Bild, darum kein Bildspeicher mehr). Das Widget fängt eigene Fehler ab; die Alarme sind eine Hilfe und ersetzen nicht die eigene Kontrolle von Akku und Temperatur.</p>
+</div>
+
+</body>
+</html>

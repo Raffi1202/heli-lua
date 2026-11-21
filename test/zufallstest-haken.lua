@@ -1,8 +1,8 @@
--- Heli RF: Haken für den Zufallstest im fensterlosen Ethos-Simulator. Kein Teil des Widgets.
+-- Heli: Haken für den Zufallstest im fensterlosen Ethos-Simulator. Kein Teil des Widgets.
 -- test/zufallstest.py setzt diesen Text beim Kopieren in den Simulator an die Stelle der Zeile
 --   «  v.sender = zahl(w.qSender)» in kern.lua (Funktion lesen), die echten Dateien bleiben unverändert.
 -- Bei jedem Weckruf bekommen alle Werte Zufalls- und Extremwerte (nil, 0, negativ, riesig, krumm), dazu zufällige
--- Seite, Rückfrage, Flugliste, Sprache und zufälliges Tippen und Wischen. Alle 400 Durchläufe eine Zeile «Heli RF FUZZ».
+-- Seite, Rückfrage, Flugliste, Sprache und zufälliges Tippen und Wischen. Alle 400 Durchläufe eine Zeile «Heli FUZZ».
 -- Bestanden: «Fehler nil», «Ereignis-Fehler 0» und kein stetig wachsender Lua-Speicher.
   v.sender = zahl(w.qSender)
   do
@@ -30,11 +30,11 @@
     c.swAus = math.random(1, 3)
     w.autoAn = math.random(1, 3) == 1 c.autoSek = math.random(0, 3) w.ab = z() c.sprache = math.random(0, 2)
     if not FSTUB then FSTUB = true system.playFile = function() FN.play = FN.play + 1 end end
-    do local ok, e = pcall(K.ereignis, w, EVT_TOUCH, ({ TOUCH_START, TOUCH_MOVE, TOUCH_END })[math.random(1, 3)], math.random(0, 800), math.random(0, 480)) if not ok then FE = (FE or 0) + 1 if FE < 4 then print("Heli RF FUZZ Fehler ereignis: " .. tostring(e)) end end end
-    if FZ % 400 == 0 then print("Heli RF FUZZ Ereignis-Fehler " .. tostring(FE or 0) .. ", Liste " .. #w.liste .. ", Seite " .. w.seite) end
+    do local ok, e = pcall(K.ereignis, w, EVT_TOUCH, ({ TOUCH_START, TOUCH_MOVE, TOUCH_END })[math.random(1, 3)], math.random(0, 800), math.random(0, 480)) if not ok then FE = (FE or 0) + 1 if FE < 4 then print("Heli FUZZ Fehler ereignis: " .. tostring(e)) end end end
+    if FZ % 400 == 0 then print("Heli FUZZ Ereignis-Fehler " .. tostring(FE or 0) .. ", Liste " .. #w.liste .. ", Seite " .. w.seite) end
     c.zellen = math.random(0, 14) c.kapaz = math.random(0, 3) * 5000
     c.flugSek = 5 c.warnTakt = 2
     if FZ % 400 == 0 then collectgarbage()
-      print(string.format("Heli RF FUZZ %5.1f s, Durchlauf %d, Lua-Speicher %+.1f KB seit Start, Ansagen %d, Fluege %d, Fehler %s", os.clock() - F0, FZ, collectgarbage("count") - M0, FN.play, w.fluege, tostring(w.fehler)))
+      print(string.format("Heli FUZZ %5.1f s, Durchlauf %d, Lua-Speicher %+.1f KB seit Start, Ansagen %d, Fluege %d, Fehler %s", os.clock() - F0, FZ, collectgarbage("count") - M0, FN.play, w.fluege, tostring(w.fehler)))
     end
   end

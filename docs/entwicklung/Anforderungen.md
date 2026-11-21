@@ -1,4 +1,4 @@
-# Heli RF: Anforderungen und Entscheide
+# Heli: Anforderungen und Entscheide
 
 Angelegt 17.11.2026. Hier steht, was das Widget können muss und was entschieden wurde.
 
@@ -49,7 +49,7 @@ Vom 17.11.2026:
 | 17.11.2026 | Ein Flug zählt ab 30 s; pausiert und Akku 30 s weg = beendet | kurze Läufe am Boden sollen nicht zählen (einstellbar) |
 | 17.11.2026 | Rückfragen auf der Seite selbst gezeichnet | Alarme und Ansagen laufen weiter, während die Frage offen ist |
 | 17.11.2026 | Tachos, Farben nach Schwellen, kein «P3» | Wunsch des Auftraggebers |
-| 17.11.2026 | Skriptordner bleibt `helirf`, Widget-Schlüssel `helirf` | schon abgegeben; ein neuer Schlüssel würde alle Zuweisungen löschen |
+| 17.11.2026 | Skriptordner bleibt `heli`, Widget-Schlüssel `heli` | schon abgegeben; ein neuer Schlüssel würde alle Zuweisungen löschen |
 | 17.11.2026 | Einstellungen im Widget-Speicher (50 von rund 51 Werten) | gewachsen; weitere Einstellungen müssten in die Datei unter `daten/` |
 
 ## Offen

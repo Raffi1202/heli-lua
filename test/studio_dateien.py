@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Heli RF: erzeugt die Studio-Testdateien (Lua-Studio-Format v1, Abschnitte 4 bis 6 und 12) in test/studio/.
+"""Heli: erzeugt die Studio-Testdateien (Lua-Studio-Format v1, Abschnitte 4 bis 6 und 12) in test/studio/.
 
 Aufruf:  python3 test/studio_dateien.py
 
@@ -9,23 +9,23 @@ Erwartung (geladen / kaputt / zuNeu). Gültige Dateien halten die Grenzen des St
 220 Tabellen). Liegt studio/beschreibung.json schon vor, nimmt der Generator Einstellungen und Werkgrenzen von dort.
 
 Dateien:
-  gueltig.helirf.lua            2 Ansichten (800 × 480 und 784 × 316), Einstellungen, Werte, Grenzen; 0 Fehler
-  gueltig.helirf.funke.lua      Änderungen an der Funke (Kapazität, Warnung Zelle)
-  voll.helirf.lua               Abschnitt 12.2: bis an die Studio-Grenzen gefüllt, 2 × 16 Plätze, 2 Kurven je Ansicht,
+  gueltig.heli.lua            2 Ansichten (800 × 480 und 784 × 316), Einstellungen, Werte, Grenzen; 0 Fehler
+  gueltig.heli.funke.lua      Änderungen an der Funke (Kapazität, Warnung Zelle)
+  voll.heli.lua               Abschnitt 12.2: bis an die Studio-Grenzen gefüllt, 2 × 16 Plätze, 2 Kurven je Ansicht,
                                 alle 6 Darstellungsarten, 8 Sensoren (einer mit Physical ID); 0 Fehler
-  falsche_typen.helirf.lua      jedes Feld in Einstellungen, Werten, Grenzen, Ansicht und Platz mit falschem Typ
-  falsche_typen_oben.helirf.lua jedes Feld der obersten Ebene mit falschem Typ
-  grenzen_fehlt.helirf.lua      kein Eintrag für lua:zelle: Werkgrenze gilt (Alarm bei 3,2 V)
-  grenzen_aus.helirf.lua        lua:zelle mit aus = true: kein Alarm
-  grenzen_warnung_false.helirf.lua  lua:zelle warnung = false, alarm = 3,5: Alarm kommt
-  grenzen_richtung.helirf.lua   lua:zelle mit richtung «ueber»: Werkgrenze plus Hinweis, Alarm kommt
-  grenzen_ohne_stufen.helirf.lua    lua:zelle = { ansage = false }: beide Stufen aus, kein Alarm
-  format99.helirf.lua           gültig, aber format = 99: «zu neu»
-  abgeschnitten.helirf.lua      gueltig.helirf.lua nach der Hälfte abgeschnitten: «kaputt»
-  gross_werte.helirf.lua        Befehlsgrenze: 48 Wert-Anpassungen für Sensoren (gültig, 0 Fehler). Bis 1.10.1 waren
+  falsche_typen.heli.lua      jedes Feld in Einstellungen, Werten, Grenzen, Ansicht und Platz mit falschem Typ
+  falsche_typen_oben.heli.lua jedes Feld der obersten Ebene mit falschem Typ
+  grenzen_fehlt.heli.lua      kein Eintrag für lua:zelle: Werkgrenze gilt (Alarm bei 3,2 V)
+  grenzen_aus.heli.lua        lua:zelle mit aus = true: kein Alarm
+  grenzen_warnung_false.heli.lua  lua:zelle warnung = false, alarm = 3,5: Alarm kommt
+  grenzen_richtung.heli.lua   lua:zelle mit richtung «ueber»: Werkgrenze plus Hinweis, Alarm kommt
+  grenzen_ohne_stufen.heli.lua    lua:zelle = { ansage = false }: beide Stufen aus, kein Alarm
+  format99.heli.lua           gültig, aber format = 99: «zu neu»
+  abgeschnitten.heli.lua      gueltig.heli.lua nach der Hälfte abgeschnitten: «kaputt»
+  gross_werte.heli.lua        Befehlsgrenze: 48 Wert-Anpassungen für Sensoren (gültig, 0 Fehler). Bis 1.10.1 waren
                                 es 100; ab 1.11.0 (Format 2, Regel 7.2) gelten höchstens 48 Einträge je Liste.
-  gross_grenzen.helirf.lua      Befehlsgrenze: 48 Grenzen für Sensoren (gültig, 0 Fehler, Alarm ab 100; bis 1.10.1: 160)
-  ueber48.helirf.lua            1.11.0, Format 2 Regel 7.2: je 60 Einträge in werte, grenzen und einstellungen;
+  gross_grenzen.heli.lua      Befehlsgrenze: 48 Grenzen für Sensoren (gültig, 0 Fehler, Alarm ab 100; bis 1.10.1: 160)
+  ueber48.heli.lua            1.11.0, Format 2 Regel 7.2: je 60 Einträge in werte, grenzen und einstellungen;
                                 geladen, je Liste 12 verworfen und 1 Hinweis (3 Fehler)
                                 In diesen Dateien stehen Texte kurz (nur «:» als Escape \058), damit sie unter 15 KB
                                 und 1100 Elementen bleiben.
@@ -323,26 +323,26 @@ def main():
     os.makedirs(ZIEL, exist_ok=True)
     g_gueltig = gueltig(einst, grenzen)
     dateien = {   # Name: (Inhalt, Erwartung, Studio-Grenzen einhalten)
-        "gueltig.helirf.lua": (datei(g_gueltig), "geladen", True),
-        "gueltig.helirf.funke.lua": (datei({"format": 1, "einstellungen": {"kapaz": 4500},
+        "gueltig.heli.lua": (datei(g_gueltig), "geladen", True),
+        "gueltig.heli.funke.lua": (datei({"format": 1, "einstellungen": {"kapaz": 4500},
                                             "grenzen": {"lua:zelle": {"warnung": 3.7}}}), "geladen", True),
-        "voll.helirf.lua": (datei(voll(einst, grenzen)), "geladen", True),
-        "falsche_typen.helirf.lua": (datei(falsche_typen()), "geladen", True),
-        "falsche_typen_oben.helirf.lua": (datei(falsche_typen_oben()), "geladen", True),
-        "grenzen_fehlt.helirf.lua": (datei(mit_grenzen(einst, {"lua:akku_proz": grenzen.get("lua:akku_proz", GRENZEN_ERSATZ["lua:akku_proz"])})), "geladen", True),
-        "grenzen_aus.helirf.lua": (datei(mit_grenzen(einst, {"lua:zelle": dict(GRENZEN_ERSATZ["lua:zelle"], aus=True)})), "geladen", True),
-        "grenzen_warnung_false.helirf.lua": (datei(mit_grenzen(einst, {"lua:zelle": {"richtung": "unter", "warnung": False, "alarm": 3.5,
+        "voll.heli.lua": (datei(voll(einst, grenzen)), "geladen", True),
+        "falsche_typen.heli.lua": (datei(falsche_typen()), "geladen", True),
+        "falsche_typen_oben.heli.lua": (datei(falsche_typen_oben()), "geladen", True),
+        "grenzen_fehlt.heli.lua": (datei(mit_grenzen(einst, {"lua:akku_proz": grenzen.get("lua:akku_proz", GRENZEN_ERSATZ["lua:akku_proz"])})), "geladen", True),
+        "grenzen_aus.heli.lua": (datei(mit_grenzen(einst, {"lua:zelle": dict(GRENZEN_ERSATZ["lua:zelle"], aus=True)})), "geladen", True),
+        "grenzen_warnung_false.heli.lua": (datei(mit_grenzen(einst, {"lua:zelle": {"richtung": "unter", "warnung": False, "alarm": 3.5,
                                                                                       "ansage": True, "vibration": True}})), "geladen", True),
-        "grenzen_richtung.helirf.lua": (datei(mit_grenzen(einst, {"lua:zelle": {"richtung": "ueber", "warnung": 3.6, "alarm": 3.5,
+        "grenzen_richtung.heli.lua": (datei(mit_grenzen(einst, {"lua:zelle": {"richtung": "ueber", "warnung": 3.6, "alarm": 3.5,
                                                                                  "ansage": True, "vibration": True}})), "geladen", True),
-        "grenzen_ohne_stufen.helirf.lua": (datei(mit_grenzen(einst, {"lua:zelle": {"ansage": False}})), "geladen", True),
-        "format99.helirf.lua": (datei(dict(g_gueltig, format=99)), "zuNeu", True),
+        "grenzen_ohne_stufen.heli.lua": (datei(mit_grenzen(einst, {"lua:zelle": {"ansage": False}})), "geladen", True),
+        "format99.heli.lua": (datei(dict(g_gueltig, format=99)), "zuNeu", True),
     }
-    dateien["gross_werte.helirf.lua"] = (gross(einst, "werte"), "geladen", True)
-    dateien["gross_grenzen.helirf.lua"] = (gross(einst, "grenzen"), "geladen", True)
-    dateien["ueber48.helirf.lua"] = (ueber48(), "geladen", True)
-    t = dateien["gueltig.helirf.lua"][0]
-    dateien["abgeschnitten.helirf.lua"] = (t[:len(t) // 2], "kaputt", False)
+    dateien["gross_werte.heli.lua"] = (gross(einst, "werte"), "geladen", True)
+    dateien["gross_grenzen.heli.lua"] = (gross(einst, "grenzen"), "geladen", True)
+    dateien["ueber48.heli.lua"] = (ueber48(), "geladen", True)
+    t = dateien["gueltig.heli.lua"][0]
+    dateien["abgeschnitten.heli.lua"] = (t[:len(t) // 2], "kaputt", False)
     fehler = 0
     for n, (inhalt, _, grenze) in dateien.items():
         with open(os.path.join(ZIEL, n), "w", encoding="ascii") as f:   # nur ASCII: alle Texte sind Escapes

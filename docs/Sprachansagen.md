@@ -1,8 +1,8 @@
-# Heli RF: Sprachansagen
+# Heli: Sprachansagen
 
 Diese Liste ist die einzige Quelle der Ansagen. Texte immer hier ändern und dann neu erzeugen
 (mit einem eigenen TTS-Werkzeug).
-Ablage: `src/helirf/audio/de/<Dateiname>.wav` und `src/helirf/audio/en/<Dateiname>.wav`.
+Ablage: `src/heli/audio/de/<Dateiname>.wav` und `src/heli/audio/en/<Dateiname>.wav`.
 Format WAV A-law, mono, 16 kHz, 8 Bit. Stimmen wie die Ethos-Originale: deutsch de-DE-Wavenet-E (Tempo 1,1),
 englisch en-US-Wavenet-F. Vorne und hinten keine Stille, weil direkt danach die Zahl folgt.
 

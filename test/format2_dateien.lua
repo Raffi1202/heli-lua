@@ -1,7 +1,7 @@
--- Heli RF: Heli-Fassungen der Testdateien zu Lua-Studio-Format 2 (Abschnitt 9) erzeugen, Lua 5.4.
+-- Heli: Heli-Fassungen der Testdateien zu Lua-Studio-Format 2 (Abschnitt 9) erzeugen, Lua 5.4.
 -- Aufruf aus dem Repo-Ordner:  /opt/homebrew/opt/lua@5.4/bin/lua test/format2_dateien.lua ["<Ordner Testdateien>"]
 --   Ordner = «FrSky Koordination/Lua-Studio-Format 2 - Testdateien» (wird nur gelesen; Standard: im Ordner FrSky Koordination).
--- Schreibt test/format2/<Kennung>.helirf.lua (Kennung = Name der Testdatei, z. B. p12_voll.helirf.lua).
+-- Schreibt test/format2/<Kennung>.heli.lua (Kennung = Name der Testdatei, z. B. p12_voll.heli.lua).
 --
 -- Heli zeichnet oben eine eigene Kopfzeile bzw. Leiste (studio/beschreibung.json «reserviert», z. B. 800 × 480: y 0–57,
 -- 784 × 316: y 0–33). Plätze und Schmuck der Originale liegen teils dort. Darum: Jedes Element, das ganz in der Ansicht
@@ -11,9 +11,9 @@
 -- Kommazahl) bleibt gleich. Ob die Fassung für die Referenz gleichwertig ist (geladen / fehlend / verworfen, gezeichneter
 -- Schmuck) und nichts Gültiges in der reservierten Fläche liegt, prüft test/format2_test.lua.
 -- Zusätzlich:
---   p11_format1_ohne.helirf.lua   p11 ohne die Format-2-Felder (Vergleichsbild für Test 11: Bild wie v1)
---   l72_listen.helirf.lua         Regel 7.2: je 60 Einträge in werte, grenzen, einstellungen (ab dem 49. verworfen)
---   a75_stumm.helirf.lua          Regel 7.5: Sensor-Grenze mit ansage = false und vibration = false (Ton bleibt)
+--   p11_format1_ohne.heli.lua   p11 ohne die Format-2-Felder (Vergleichsbild für Test 11: Bild wie v1)
+--   l72_listen.heli.lua         Regel 7.2: je 60 Einträge in werte, grenzen, einstellungen (ab dem 49. verworfen)
+--   a75_stumm.heli.lua          Regel 7.5: Sensor-Grenze mit ansage = false und vibration = false (Ton bleibt)
 local repo = arg[0]:gsub("test/format2_dateien%.lua$", "")
 if repo == "" then repo = "./" end
 local QUELLE = arg[1] or ((os.getenv("FORMAT2_ORDNER") or error("Umgebungsvariable FORMAT2_ORDNER fehlt", 0)) .. "/Lua-Studio-Format 2 - Testdateien")
@@ -122,7 +122,7 @@ end
 
 local function schreibe(name, d)
   local t = "return " .. wert(d) .. "\n"
-  local f = assert(io.open(ZIEL .. name .. ".helirf.lua", "wb"))
+  local f = assert(io.open(ZIEL .. name .. ".heli.lua", "wb"))
   f:write(t)
   f:close()
   return #t
@@ -142,7 +142,7 @@ for _, n in ipairs(namen) do
   for _, a in ipairs(type(d.ansichten) == "table" and d.ansichten or {}) do verschoben = verschoben + stauche(a) end
   local k = n:gsub("%.lua$", "")
   local byte = schreibe(k, d)
-  print(string.format("%-34s %6d Byte (Original %6d), %3d Elemente verschoben", k .. ".helirf.lua", byte, #text, verschoben))
+  print(string.format("%-34s %6d Byte (Original %6d), %3d Elemente verschoben", k .. ".heli.lua", byte, #text, verschoben))
   if k == "p11_format1" then
     -- Vergleich für Test 11: dieselbe Datei ohne Format-2-Felder
     d.symbole = nil
@@ -150,7 +150,7 @@ for _, n in ipairs(namen) do
       a.deko = nil
       for _, pl in ipairs(a.plaetze or {}) do pl.symbol, pl.symbolPx, pl.einheitZeigen = nil, nil, nil end
     end
-    print(string.format("%-34s %6d Byte", "p11_format1_ohne.helirf.lua", schreibe("p11_format1_ohne", d)))
+    print(string.format("%-34s %6d Byte", "p11_format1_ohne.heli.lua", schreibe("p11_format1_ohne", d)))
   end
 end
 
@@ -163,13 +163,13 @@ do
     d.grenzen[string.format("sensor:%04X:0", 0x5100 + i)] = { richtung = "ueber", warnung = 50, alarm = 60 }
     d.einstellungen["e" .. i] = i
   end
-  print(string.format("%-34s %6d Byte", "l72_listen.helirf.lua", schreibe("l72_listen", d)))
+  print(string.format("%-34s %6d Byte", "l72_listen.heli.lua", schreibe("l72_listen", d)))
 end
 -- Regel 7.5: Sensor-Grenze mit ansage = false, vibration = false: Alarm spielt trotzdem einen Ton
 do
   local d = { format = 2,
     grenzen = { ["sensor:0A00:0"] = { richtung = "ueber", alarm = 100, ansage = false, vibration = false } },
     ansichten = { { breite = 800, hoehe = 480, plaetze = { { x = 10, y = 70, b = 380, h = 120, w = "sensor:0A00:0", titel = "Stumm" } } } } }
-  print(string.format("%-34s %6d Byte", "a75_stumm.helirf.lua", schreibe("a75_stumm", d)))
+  print(string.format("%-34s %6d Byte", "a75_stumm.heli.lua", schreibe("a75_stumm", d)))
 end
 print("Ziel: " .. ZIEL)

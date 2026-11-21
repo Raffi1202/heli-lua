@@ -1,4 +1,4 @@
--- Heli RF: Update-Test. Eine ältere Version (aus einem Git-Tag) schreibt Einstellungen, die aktuelle liest sie.
+-- Heli: Update-Test. Eine ältere Version (aus einem Git-Tag) schreibt Einstellungen, die aktuelle liest sie.
 -- Aufruf über test/update_test.py. storage arbeitet wie Ethos nach Reihenfolge (Schlüssel egal).
 -- Update-Test: alte Version schreibt Einstellungen (storage nach Reihenfolge, Schlüssel egal), neue liest sie.
 local werte, pos = {}, 0
@@ -48,6 +48,28 @@ for _, fall in ipairs({ { 1, 31 }, { 2, 0 }, { 3, 21 }, { 3, 0 }, { 1, 30 } }) d
   if not ok then fehler = fehler + 1 end
   print(string.format("neu -> neu: swAus %d mAus %2d: %d Werte (Reserve %d), gelesen swAus %s mAus %s %s", fall[1], fall[2], n,
     GRENZE - n, tostring(w2.cfg.swAus), tostring(w2.cfg.mAus), ok and "ok" or "FEHLER"))
+end
+-- 1.13.0: Flugdaten von «Heli RF» (scripts/helirf/daten/) werden gelesen, wenn scripts/heli/daten/ nichts hat
+do
+  local io_open, gelesen = io.open, {}
+  local dateien = { ["SCRIPTS:/helirf/daten/MOTOR_omp.txt"] = "fluege=42\nmahnull=0\nf=41,300,2500,2300,150,70,3.60,7.8,25\n" }
+  io.open = function(p, m)
+    gelesen[#gelesen + 1] = p
+    local t = dateien[p]
+    if m == "r" and t then
+      local pos = 1
+      return { read = function(_, n) if pos > #t then return nil end local x = t:sub(pos, pos + n - 1) pos = pos + n return x end,
+        close = function() end }
+    end
+    return nil
+  end
+  model = { path = function() return "MOTOR/omp.bin" end, name = function() return "omp" end }
+  local okN, w = pcall(neuK.neu)
+  io.open = io_open
+  local ok = okN and w.fluege == 42 and #w.liste == 1 and gelesen[1] == "daten/MOTOR_omp.txt"
+  if not ok then fehler = fehler + 1 end
+  print(string.format("Flugdaten aus scripts/helirf/daten: %s (Flüge %s, Liste %s, zuerst gesucht %s)", ok and "ok" or "FEHLER",
+    tostring(okN and w.fluege), tostring(okN and #w.liste), tostring(gelesen[1])))
 end
 print(fehler == 0 and "UPDATE-TEST BESTANDEN" or ("UPDATE-TEST FEHLER: " .. fehler))
 os.exit(fehler == 0 and 0 or 1)

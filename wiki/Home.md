@@ -1,8 +1,8 @@
-# Heli RF – Wiki
+# Heli – Wiki
 
 🇬🇧 English · 🇩🇪 Deutsch
 
-Heli RF is an Ethos widget for helis: full-screen display, alarms in two stages, head speed and «Autorotation» callouts, flight list, Lua-Studio file. Version 1.12.0 (pre-release).
+Heli is an Ethos widget for helis: full-screen display, alarms in two stages, head speed and «Autorotation» callouts, flight list, Lua-Studio file. Version 1.13.0 (pre-release).
 **Tested on a real radio only on the X18RS** (Ethos 26.2.0); all other radios only in the simulator.
 
 ## English
@@ -17,7 +17,7 @@ Heli RF is an Ethos widget for helis: full-screen display, alarms in two stages,
 
 ## Deutsch
 
-Heli RF ist ein Ethos-Widget für Helis: Vollbild-Anzeige, Alarme in zwei Stufen, Ansage von Drehzahl und «Autorotation», Flugliste, Studio-Datei aus Lua-Studio. Version 1.12.0 (Vorabversion).
+Heli ist ein Ethos-Widget für Helis: Vollbild-Anzeige, Alarme in zwei Stufen, Ansage von Drehzahl und «Autorotation», Flugliste, Studio-Datei aus Lua-Studio. Version 1.13.0 (Vorabversion).
 **Am echten Sender getestet nur an der X18RS** (Ethos 26.2.0); alle anderen Sender nur im Simulator.
 
 - [Installation](de/Installation.md)
@@ -29,7 +29,7 @@ Heli RF ist ein Ethos-Widget für Helis: Vollbild-Anzeige, Alarme in zwei Stufen
 - [Fehlerbehebung](de/Fehlerbehebung.md)
 - [Versionen](de/Versionen.md)
 
-Full manual / ganze Anleitung: [Manual (PDF)](../docs/Heli%20RF%20-%20Manual.pdf) · [Anleitung (PDF)](../docs/Heli%20RF%20-%20Anleitung.pdf)
+Full manual / ganze Anleitung: [Manual (PDF)](../docs/Heli%20-%20Manual.pdf) · [Anleitung (PDF)](../docs/Heli%20-%20Anleitung.pdf)
 
 ## Related projects / Weitere Projekte
 

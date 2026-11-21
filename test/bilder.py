@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Heli RF: erzeugt den festen Satz Simulatorbilder in docs/bilder-simulator/.
+"""Heli: erzeugt den festen Satz Simulatorbilder in docs/bilder-simulator/.
 
 Aufruf:  python3 test/bilder.py [Nummer ...]     ohne Nummer alle Bilder, sonst nur die genannten (z. B. 06 20)
 
-Namen: «Heli RF - Sim <BxH> <Nr> <Zustand>.png». Die Werte sind glaubhafte Testwerte, die Einstellungen stehen ab Werk.
+Namen: «Heli - Sim <BxH> <Nr> <Zustand>.png». Die Werte sind glaubhafte Testwerte, die Einstellungen stehen ab Werk.
 Jedes Bild danach ansehen. Ein Lauf dauert rund 40 s.
 """
 import os, sys
@@ -11,7 +11,7 @@ from sim_hilfe import REPO, fenster, haken, lauf, plan
 
 ZIEL = os.path.join(REPO, "docs", "bilder-simulator")
 GROESSEN = [(800, 480), (640, 360), (480, 320), (480, 272), (784, 316), (630, 258), (472, 210)]   # ab 4: Layout mit Leisten
-WISCH = {"t": 5800, "wisch": [700, 250, 100, 250]}       # auf Bildschirm 2 (Heli RF)
+WISCH = {"t": 5800, "wisch": [700, 250, 100, 250]}       # auf Bildschirm 2 (Heli)
 MENUE = [{"t": 5800, "tipp": [370, 450]}, {"t": 7600, "tipp": [270, 88]}, {"t": 9400, "tipp": [400, 290]}]   # Bildschirme > Bildsch. 2 > Widget
 HOCH = {"wisch": [400, 420, 400, 120]}
 
@@ -74,7 +74,7 @@ for nr, zustand, lua, groessen, art, extra in BILDER:
         continue
     for g in groessen:
         b, h = GROESSEN[g]
-        datei = os.path.join(ZIEL, "Heli RF - Sim %dx%d %s %s.png" % (b, h, nr, zustand))
+        datei = os.path.join(ZIEL, "Heli - Sim %dx%d %s %s.png" % (b, h, nr, zustand))
         ersetze = [haken(lua.rstrip("\n"))]
         if g:
             ersetze.insert(0, fenster(b, h))
@@ -88,5 +88,5 @@ for nr, zustand, lua, groessen, art, extra in BILDER:
         if g:
             bild["schnitt"] = [b, h]
         aus = lauf(plan(ersetze, schritte + [bild, {"t": t + 800, "ende": True}]))
-        fehler = [z for z in aus.splitlines() if "Heli RF: Fehler" in z or "FEHLER" in z or "ERSETZE" in z]
+        fehler = [z for z in aus.splitlines() if "Heli: Fehler" in z or "FEHLER" in z or "ERSETZE" in z]
         print(("FEHLER " if fehler or not os.path.exists(datei) else "ok     ") + os.path.basename(datei), *fehler[:2], sep="\n  " if fehler else "")

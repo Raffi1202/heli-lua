@@ -6,6 +6,7 @@ Full details: [CHANGELOG.md](../../CHANGELOG.md) (German).
 
 | Version | Main changes |
 |---|---|
+| 1.13.0 | Renamed from «Heli RF» to «Heli» (key and folder `heli`, Studio file `<ID>.heli.lua`) – breaking, see [Upgrading](Installation.md#upgrading-from-heli-rf). |
 | 1.12.0 | «Also with motor off» per alarm (menu and Lua-Studio), memory freed after a model change, a Studio entry without thresholds no longer switches an alarm off. Pre-release. |
 | 1.11.0 | Lua-Studio format 2: symbols, bold unit, decoration. |
 | 1.10.1 | Studio file sensors on the radio, large Studio files in parts. |

@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Heli – Manual</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 16mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.42; color: #1a1f2b; margin: 0; }
+  h1 { font-size: 24pt; margin: 0 0 2mm; }
+  h2 { font-size: 14.5pt; margin: 7mm 0 2.5mm; padding-bottom: 1mm; border-bottom: 1.5pt solid #1f4f96; color: #12305e; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 4mm 0 1.5mm; break-after: avoid; }
+  h3.gross { font-size: 13pt; color: #12305e; margin-top: 6mm; }
+  p { margin: 0 0 2.5mm; }
+  ol, ul { margin: 0 0 2.5mm; padding-left: 6mm; }
+  ol { break-inside: avoid; }
+  li { margin-bottom: 1.2mm; }
+  .unter { color: #56607a; font-size: 11pt; margin-bottom: 5mm; }
+  .bild { position: relative; width: 100%; margin: 3mm 0 3mm; break-inside: avoid; }
+  .bild img { width: 100%; display: block; border-radius: 2mm; border: 0.5pt solid #99a; }
+  .halb { display: flex; gap: 5mm; break-inside: avoid; margin: 3mm 0; }
+  .halb > div { flex: 1; }
+  .halb img { width: 100%; display: block; border-radius: 1.5mm; border: 0.5pt solid #99a; }
+  .halb .t { font-size: 9pt; color: #56607a; margin-top: 1mm; }
+  .nr { position: absolute; width: 6.2mm; height: 6.2mm; margin: -3.1mm 0 0 -3.1mm; border-radius: 50%; background: #e11d48; color: #fff;
+        font-weight: 700; font-size: 9.5pt; line-height: 6.2mm; text-align: center; border: 0.6pt solid #fff; }
+  .n { display: inline-block; min-width: 5mm; height: 5mm; border-radius: 50%; background: #e11d48; color: #fff; font-weight: 700;
+       font-size: 8.5pt; line-height: 5mm; text-align: center; margin-right: 1mm; }
+  table { border-collapse: collapse; width: 100%; margin: 2mm 0 3mm; font-size: 9.6pt; break-inside: avoid; }
+  th, td { border: 0.5pt solid #b6bccb; padding: 1.3mm 2mm; text-align: left; vertical-align: top; }
+  th { background: #e9eef8; }
+  .kasten { border: 1pt solid #d99a00; background: #fff7df; border-radius: 2mm; padding: 2.5mm 3.5mm; margin: 3mm 0; break-inside: avoid; }
+  .kasten.blau { border-color: #1f4f96; background: #eef3fb; }
+  code { font-family: Menlo, monospace; font-size: 9.3pt; background: #eef0f5; padding: 0 1mm; border-radius: 1mm; }
+  .legende { columns: 2; column-gap: 8mm; padding-left: 0; list-style: none; }
+  .legende li { break-inside: avoid; }
+  .neu { break-before: page; }
+  .klein { font-size: 9pt; color: #56607a; }
+</style>
+</head>
+<body>
+
+<h1>Heli</h1>
+<div class="unter">Display for helis on FrSky radios with Ethos · Manual · Version 1.13.0 · As of 21.11.2026<br><span class="klein">German version: «Heli - Anleitung.pdf». The screenshots show the German display; with the language set to English the labels are in English (chapter 7, «Language»).</span></div>
+
+<div class="bild" style="width:80%;margin-left:auto;margin-right:auto">
+  <img src="../bilder-simulator/Heli - Sim 800x480 04 Normal.png" alt="Heli in flight">
+</div>
+
+<p><b>Heli</b> is a widget for Ethos. It shows the heli's most important values on a whole screen, monitors five values with two adjustable thresholds each (orange, and red with sound), calls out the head speed during autorotation and keeps a list of flights on a second page. Display, menu and announcements are available in German and in English. New in 1.10.0: with the PC program Lua-Studio the display can be designed freely for each model (chapter 8, «Studio file from Lua-Studio»); without a Studio file the widget works exactly as in 1.9.1. New in 1.11.0: Lua-Studio format 2 with symbols, bold unit and decoration; without a Studio file the widget works as in 1.10.1. New in 1.12.0: the setting «Also with motor off» for each alarm (chapter 6), and after a model change Heli frees almost all of its memory.</p>
+
+<div class="kasten">
+  <b>Testing status:</b> The widget has been tested in the Ethos simulator (Ethos 26.1.2; rotary encoder, swiping and PAGE also with Ethos 26.2.0), including long runs with random and extreme values: on 800 × 480 directly (X18RS simulator), recreated on 640 × 360, 480 × 320 and 480 × 272. On a real radio (X18RS, Ethos 26.2.0, Archer Plus SR10+ receiver, telemetry from a test device with 48 sensors), installation, automatic sensor search (8 fields assigned) and the display with live values worked on 20.11.2026. Not checked on the radio: each menu item individually, the announcements, the flight list with real flights, the rotary encoder and all other radios. New in 1.9.0 and so far only tested in the simulator: the compact view, the Governor field with ARMED/SAFE (Ethos 26.2, Rotorflight values injected in the simulator). On the radio (X18RS) the compact view has been checked, Governor and ARMED/SAFE not yet. New in 1.10.0 and so far only tested in the simulator (Ethos 26.2): the Studio file from Lua-Studio with <code>.funke.lua</code>, info file, note bar and the menu line «Studio file». Checked on the radio (X18RS, 20.11.2026): without a Studio file as before, a full Studio file in full screen without abort. Version 1.10.1 (Studio file sensors and info file on the radio, large Studio files in parts) is so far only tested in the simulator; <code>.funke.lua</code>, the compact view with a Studio file and English are still open on the radio. Version 1.11.0 (Lua-Studio format 2: symbols, bold unit, decoration) is only tested on the Mac test bench and in the simulator, ran on the radio (X18RS, 21.11.2026) with a full format 2 file in full screen without abort; the compact view, <code>.funke.lua</code> and English are still open there. Version 1.12.0 («Also with motor off», freeing memory) is tested on the Mac test bench and in the simulator, <b>not yet on the radio</b>. Counted on the Mac, a full format 2 file needs about 6,400 instructions per frame and the built-in display 6,400 to 7,500; this is within the format's target for drawing (below 10,000 since 21.11.2026, before 5,000). Not yet tested in flight. Please try it on the ground first and check the sensors (chapter 4).
+</div>
+
+<h2>1. What you need</h2>
+<ul>
+  <li>A FrSky radio with Ethos (26.1 or later) and a colour screen. The display adapts to the screen size; chapter 11 lists the radios and what has been tested. The pictures in this manual show 800 × 480.</li>
+  <li>A computer with the <b>FrSky Suite</b> (FrSky's program for Ethos radios) and the radio's USB cable.</li>
+  <li>A heli with telemetry via the FrSky receiver. Meant for all helis: with a flybarless system such as Rotorflight, with normal FrSky sensors via FBUS/S.Port or with a telemetry ESC. Only «Profile / Rate» at the top right needs a system that reports the profiles (e.g. Rotorflight); otherwise that spot stays empty.</li>
+  <li>The telemetry sensors have already been discovered in the model (Model › Telemetry › Discover new sensors).</li>
+</ul>
+
+<h2>2. Installing</h2>
+<p>You have received the file <code>Heli-1.13.0-share.zip</code>. The widget is put on the radio with the FrSky Suite; this way every file ends up in the right place.</p>
+<ol>
+  <li>Unpack the ZIP for sharing. It contains this manual, a file <code>LIES MICH.txt</code> and the package <code>Heli-1.13.0.zip</code>. <b>Do not unpack this package.</b></li>
+  <li>Switch on the radio and connect it to the computer via USB. On the radio, choose <b>Ethos Suite</b>.</li>
+  <li>On the computer, open the FrSky Suite and wait until it shows the radio.</li>
+  <li>In the Suite, open <b>Lua library</b>, choose <b>Install from local ZIP</b>, select <code>Heli-1.13.0.zip</code> and click <b>Install scripts</b>. «Heli» then appears in the list of installed scripts.</li>
+  <li>Disconnect the radio from the computer and restart it.</li>
+</ol>
+<div class="kasten"><b>Important:</b> The radio must be connected via USB before you click «Install scripts»; otherwise the Suite stops at «Start installing the script …». Do not delete an old <code>heli</code> folder on the radio beforehand: the Suite overwrites it, and it contains the flight list. <b>Without the Suite</b> it also works by hand: unpack <code>Heli-1.13.0.zip</code>, connect the radio as a USB drive and copy the folder <code>heli</code> including its subfolder <code>audio</code> into the radio's <code>scripts</code> folder (overwrite an existing folder, do not delete it). You then have <code>scripts/heli/main.lua</code>. <b>Radios with an SD card:</b> Ethos loads the scripts either from the internal memory or from the SD card, depending on a setting on the radio. The Suite follows it. By hand: copy to where the other Lua scripts are; if in doubt, to the SD card (<code>SD:/scripts/heli</code>). On an X18RS with Ethos 26.2.0, only the SD card loaded. The radio does not need the file <code>ethos_lua_manifest.json</code>.</div>
+
+<h2>3. Setting up the screen</h2>
+<ol>
+  <li>In the bar at the bottom, open <b>Screens</b> (Configure screens).</li>
+  <li>Tap <b>+</b> at the top right. Swipe down in the list and choose the layout <b>Full screen</b>. If you want to keep the Ethos top and bottom bars, take the layout with <b>one field and bars</b>: the widget then draws the compact view by itself (chapter 5).</li>
+  <li>Tap the empty field, open the list at <b>Widget</b>, swipe all the way down and choose <b>Heli</b>.</li>
+</ol>
+<p>The widget's settings appear right below. Later you get back there via Screens › choose the screen › tap into the widget. Alarms, announcements and flight list need no further switch functions or special functions in the model; the widget does everything itself.</p>
+
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 02 Menue.png" alt="Settings"><div class="t">At the top the «Search» button, below it the groups. Tapping a group expands it; more groups follow when you swipe down.</div></div>
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 22 Menue Alarm.png" alt="Alarm group"><div class="t">An alarm group: On, orange threshold, red-with-sound threshold, repeat time.</div></div>
+</div>
+
+<h2 class="neu">4. Assigning and setting up sensors (once per model)</h2>
+<ol>
+  <li><b>Switch on the heli</b> so that telemetry is running.</li>
+  <li>In the line «Find sensors automatically», tap <b>Search</b>. A window «Searching …» appears and closes by itself when done. The widget fills all empty sensor fields it recognises; the IDs in brackets appear the next time you open the menu.</li>
+  <li>Expand the group <b>Sensors</b> and <b>check every field</b>. Choose by hand whatever is empty or wrong. The search recognises FrSky sensors by their identifier (Application ID), not by their name; this way sensors with the same name from different devices are not mixed up. With Rotorflight, the voltage of the control board never counts as battery voltage and the BEC current never as battery current. Custom sensors without an identifier (e.g. Rotorflight «Headspeed», PID and rate profile) are found by name and unit. Next to the field name, the identifier and Physical ID are shown in brackets, e.g. «Battery voltage [0B50/0A]». If several sensors match, below it says «n sensors match, chosen: … – please check». The search can still be wrong.</li>
+  <li><b>Rotorflight only:</b> In Rotorflight (Configurator › Telemetry), enable the values <b>Governor State</b> and <b>Arming Flags</b>. Heli reads them directly from the telemetry (AppID 0x5125 and 0x5122); no sensor needs to be created in Ethos.</li>
+  <li>Group <b>Battery</b>: set <b>Cells</b> (e.g. 6 or 12), <b>Capacity</b> and <b>Battery type</b> (LiPo, LiHV or Li-Ion). The % display needs this if there is no % sensor. When you change the battery type, the thresholds of the cell alarm follow the new type (Li-Ion 3.10 / 3.00 V, otherwise 3.60 / 3.50 V) as long as they are still at the factory value; thresholds you have set yourself are kept. The line «Battery % from» shows whether a sensor or the widget's own estimate is used.</li>
+  <li>Groups <b>Alarm …</b>: adapt the two thresholds to the heli or switch off individual monitors (chapter 6).</li>
+  <li>Group <b>RPM callout › Throttle channel</b>: choose the channel on which the throttle goes to the heli. Without a throttle channel there is no RPM callout.</li>
+  <li>Group <b>Flight and motor switch</b>: choose the switch you use to turn off the motor, and its «motor off» position (chapters 6 and 7). Without a switch the widget detects flights by the head speed, and there is no «Autorotation» announcement.</li>
+  <li>Group <b>Gauges: full scale</b>: the value at which the gauges for head speed, current and ESC temperature are full.</li>
+</ol>
+
+<table>
+  <tr><th style="width:32%">Field in «Sensors»</th><th>Which sensor belongs in it</th></tr>
+  <tr><td>Battery %</td><td>Remaining charge of the flight battery in percent. If there is none, leave it empty: the widget then calculates it itself (chapter 7).</td></tr>
+  <tr><td>Battery voltage</td><td>Total voltage of the flight battery</td></tr>
+  <tr><td>Head speed</td><td>Rotor speed (headspeed); if there is none, the ESC's RPM</td></tr>
+  <tr><td>Current</td><td>Current of the ESC</td></tr>
+  <tr><td>ESC temperature</td><td>Temperature of the ESC</td></tr>
+  <tr><td>BEC voltage</td><td>Voltage of the BEC or the receiver supply</td></tr>
+  <tr><td>Cell voltage</td><td>Voltage per cell. A cell sensor (FLVSS, «LiPo» in Ethos) also works: the widget then takes the lowest cell. Leaving it empty works: with the number of cells set, the widget calculates it itself (total voltage ÷ number of cells, with alarm). If the number of cells is 0 (automatic) and there is no cell sensor, the «Cell» field shows «SET CELLS in menu» in orange: then set the number of cells under Battery.</td></tr>
+  <tr><td>Used capacity mAh</td><td>Capacity used</td></tr>
+  <tr><td>RSSI</td><td>Signal strength (for the bars at the top right)</td></tr>
+  <tr><td>PID profile, Rate profile</td><td>Active profiles of the flybarless system (e.g. Rotorflight). Not required; without them that spot stays empty.</td></tr>
+</table>
+
+<h2 class="neu">5. The display</h2>
+<div class="bild">
+  <img src="../bilder-simulator/Heli - Sim 800x480 04 Normal.png" alt="Display with numbers">
+  <span class="nr" style="left:24%;top:5.5%">1</span>
+  <span class="nr" style="left:41%;top:5.5%">2</span>
+  <span class="nr" style="left:64.5%;top:5.5%">3</span>
+  <span class="nr" style="left:3.6%;top:17.5%">4</span>
+  <span class="nr" style="left:28.1%;top:17.5%">5</span>
+  <span class="nr" style="left:52.6%;top:17.5%">6</span>
+  <span class="nr" style="left:77.1%;top:17.5%">7</span>
+  <span class="nr" style="left:8%;top:95%">8</span>
+  <span class="nr" style="left:71.5%;top:60.5%">9</span>
+  <span class="nr" style="left:96.3%;top:60.5%">10</span>
+  <span class="nr" style="left:71.5%;top:82.5%">11</span>
+  <span class="nr" style="left:96.3%;top:82.5%">12</span>
+</div>
+<ul class="legende">
+  <li><span class="n">1</span>Model name (taken automatically from Ethos)</li>
+  <li><span class="n">2</span>Time of day</li>
+  <li><span class="n">3</span>Profile and rate, signal, radio battery</li>
+  <li><span class="n">4</span>Battery in %, below it number of cells and voltage</li>
+  <li><span class="n">5</span>Head speed, below it MAX = highest head speed with this battery</li>
+  <li><span class="n">6</span>Current, below it MAX = highest current with this battery</li>
+  <li><span class="n">7</span>ESC temperature, below it MAX = highest temperature with this battery</li>
+  <li><span class="n">8</span>Rotorflight governor state, top right the pill <b>ARMED</b> (green) or <b>SAFE</b> (grey), at the bottom the headspeed; below it the flight count. Tap = flight list</li>
+  <li><span class="n">9</span>Flight mode (active flight mode from Ethos)</li>
+  <li><span class="n">10</span>BEC voltage, LOW = lowest value with this battery</li>
+  <li><span class="n">11</span>Cell voltage, LOW = lowest value with this battery</li>
+  <li><span class="n">12</span>Used mAh with the «RESET» button to reset</li>
+</ul>
+<p>The gauges run from bottom left over the top to bottom right; a quarter stays open at the bottom. A full gauge means: full-scale value reached (adjustable in the menu). MAX and LOW are measured values and start again with every battery. If a value is missing (no telemetry or no sensor assigned), <b>--</b> is shown.</p>
+<h3>Governor and ARMED / SAFE</h3>
+<p>The <b>Governor</b> field shows the state of the Rotorflight governor: <b>OFF</b>, <b>IDLE</b> (grey), <b>SPOOLUP</b>, <b>RECOVERY</b>, <b>BAILOUT</b>, <b>BYPASS</b> (orange), <b>ACTIVE</b> (green), <b>HOLD</b>, <b>AUTOROTATION</b> (light blue) and <b>LOST HEADSPEED</b> (red with a frame, plus one tone, vibration and the announcement «Warning! Headspeed lost», at most every 10 s). «Lost headspeed» is the Rotorflight state «Fallback»: the governor has no headspeed signal (e.g. sensor or wire) and runs on the fallback throttle without speed control. The rotor does not necessarily slow down; still, land and check the headspeed sensor. Without Rotorflight values it shows «--» and «Rotorflight only». The ARMED / SAFE pill comes from the Rotorflight arming flags; without them it follows the motor switch (chapter 7).</p>
+<h3>Compact view (layout with top and bottom bars)</h3>
+<div class="bild"><img src="../bilder-simulator/Heli - Sim 784x316 34 Kompakt Englisch.png" alt="Compact view"></div>
+<p>In the layout with bars, Ethos stays visible at the top (model name, radio battery) and at the bottom (clock, menu buttons). The widget then shows a narrow bar at the top with the <b>flight time</b> of the current flight, the ARMED / SAFE pill, profile / rate and the signal bars, below it the four gauges and eight fields: Governor, Cell, Used (tap = reset), BEC, Flight mode, Signal, Power (voltage × current) and Flights (tap = flight list). The widget detects the size by itself, no menu item is needed. The flight list looks the same in both views.</p>
+<div class="kasten blau"><b>Tip:</b> Give the flight modes in Ethos short names (e.g. «Normal», «Idle 1», «Hold»). Then the flight mode is shown large in the field. Long names are automatically written smaller.</div>
+
+<h2 class="neu">6. Warnings, alarms and announcements</h2>
+<h3 class="gross">Monitoring: green, orange, red</h3>
+<p>Five values are monitored, each with <b>two thresholds</b>:</p>
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 05 Warnung.png" alt="Orange"><div class="t"><b>Orange</b> (first threshold): only the display turns orange, i.e. the gauge or the number. No sound, no frame.</div></div>
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 06 Alarm.png" alt="Red"><div class="t"><b>Red</b> (second threshold): display and frame red, the header flashes red, plus warning tone, vibration and announcement.</div></div>
+</div>
+<p>As long as everything is fine, the monitored displays are <b>green</b>: the gauges for battery and ESC temperature and the numbers for cell, BEC and used capacity. A white number means: this value is not monitored («On» is off). The announcement first says what it is about, then the value, e.g. «ESC temperature, 85 degrees Celsius» or «Battery, 20 percent». It repeats at the set interval as long as the value is in the red range.</p>
+<table>
+  <tr><th style="width:27%">Group in the menu</th><th>Orange (factory)</th><th>Red + sound (factory)</th><th style="width:12%">factory</th><th style="width:12%">Interval</th></tr>
+  <tr><td>Alarm ESC temperature</td><td>from 70 °C</td><td>from 80 °C</td><td>on</td><td>5 s</td></tr>
+  <tr><td>Alarm battery %</td><td>below 35 %</td><td>below 25 %</td><td>on</td><td>10 s</td></tr>
+  <tr><td>Alarm cell voltage</td><td>below 3.60 V (Li-Ion 3.10 V)</td><td>below 3.50 V (Li-Ion 3.00 V)</td><td>on</td><td>10 s</td></tr>
+  <tr><td>Alarm BEC voltage</td><td>below 7.2 V</td><td>below 7.0 V</td><td>off</td><td>10 s</td></tr>
+  <tr><td>Alarm used capacity</td><td>from 3500 mAh</td><td>from 4000 mAh</td><td>off</td><td>20 s</td></tr>
+</table>
+<ul>
+  <li>In every group: <b>On</b>, <b>Orange from/below</b>, <b>Red + sound from/below</b>, <b>Repeat every</b>, <b>Also with motor off</b>. If «On» is off, the value is not monitored at all (neither orange nor red).</li>
+  <li><b>Also with motor off</b> (new in 1.12.0, on by default): if the tick is removed and the motor switch is in the «motor off» position, this alarm stays silent: no sound, no vibration, no announcement. The display still turns orange or red. As soon as the motor is on again, the alarm comes back. Without a motor switch the setting has no effect and the alarm always comes. «Lost headspeed» from the governor always comes.</li>
+  <li>Red only starts when the value has been beyond the threshold for one second in a row, and ends with some margin to the threshold. This way nothing flickers.</li>
+  <li>If several alarms are red, the announcements come one after the other. If the RPM callout or «Autorotation» is running, they take priority: then at most one alarm comes every 10 s.</li>
+  <li>Without a value (no sensor, no telemetry) a monitor stays silent.</li>
+</ul>
+<div class="kasten"><b>Adapting the thresholds to your own heli:</b> Under load the cell voltage drops briefly. If the alarm comes in normal flight, set the threshold lower. BEC and used capacity are off from the factory, because the suitable thresholds depend on the receiver voltage (5 V, 6 V, 7.4 V, 8.4 V) and on the battery.</div>
+
+<h3 class="gross">RPM callout and «Autorotation»</h3>
+<p><b>RPM callout:</b> If the throttle channel is at <b>−25 % or lower</b> and the rotor is still turning (above 300 RPM), the radio calls out <b>the head speed every second</b>. On the ground with the rotor stopped it stays silent. While the callout is running, a light blue dot lights up to the left of the flight count.</p>
+<p><b>«Autorotation» announcement:</b> If you turn off the motor with the <b>motor switch</b> while the rotor is turning, the radio says «Autorotation» and repeats it every 3 s <b>until the rotor stops</b> (head speed below 30 RPM) or you turn the motor back on. In between, the head speed is called out. For this, the motor switch must be selected in the menu under «Flight and motor switch»; with «Autorotation every» = 0 the announcement is off.</p>
+<div class="kasten"><b>If the announcements lag behind:</b> Speaking a four-digit number takes longer than one second. Then set RPM callout › <b>Call out every</b> to 2 s.</div>
+
+<h2>7. Operation</h2>
+<h3 class="gross">Battery in % and resetting used capacity</h3>
+<p><b>If the heli already sends the remaining charge in %</b> (e.g. Rotorflight «Bat%»/«Fuel», in German Ethos also «Kraftstoff», or an ESC), the widget shows this value directly and does not calculate it itself. The automatic search assigns it; it can be changed by hand under Sensors › Battery %.</p>
+<p><b>How the % display is produced</b> when no % sensor is assigned:</p>
+<ul>
+  <li>When the battery is plugged in (2 s without load, «--» is shown during that time) the widget reads the cell voltage and uses the curve of the <b>battery type</b> to determine the starting value. Examples (guide values): LiPo 4.20 V = 100 %, 3.85 V = 55 %; LiHV 4.35 V = 100 %, 3.85 V = 38 %; Li-Ion 4.20 V = 100 %, 3.70 V = 47 %.</li>
+  <li>In flight it counts down with the used mAh. For this, <b>Capacity</b> and <b>Cells</b> under <b>Battery</b> must be correct.</li>
+  <li>If no capacity is entered, it shows the value from the cell voltage at rest; in flight this value stays fixed.</li>
+</ul>
+<div class="kasten"><b>Caution, % sensor:</b> If a sensor is assigned in the «Battery %» field (the automatic search fills it if there is one), the widget shows its value and does not calculate itself. If this sensor shows 100 % after plugging in a half-empty battery, clear the «Battery %» field.</div>
+<p><b>Resetting used capacity</b> (if the mAh do not start at 0 by themselves after a battery change):</p>
+<ul>
+  <li>Tap the <b>RESET</b> button in the «Used capacity» field and confirm the question with <b>YES, RESET</b>. Or</li>
+  <li>in the menu under <b>Battery › Reset used capacity</b>, press the «Set to 0 mAh» button. Or</li>
+  <li>choose <b>Reset flight</b> in Ethos; the widget then resets as well.</li>
+</ul>
+<p>MAX and LOW also start again, and Battery % is determined anew from the voltage at rest. If the sensor itself counts from 0 again after plugging in, the widget notices this and you do not have to do anything.</p>
+
+<h3 class="gross" style="break-before:page">Flights: motor switch, question and flight list</h3>
+<h3>When a flight starts and ends</h3>
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 23 Menue Flug und Motorschalter.png" alt="Group Flight and motor switch"><div class="t">Group «Flight and motor switch» in the menu (factory settings, no switch yet).</div></div>
+  <div><p>Under <b>Motor switch</b> you choose the switch you use to turn off the motor, under <b>Motor off position</b> its position for «off» (up, middle or down). All other positions count as «motor on».</p></div>
+</div>
+<p><b>With motor switch:</b></p>
+<ul>
+  <li><b>Motor on</b> starts a flight.</li>
+  <li><b>Motor off</b> pauses the flight and asks <b>«Flight finished?»</b>.
+    <b>YES, FINISHED</b> completes the flight, it goes into the list.
+    <b>NO, JUST PAUSE</b> leaves it open; at the next «motor on» the same flight continues.</li>
+  <li>If you turn the motor back on without answering (e.g. after an autorotation), the question disappears by itself and the flight continues.</li>
+  <li>A paused flight counts as finished when the battery has been unplugged for more than 30 s. It is also not lost when you switch off the radio. On page 2 you can tap the «paused» line, then the question comes again.</li>
+  <li>If the switch is already at «motor on» when the radio is switched on, the flight starts as soon as the rotor turns.</li>
+</ul>
+<p><b>Without motor switch:</b> The flight starts as soon as the head speed is above 500 RPM and ends 5 s after it has dropped below. There is then no question.</p>
+<p>In both cases a flight only <b>counts</b> once it has lasted 30 s. Shorter runs (test on the ground) are discarded.</p>
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 07 Rueckfrage Flug beendet.png" alt="Question"><div class="t">Question after «motor off».</div></div>
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 20 Flugliste.png" alt="Flight list"><div class="t">Page 2 «Flights»: flight 11 is tapped, its values are on the left, at the bottom the button for deleting this flight.</div></div>
+</div>
+<h3>The flight list (page 2)</h3>
+<ul>
+  <li><b>Open:</b> swipe left on the display, tap the flight count or turn the <b>rotary encoder</b> to the right. <b>Back:</b> swipe right, «BACK» or turn the rotary encoder to the left past the top flight.</li>
+  <li>On the <b>right</b> are the last 20 flights, the newest at the top, the current one with «live» or «paused». If they do not all fit, <b>swipe up and down</b> in the list (a scroll bar appears on the right).</li>
+  <li><b>Tap a flight:</b> its values appear on the left: flight time, used capacity, highest head speed, highest current, highest ESC temperature, lowest cell and BEC voltage, battery at the end. Tapping the left field shows the newest flight again.</li>
+  <li><b>With the rotary encoder:</b> turning right selects the next flight further down, turning left the next one further up; the list scrolls along. Deleting is done with the button at the bottom or via the menu (see «Without touch»).</li>
+  <li><b>Deleting a single flight</b> (e.g. a short on and off that should not count): tap the flight, then at the bottom centre <b>DELETE FLIGHT …</b> and confirm the question. The flight count goes back by one and the later flights move up, the numbers stay without gaps. This also works with the current or paused flight: if you tap the paused one, «Flight finished?» comes again first (not when selected with the rotary encoder); after «NO, JUST PAUSE» the button appears. If you delete the current flight without a motor switch, a new one only starts again after the rotor has stopped.</li>
+  <li><b>CLEAR LIST</b> empties the whole list after a question. The flight count is kept; it can be set by hand in the menu under «Display and flight count».</li>
+</ul>
+<p>Flight count and list are saved per model on the radio (<code>scripts/heli/daten/</code>). From the display you get to the next Ethos screen by swiping left twice. On this screen the rotary encoder belongs to the widget: you do not switch to other Ethos screens with it. All other keys stay with Ethos and work as usual; <b>PAGE</b> takes you to the next screen.</p>
+<h3>Without touch (e.g. X14, X10, X12)</h3>
+<p>With the <b>rotary encoder</b> you page between display and flight list and select a flight as described above. Everything else is done via the widget's menu, group <b>Flights without touch</b>:</p>
+<ul>
+  <li><b>Page:</b> «Display» or «Flights» switches between page 1 and page 2.</li>
+  <li><b>Select flight (0=latest):</b> the number of the flight whose values are to be shown on the left. With 0 the top line of the list applies (current or newest flight).</li>
+  <li><b>Delete selected flight</b>, <b>Finish current flight</b> (instead of the question «Flight finished?») and <b>Clear flight list</b>: one button each with a question. In the question, «CANCEL» is preselected. If the selected flight does not exist, a note appears and nothing is deleted.</li>
+  <li><b>Question: just pause</b> closes the question «Flight finished?» on the page; the flight stays paused (like «NO, JUST PAUSE»).</li>
+  <li>You reset the used capacity in the group <b>Battery › Reset used capacity</b>.</li>
+</ul>
+
+<h3 class="gross">Language</h3>
+<div class="halb">
+  <div><img src="../bilder-simulator/Heli - Sim 800x480 12 Englisch.png" alt="Display in English"><div class="t">The display with the language set to English.</div></div>
+  <div><p>Under <b>Display and flight count › Sprache / Language</b> you choose <b>same as radio</b>, <b>Deutsch</b> or <b>English</b>. This applies to the display, the questions, the menu (after it is next opened) and the announcements of the alarms and of «Autorotation». Ethos speaks numbers and units in the radio's language.</p></div>
+</div>
+
+<h2>8. All settings</h2>
+<table>
+  <tr><th style="width:27%">Group</th><th>Setting</th><th style="width:25%">Factory</th></tr>
+  <tr><td>Sensors</td><td>eleven fields, see chapter 4</td><td>empty, via search</td></tr>
+  <tr><td>Battery</td><td>Cells (0 = automatic, needs a cell sensor) · Capacity for % display · Battery type (LiPo, LiHV, Li-Ion) · Battery % from (display) · Reset used capacity (button)</td><td>0 · 0 mAh · LiPo · – · –</td></tr>
+  <tr><td>Gauges: full scale</td><td>Head speed · Current · ESC temperature</td><td>2400 RPM · 250 A · 100 °C</td></tr>
+  <tr><td>Alarm ESC temperature</td><td>On · Orange from · Red + sound from · Repeat every · Also with motor off</td><td>on · 70 °C · 80 °C · 5 s · on</td></tr>
+  <tr><td>Alarm battery %</td><td>On · Orange below · Red + sound below · Repeat every · Also with motor off</td><td>on · 35 % · 25 % · 10 s · on</td></tr>
+  <tr><td>Alarm cell voltage</td><td>On · Orange below · Red + sound below · Repeat every · Also with motor off</td><td>on · 3.60 V · 3.50 V · 10 s · on (Li-Ion: 3.10 V · 3.00 V)</td></tr>
+  <tr><td>Alarm BEC voltage</td><td>On · Orange below · Red + sound below · Repeat every · Also with motor off</td><td>off · 7.2 V · 7.0 V · 10 s · on</td></tr>
+  <tr><td>Alarm used capacity</td><td>On · Orange from · Red + sound from · Repeat every · Also with motor off</td><td>off · 3500 mAh · 4000 mAh · 20 s · on</td></tr>
+  <tr><td>RPM callout</td><td>On · Throttle channel · Throttle at or below · Call out every · Only above</td><td>on · – · −25 % · 1 s · 300 RPM</td></tr>
+  <tr><td>Flight and motor switch</td><td>Motor switch · Motor off position (up, middle, down) · Autorotation every (0=off) · Flight counts after · Without switch: from</td><td>– · up · 3 s · 30 s · 500 RPM</td></tr>
+  <tr><td>Flights without touch</td><td>Page · Select flight (0=latest) · Delete selected flight · Finish current flight · Question: just pause · Clear flight list</td><td>Display · 0 · buttons</td></tr>
+  <tr><td>Display and flight count</td><td>Sprache / Language · Flight count</td><td>same as radio · 0</td></tr>
+</table>
+<p>The settings are saved with the model and apply only to this model. At the very top of the menu there are also the lines «Find sensors automatically» (chapter 4) and «Studio file» (next section). With a Studio file, its settings and limits apply (see below).</p>
+
+<h3>Studio file from Lua-Studio (new in 1.10.0, format 2 new in 1.11.0)</h3>
+<p>With the PC program <b>Lua-Studio</b> you design the display freely for each model and set settings and limits. Lua-Studio writes the file <code>scripts/studio/ID.heli.lua</code> to the radio, into the same storage the radio loads its scripts from (with an SD card usually <code>SD:/scripts/studio/</code>). The <b>ID</b> is the model name in which every character other than A–Z, a–z and 0–9 becomes <code>_</code>; an umlaut gives <code>__</code> («Logo 700» becomes <code>Logo_700</code>). Lua-Studio does this itself. Heli reads the file when the model is loaded.</p>
+<ul>
+  <li><b>Without this file</b> Heli works exactly as in 1.9.1, without any note. The menu shows «Studio file: none».</li>
+  <li><b>Own views:</b> each view applies to exactly one window size (e.g. full screen 800 × 480 or compact view 784 × 316), at most two views per file. A view has up to 16 boxes («places»); for each one Lua-Studio sets the value, the style (number, ring, bar horizontal or vertical, trend, status such as Governor or ARMED/SAFE), title, range, colours and an extra line (MIN, MAX or Ø), at most two trends per view. Heli still draws the top bar itself. In full screen the view replaces page 1 only; you open the flight list as usual. For other window sizes Heli draws its built-in display.</li>
+  <li><b>Value adjustment:</b> for each value the file can set factor and offset, unit, decimals and name. This applies in all boxes of the studio view, to the limits and to the head speed and alarm announcements. The built-in display (window size without a studio view, header, bar, flight list) still shows the sensor value.</li>
+  <li><b>Limits</b> apply per value, even if it is not shown in any box. If a value is missing from the limits in the file, the factory limit applies (cell voltage according to the battery type). An alarm is only switched off if the file explicitly says so. If, for ESC temperature, battery %, cell voltage, BEC voltage or used capacity, the direction does not fit the value, the factory limit also applies, with a note. The file can also set limits for further sensors and channels: these alert with tone and vibration, without announcement, at most every 10 s.</li>
+  <li><b>If you change</b> battery, limits or other settings in the menu on the radio, Heli writes this to its own file <code>ID.heli.funke.lua</code>. The Lua-Studio file stays unchanged, and so does the widget storage. Lua-Studio shows the differences and takes them over on request. The sensor assignment stays in the widget.</li>
+  <li><b>Menu › Studio file › Reset:</b> the line shows the state (none, loaded, loaded with n errors, broken, too new). With a file, <b>Reset</b> asks «Back to Studio settings?» and after <b>YES, RESET</b> deletes your changes on the radio (the <code>.funke.lua</code>). Without a valid file it asks «Back to defaults?»: factory settings and limits, sensors and flights stay.</li>
+  <li><b>Notes:</b> if the file is broken, made for a newer Heli version or contains invalid entries, a dark bar appears at the bottom for 8 seconds («Studio file broken - default», «Studio file too new - update the Lua» or «Studio file: n errors»), then an orange «!» at the top right until the next model change. A broken <code>.funke.lua</code> is discarded («Changes on the radio discarded»); the Studio file still applies. Heli always keeps running, if in doubt with the built-in display. What exactly is wrong is in the log (one line «Heli: Studio-Datei …» per error).</li>
+  <li><b>Format 2 (new in 1.11.0):</b> Heli reads Studio files in format 1 and 2; format 1 files keep working unchanged. With format 2 a box can show a <b>symbol</b> at the top left in the colour of the value (the title then moves to the right) and the <b>unit in bold</b> at the top left instead of next to the value, or no unit at all. In addition there is <b>decoration</b> per view: freely placed symbols, texts, lines and frames, at most 24 per view. Lua-Studio offers the templates «Current look» and «With symbols» (each for 800 × 480 and 784 × 316). Symbols and decoration do not change any limit, announcement or alarm.</li>
+  <li><b>«Also with motor off» (new in 1.12.0):</b> In Lua-Studio you can choose for each limit whether the alarm also comes with the motor switch «off» (yes by default). This applies to the five alarms and to the additional limits (sensors, channels). If you change the tick in the widget menu, it is stored in the file <code>.funke.lua</code> like the thresholds.</li>
+  <li><b>Symbol files:</b> the symbols are greyscale images (PNG) in the folder <code>scripts/studio/symbole/</code>, named <code>name_px.png</code> (e.g. <code>akku_64.png</code>). Only Lua-Studio writes them; all Luas and models on the radio share the folder. A Studio file names at most 20 symbols. Heli loads them in small steps after a model change, so they appear a few frames later. If a symbol file is missing or broken, the box stays without a symbol and the bottom shows «Studio: n symbols missing» for 8 seconds, then the orange «!» at the top right.</li>
+  <li><b>File limits:</b> value adjustments, limits and settings take up to 48 entries each; Heli discards further entries with a note.</li>
+  <li>For Lua-Studio, Heli writes the file <code>ID.heli.info.json</code> after every model change (model name, radio, sensor list, window sizes). Only Lua-Studio reads it; it is also written without a Studio file.</li>
+</ul>
+
+<h2>9. If something does not work</h2>
+<table>
+  <tr><th style="width:36%">What you see or hear</th><th>What helps</th></tr>
+  <tr><td><b>--</b> everywhere</td><td>Heli switched on and telemetry present? Then assign the sensors (chapter 4). The bars at the top right only show something once the RSSI field is assigned.</td></tr>
+  <tr><td>A single value shows <b>--</b> or nonsense</td><td>In «Sensors», set the field by hand to the right sensor.</td></tr>
+  <tr><td>An alarm comes too often or too early</td><td>In the group «Alarm …» adjust the thresholds, lengthen «Repeat every» or switch off the monitor.</td></tr>
+  <tr><td>Alarm only with tone and number, without words</td><td>The folder <code>scripts/heli/audio</code> is missing or incomplete. Install again.</td></tr>
+  <tr><td>No RPM callout</td><td>Throttle channel selected? «On» active? Head speed above 300 RPM? Throttle really at −25 % or lower? Radio volume?</td></tr>
+  <tr><td>No «Autorotation» announcement</td><td>Motor switch and «Motor off position» selected? «Autorotation every» not at 0? The rotor must be turning when you switch off.</td></tr>
+  <tr><td>Announcements lag behind</td><td>Set «Call out every» to 2 s, lengthen «Autorotation every».</td></tr>
+  <tr><td>«12S» missing, cell voltage shows -- or «SET CELLS»</td><td>Set the number of cells under Battery.</td></tr>
+  <tr><td>Battery % shows --</td><td>Set the number of cells under Battery (without a % sensor the widget needs the cell voltage) and enter the capacity.</td></tr>
+  <tr><td>Battery % is wrong</td><td>Check capacity and cells under Battery. If a % sensor is assigned, the widget shows its value; clear the «Battery %» field, then it calculates itself (chapter 7).</td></tr>
+  <tr><td>Used capacity does not start at 0</td><td>Tap the «RESET» button and confirm (chapter 7).</td></tr>
+  <tr><td>«Flight finished?» does not come at all or at the wrong moment</td><td>Under «Flight and motor switch», choose the right switch and the right «Motor off position».</td></tr>
+  <tr><td>A flight is in the list that should not count</td><td>Tap it on page 2 and choose «DELETE FLIGHT …» (chapter 7).</td></tr>
+  <tr><td>A flight is missing from the list</td><td>It was shorter than 30 s, or the question «Flight finished?» is still open or was answered with «Just pause».</td></tr>
+  <tr><td>Swiping left shows the flights instead of the next screen</td><td>Intended: swipe left once more.</td></tr>
+  <tr><td>Rotary encoder does not switch to the next Ethos screen</td><td>Intended: on this screen the rotary encoder pages through the flight list. Swipe to the next screen, or press the <b>PAGE</b> key (also on radios without touch).</td></tr>
+  <tr><td>ESC temperature stops at 100 °C</td><td>Ethos creates temperature sensors with the range −30 to 100 °C. In Ethos, open the sensor under Telemetry and increase the maximum. The alarms up to 100 °C work anyway.</td></tr>
+  <tr><td>Flight mode written very small</td><td>Give the flight mode a shorter name in Ethos.</td></tr>
+  <tr><td>The field only shows «zone too small»</td><td>The field is too small (e.g. a zone in the 2×2 layout). Create a screen with the layout <b>Full screen</b> or with one field and bars (chapter 3).</td></tr>
+  <tr><td>Governor shows «--» and «Rotorflight only»</td><td>In Rotorflight, enable the telemetry values Governor State and Arming Flags (chapter 4). Without Rotorflight the field stays empty, which is normal.</td></tr>
+  <tr><td>A bar at the bottom «Studio file broken - default», «… too new - update the Lua» or «Studio file: n errors», then an orange «!» at the top right</td><td>The Studio file from Lua-Studio is broken, made for a newer Heli version or contains invalid entries. Transfer it again from Lua-Studio or update Heli. What exactly is wrong is in the log (chapter 8, «Studio file from Lua-Studio»).</td></tr>
+  <tr><td>At the bottom «Studio: n symbols missing», some boxes without a symbol</td><td>Symbol files in the folder <code>scripts/studio/symbole/</code> are missing or broken. Send the view from Lua-Studio again; Lua-Studio writes the symbols along with it. Values and alarms work normally without a symbol.</td></tr>
+  <tr><td>«Changes on the radio discarded» or «Change not saved»</td><td>The file <code>….heli.funke.lua</code> was broken or could not be written. The Studio file still applies. Make the change in the menu again; if the note comes back, please report it with the log.</td></tr>
+  <tr><td>Red line at the bottom left «Heli: …»</td><td>The widget has reported an error. The radio keeps running normally. Please take a photo of the text and report it.</td></tr>
+  <tr><td>«Heli» missing from the widget list</td><td>Is «Heli» listed in the Suite's Lua library? Radio restarted? Copied by hand: is <code>main.lua</code> directly in <code>scripts/heli/</code>, on the drive from which the radio loads the scripts (with an SD card usually <code>SD:/scripts</code>, see chapter 2)? If very many other Lua scripts are installed, the Lua memory may be full: remove unused scripts.</td></tr>
+</table>
+
+<div style="break-inside:avoid">
+<h2>10. Updating and removing</h2>
+<ul>
+  <li><b>New version:</b> install with the Suite exactly as in chapter 2. The Suite replaces the program and announcements; the folder <code>daten</code> with flight count and flight list is kept, as are your settings. By hand: overwrite the files in <code>scripts/heli/</code> including the folder <code>audio</code>, leave the subfolder <code>daten</code> in place.</li>
+  <li>After updating from a version before 1.4, the new «Orange» threshold is set to match the previous red threshold, and the language is set to «same as radio» (change it under «Sprache / Language» if needed).</li>
+  <li><b>Upgrading from «Heli RF» (up to 1.12.0) to «Heli» 1.13.0:</b> the widget is now called «Heli», folder <code>scripts/heli</code>. In every model select the widget again and set it up (the settings start from the factory values); re-transfer Studio files with Lua-Studio or rename them to <code><i>ID</i>.heli.lua</code>. An old <code>…helirf.lua</code> is still read, with a note in the log. Flight count and flight list are taken over automatically from <code>scripts/helirf/daten/</code>; delete the old folder only after every model has been used once.</li>
+  <li>From 1.9.1 to 1.10.x, 1.11.0 and 1.12.0 all settings are kept. 1.12.0 saves in a new format (adding «Also with motor off», on everywhere after the update); going back to an older version, the factory settings apply there. Without a Studio file nothing changes in the operation; existing Studio files (format 1) keep working.</li>
+  <li><b>Removing:</b> first remove the widget from the screen, then uninstall it in the Suite or delete the folder <code>scripts/heli</code>. The files <code>….heli.…</code> in the folder <code>scripts/studio</code> belong to Lua-Studio; they do no harm and can be deleted by hand.</li>
+</ul>
+</div>
+
+<div style="break-inside:avoid">
+<h2>11. Which radios</h2>
+<p>The widget detects the screen size itself; there is only one package for all radios.</p>
+<table>
+  <tr><th style="width:24%">Screen</th><th>Radios</th><th style="width:30%">Status</th></tr>
+  <tr><td>800 × 480, touch</td><td>X20, X20S, X20HD, X20 Pro, X20R, X20RS, X18R, X18RS</td><td>X18RS tested on the radio (Ethos 26.2.0), the others in the simulator</td></tr>
+  <tr><td>640 × 360, no touch</td><td>Twin X14, X14S</td><td>recreated in the simulator</td></tr>
+  <tr><td>480 × 320, touch</td><td>X18, X18S, X18SE, Twin X Lite, Twin X Lite S</td><td>recreated in the simulator</td></tr>
+  <tr><td>480 × 272, no touch</td><td>X10, X10S, X10 Express, X12S (with Ethos)</td><td>recreated in the simulator</td></tr>
+</table>
+<p>Compact view (layout with bars, measured in simulator 26.2): 784 × 316 (X18R, X18RS, X20 family), 630 × 258 (X14), 472 × 210 (X18, Twin X Lite), all recreated in the simulator.</p>
+<p>«Recreated» means: the layout has been checked at this size, but with the fonts of the large simulator; on the real device the font may turn out slightly different. On radios without touch you operate everything via the widget's menu (chapter 7).</p>
+<p class="klein">Memory use (simulator, together with 44 other scripts): about 90 KB of Lua memory (measured with 1.8.1; since 1.9.0 without the heli picture, so no bitmap memory any more). The widget catches its own errors; the alarms are an aid and do not replace your own checks of battery and temperature.</p>
+</div>
+
+</body>
+</html>

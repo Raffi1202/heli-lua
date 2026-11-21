@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Heli RF: Pflichttests Lua-Studio-Format 2 (Abschnitt 9) im Ethos-Simulator (X18RS-EU, 26.2.0).
+"""Heli: Pflichttests Lua-Studio-Format 2 (Abschnitt 9) im Ethos-Simulator (X18RS-EU, 26.2.0).
 
 Aufruf (aus dem Repo-Ordner):
   /opt/homebrew/opt/lua@5.4/bin/lua test/format2_dateien.lua     zuerst: Heli-Fassungen nach test/format2/
@@ -10,10 +10,10 @@ Aufruf (aus dem Repo-Ordner):
 Optionen:  --port N (8803–8805; 8765/8766 sind tabu)   --basis DIR (Arbeitsordner, Standard: neuer Temp-Ordner)
            --bilder DIR (Ablage der Bilder, Standard: <basis>/bilder)   --koord DIR (Ordner «FrSky Koordination»)
 
-Je Fall ein eigenes Dateisystem (wie test/studio_sim.py): Heli RF aus src/helirf, die Symbole aus «Lua-Studio-Format 2 -
+Je Fall ein eigenes Dateisystem (wie test/studio_sim.py): Heli aus src/heli, die Symbole aus «Lua-Studio-Format 2 -
 Testdateien/symbole» direkt in den Root-Ordner nach scripts/studio/symbole/ (nicht über writeFile des Plugins, das kleine
-Dateien falsch schreibt; jede Datei wird nachgelesen), die Studio-Datei nach scripts/studio/Heli_Studio.helirf.lua,
-Modell «Heli Studio» mit Heli RF als einzigem Widget. In der KOPIE von studio_symbole.lua (nur im Root-Ordner, nie im
+Dateien falsch schreibt; jede Datei wird nachgelesen), die Studio-Datei nach scripts/studio/Heli_Studio.heli.lua,
+Modell «Heli Studio» mit Heli als einzigem Widget. In der KOPIE von studio_symbole.lua (nur im Root-Ordner, nie im
 Repo) meldet ein Messzusatz jedes io.open und lcd.loadMask (TESTOPEN/TESTLOAD) und die Zähler nach dem Ende von S.schritt
 (TESTSYM geladen fehlend verworfen). Geprüft: Zähler wie im LIESMICH, loadMask/io.open nur für gültige Dateien, Lua-Log
 ohne Fehler, Hinweis «Studio: 8 Symbole fehlen» (p01), Lua-Speicher (luaRamAvailable, luaBitmapsRamAvailable), ein Bild
@@ -59,7 +59,7 @@ HINTEN = ('local schritt_, start_, gemeldet = S.schritt, S.start, false\n'
 
 def messzusatz(root):
     """Messzusatz in die Kopie von studio_symbole.lua (nur im Root-Ordner des Simulators)."""
-    p = os.path.join(root, "scripts", "helirf", "studio_symbole.lua")
+    p = os.path.join(root, "scripts", "heli", "studio_symbole.lua")
     if not os.path.exists(p):
         return False
     t = open(p, encoding="utf-8").read()
@@ -81,7 +81,7 @@ def symbole(root, koord):
 
 
 def datei(name):
-    return open(os.path.join(F2, name + ".helirf.lua"), "rb").read()
+    return open(os.path.join(F2, name + ".heli.lua"), "rb").read()
 
 
 def speicher(sim):
@@ -115,7 +115,7 @@ def auswerten(fall, log, erg):
         erg["befunde"].append("io.open ausserhalb der gültigen Namen: %s" % sorted(set(offen) - fall["offen"]))
     if fall.get("hinweis") and not any(h in z for z in log for h in fall["hinweis"]):
         erg["befunde"].append("Hinweis «%s» fehlt im Log" % fall["hinweis"][0])
-    studio = [z for z in log if z.startswith(("Studio-Symbol", "Heli RF"))]
+    studio = [z for z in log if z.startswith(("Studio-Symbol", "Heli"))]
     if studio:
         erg["notizen"].append("Log: " + " | ".join(studio[:3]) + (" …" if len(studio) > 3 else ""))
 
@@ -124,12 +124,12 @@ def lauf(name, fall, port, basis, bilder, koord):
     erg = {"fall": name, "tests": fall["tests"], "befunde": [], "notizen": []}
     root = os.path.join(basis, name)
     b, h = fall["groesse"]
-    bild = os.path.join(bilder, "Heli RF - Format 2 %s %dx%d.png" % (name, b, h))
+    bild = os.path.join(bilder, "Heli - Format 2 %s %dx%d.png" % (name, b, h))
     sim = ss.Sim(port, root, os.path.join(basis, "_shots"))
     try:
         ss.grundstand(root, "src")
         if not messzusatz(root):
-            erg["befunde"].append("src/helirf/studio_symbole.lua fehlt oder ohne «return S»: Messzusatz nicht möglich")
+            erg["befunde"].append("src/heli/studio_symbole.lua fehlt oder ohne «return S»: Messzusatz nicht möglich")
         symbole(root, koord)
         if name == "t13":
             return modellwechsel(sim, root, erg, bild)
@@ -237,13 +237,13 @@ def main():
     os.makedirs(bilder, exist_ok=True)
     if subprocess.run(["lsof", "-nP", "-iTCP:%d" % port, "-sTCP:LISTEN"], capture_output=True).stdout:
         sys.exit("Port %d ist belegt" % port)
-    if not os.path.exists(os.path.join(F2, "p12_voll.helirf.lua")):
+    if not os.path.exists(os.path.join(F2, "p12_voll.heli.lua")):
         sys.exit("test/format2 fehlt: zuerst lua test/format2_dateien.lua")
     wahl = a or list(F)
     unbekannt = [n for n in wahl if n not in F]
     if unbekannt:
         sys.exit("unbekannte Fälle: " + ", ".join(unbekannt))
-    print("Heli RF %s, Simulator X18RS-EU 26.2.0, Port %d, Arbeitsordner %s" % (
+    print("Heli %s, Simulator X18RS-EU 26.2.0, Port %d, Arbeitsordner %s" % (
         re.search(r'VERSION = "([^"]+)"', open(os.path.join(ss.SKRIPT, "main.lua")).read()).group(1), port, basis))
     alle = []
     for n in wahl:

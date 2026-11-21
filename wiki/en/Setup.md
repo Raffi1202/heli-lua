@@ -4,13 +4,13 @@
 
 Open the widget's settings via Screens › choose the screen › tap into the widget. Alarms, announcements and the flight list need no special functions in the model.
 
-![Menu](../../docs/bilder-simulator/Heli%20RF%20-%20Sim%20800x480%2002%20Menue.png)
+![Menu](../../docs/bilder-simulator/Heli%20-%20Sim%20800x480%2002%20Menue.png)
 
 ## Sensors (once per model)
 1. Switch on the heli so that telemetry is running.
 2. **Find sensors automatically › Search.** The widget fills every empty sensor field it recognises (by Application ID, not by name; custom Rotorflight sensors by name and unit).
 3. Open the group **Sensors** and check every field. Set empty or wrong fields by hand. The search can be wrong.
-4. **Rotorflight only:** enable *Governor State* and *Arming Flags* in the Rotorflight telemetry. Heli RF reads them directly (AppID 0x5125 / 0x5122).
+4. **Rotorflight only:** enable *Governor State* and *Arming Flags* in the Rotorflight telemetry. Heli reads them directly (AppID 0x5125 / 0x5122).
 
 | Field | Sensor |
 |---|---|

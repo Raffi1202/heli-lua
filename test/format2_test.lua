@@ -1,10 +1,10 @@
--- Heli RF: Pflichttests Lua-Studio-Format 2 (Abschnitt 9, Tests 1–13, 15–17, dazu Regeln 7.2 und 7.5) auf dem Mac, Lua 5.4.
+-- Heli: Pflichttests Lua-Studio-Format 2 (Abschnitt 9, Tests 1–13, 15–17, dazu Regeln 7.2 und 7.5) auf dem Mac, Lua 5.4.
 -- Aufruf aus dem Repo-Ordner:
 --   /opt/homebrew/opt/lua@5.4/bin/lua test/format2_dateien.lua     (einmal: Heli-Fassungen nach test/format2/)
 --   /opt/homebrew/opt/lua@5.4/bin/lua test/format2_test.lua
 -- Umgebung: FORMAT2_ORDNER = Ordner mit den Unterlagen zum Lua-Studio-Format (Pflicht).
 --
---  A. Referenz wörtlich: src/helirf/studio_symbole.lua Byte für Byte gleich «Lua-Studio-Format 2 - Referenz studio_symbole.lua».
+--  A. Referenz wörtlich: src/heli/studio_symbole.lua Byte für Byte gleich «Lua-Studio-Format 2 - Referenz studio_symbole.lua».
 --  B. Heli-Fassungen (test/format2/) gegen die Originale mit der Referenz allein: gleiche Zähler geladen / fehlend /
 --     verworfen, gleich viel gezeichneter Schmuck und Symbole, nichts Gezeichnetes in der reservierten Kopfzeile/Leiste.
 --  C. Das ganze Widget (main.lua → kern.lua → …) in einer nachgebauten Ethos-Umgebung (X18RS 26.2.0): create, read,
@@ -15,7 +15,7 @@
 -- Fälle: 1–5, 15 p01 · 6 p06 · 7 p07 · 8 p08 · 9 p09 · 10 p10 · 11 p11 (Bild wie v1) · 12 p12 (800 × 480 und 784 × 316)
 --        · 13 Modellwechsel 10 × p12/p06 · 15 p01 bei Displaybreite 640 · 16 p16 · 17 p17 und erstes paint von p12 nach
 --        S.start · 7.2 Listengrenzen (l72) · 7.5 kein ganz stummer Alarm (a75).
--- Schreibt nichts ins Repo: Kopie von src/helirf und symbole/ in einem Temp-Ordner.
+-- Schreibt nichts ins Repo: Kopie von src/heli und symbole/ in einem Temp-Ordner.
 local repo = arg[0]:gsub("test/format2_test%.lua$", "")
 if repo == "" then repo = "./" end
 local KOORD = os.getenv("FORMAT2_ORDNER") or error("Umgebungsvariable FORMAT2_ORDNER fehlt: Ordner mit den Unterlagen zum Lua-Studio-Format", 0)
@@ -49,19 +49,19 @@ end
 -- ---------------------------------------------------------------- A. Referenz wörtlich
 local refText = lies(REF)
 if not refText then print("FEHLER  Referenz fehlt: " .. REF) os.exit(2) end
-local SYMDATEI = repo .. "src/helirf/studio_symbole.lua"
+local SYMDATEI = repo .. "src/heli/studio_symbole.lua"
 local heliSym = lies(SYMDATEI)
 if not heliSym then
   -- anderer Name? die Datei mit der Kopfzeile der Referenz suchen
-  local p = io.popen('ls "' .. repo .. 'src/helirf/"')
+  local p = io.popen('ls "' .. repo .. 'src/heli/"')
   for n in p:read("a"):gmatch("[^\n]+") do
-    local t = n:find("%.lua$") and lies(repo .. "src/helirf/" .. n)
-    if t and t:sub(1, 60) == refText:sub(1, 60) then SYMDATEI, heliSym = repo .. "src/helirf/" .. n, t end
+    local t = n:find("%.lua$") and lies(repo .. "src/heli/" .. n)
+    if t and t:sub(1, 60) == refText:sub(1, 60) then SYMDATEI, heliSym = repo .. "src/heli/" .. n, t end
   end
   p:close()
 end
 if not heliSym then
-  pruefe(false, "studio_symbole.lua fehlt in src/helirf (Einbau Format 2 noch nicht da)")
+  pruefe(false, "studio_symbole.lua fehlt in src/heli (Einbau Format 2 noch nicht da)")
 else
   local abw
   if heliSym ~= refText then
@@ -73,8 +73,8 @@ else
   end
   pruefe(abw == nil, SYMDATEI:gsub("^.*src/", "src/") .. " wörtlich wie die Referenz (" .. #refText .. " Byte)" .. (abw and (": " .. abw) or ""))
 end
-local version = (lies(repo .. "src/helirf/main.lua") or ""):match('local VERSION = "([^"]+)"') or "?"
-print("Heli RF " .. version)
+local version = (lies(repo .. "src/heli/main.lua") or ""):match('local VERSION = "([^"]+)"') or "?"
+print("Heli " .. version)
 
 -- reservierte Flächen aus beschreibung.json
 local RES = {}
@@ -271,8 +271,8 @@ return G
 -- ---------------------------------------------------------------- Temp-Ordner
 local tmp = os.tmpname()
 os.remove(tmp)
-assert(os.execute("mkdir -p '" .. tmp .. "/helirf/daten' '" .. tmp .. "/SCRIPTS/studio' && cp -R '" .. repo ..
-  "src/helirf/.' '" .. tmp .. "/helirf/'"))
+assert(os.execute("mkdir -p '" .. tmp .. "/heli/daten' '" .. tmp .. "/SCRIPTS/studio' && cp -R '" .. repo ..
+  "src/heli/.' '" .. tmp .. "/heli/'"))
 assert(os.execute("cp -R '" .. TESTORDNER .. "/symbole' '" .. tmp .. "/SCRIPTS/studio/symbole'"))
 local io_open, os_rename, os_remove = io.open, os.rename, os.remove
 local function kopiere(von, nach)
@@ -309,15 +309,15 @@ local function neueUmgebung(B)
     toene = 0, vib = 0, zahlen = 0, dateien = 0, invalidate = 0, trace = {}, texte = {}, dk = {}, dkY = {}, platzRet = {},
     startN = 0, schrittImPaint = 0, bildAnfangN = 0, dekoN = 0, freigebenN = 0, loadImPaint = 0, erstImBild = 0,
     platzMasken = 0, bild = 0 }
-  local G = assert(load(ETHOS, "=ethos", "t", _ENV))(E, io_open, os_rename, os_remove, loadfile, tmp, tmp .. "/helirf")
+  local G = assert(load(ETHOS, "=ethos", "t", _ENV))(E, io_open, os_rename, os_remove, loadfile, tmp, tmp .. "/heli")
   local main = assert(G.loadfile("main.lua"))()
   main.init()
   assert(E.widget, "registerWidget nicht aufgerufen")
   return E.widget
 end
 
-local ZIEL = tmp .. "/SCRIPTS/studio/Heli_Studio.helirf.lua"
-local function kennungDatei(modell) return tmp .. "/SCRIPTS/studio/" .. modell:gsub("[^%w]", "_"):sub(1, 32) .. ".helirf.lua" end
+local ZIEL = tmp .. "/SCRIPTS/studio/Heli_Studio.heli.lua"
+local function kennungDatei(modell) return tmp .. "/SCRIPTS/studio/" .. modell:gsub("[^%w]", "_"):sub(1, 32) .. ".heli.lua" end
 
 -- Ein Modell laden und laufen lassen: create, read, dann je Bild wakeup + paint (wie Ethos, ~10 Bilder/s).
 -- Rückgabe: Ergebnis-Tabelle
@@ -395,7 +395,7 @@ print("\nB. Heli-Fassungen (test/format2) gegen die Originale, Referenz allein:"
 do
   local function referenzLauf(text)
     neueUmgebung(800)
-    local G = assert(load(ETHOS, "=ethos", "t", _ENV))(E, io_open, os_rename, os_remove, loadfile, tmp, tmp .. "/helirf")
+    local G = assert(load(ETHOS, "=ethos", "t", _ENV))(E, io_open, os_rename, os_remove, loadfile, tmp, tmp .. "/heli")
     local S = assert(load(refText, "=studio_symbole", "t", G))()
     S.B = 800
     local d = assert(load(text, "=datei", "t", {}))()
@@ -423,7 +423,7 @@ do
   local p = io.popen('ls "' .. TESTORDNER .. '"')
   for n in p:read("a"):gmatch("[^\n]+") do
     if n:find("^p%d%d_.*%.lua$") then
-      local heli = F2 .. n:gsub("%.lua$", ".helirf.lua")
+      local heli = F2 .. n:gsub("%.lua$", ".heli.lua")
       local t1, t2 = lies(TESTORDNER .. "/" .. n), lies(heli)
       if not t2 then
         pruefe(false, n .. ": Heli-Fassung fehlt (zuerst lua test/format2_dateien.lua)")
@@ -486,7 +486,7 @@ local speicher0 = collectgarbage("count")
 allgemein("ohne Studio-Datei 800x480", r0)
 
 -- Tests 1–5, 15 (p01)
-local r = fall("p01_kaputte_png.helirf.lua", { 800, 480 })
+local r = fall("p01_kaputte_png.heli.lua", { 800, 480 })
 allgemein("1–5,15 p01 800x480", r)
 pruefe(r.zustand == "geladen" and gleich(r.z, { 2, 8, 0 }), "1–5,15 p01: " .. grund(r) .. " (erwartet 2 / 8 / 0)")
 do
@@ -500,18 +500,18 @@ do
 end
 
 -- Test 15 mit Displaybreite 640 (X14): alle 48-px-Dateien abgewiesen ausser fremdkante_48 (38 × 38)
-r = fall("p01_kaputte_png.helirf.lua", { 630, 258 }, 640)
+r = fall("p01_kaputte_png.heli.lua", { 630, 258 }, 640)
 allgemein("15 p01 B=640 630x258", r)
 pruefe(gleich(r.z, { 1, 9, 0 }), "15 p01 bei 640 px: " .. grund(r) .. " (erwartet 1 / 9 / 0)")
 
 -- Test 6 (p06)
-r = fall("p06_100_symbole.helirf.lua", { 800, 480 })
+r = fall("p06_100_symbole.heli.lua", { 800, 480 })
 allgemein("6 p06 800x480", r)
 pruefe(r.zustand == "geladen" and gleich(r.z, { 20, 0, 80 }), "6 p06: " .. grund(r) .. " (erwartet 20 / 0 / 80)")
 pruefe(logHat(r, "Symbol", "symbol"), "6 p06: Hinweis zu den verworfenen Einträgen im Log")
 
 -- Test 7 (p07)
-r = fall("p07_namen.helirf.lua", { 800, 480 })
+r = fall("p07_namen.heli.lua", { 800, 480 })
 allgemein("7 p07 800x480", r)
 pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 1, 9 }), "7 p07: " .. grund(r) .. " (erwartet 1 / 1 / 9)")
 do
@@ -523,12 +523,12 @@ do
 end
 
 -- Test 8 (p08)
-r = fall("p08_px.helirf.lua", { 800, 480 })
+r = fall("p08_px.heli.lua", { 800, 480 })
 allgemein("8 p08 800x480", r)
 pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 0, 7 }), "8 p08: " .. grund(r) .. " (erwartet 1 / 0 / 7)")
 
 -- Test 9 (p09): gezeichnet 8 Rahmen, 2 Texte, 1 Linie, 1 Symbol, nichts in der Kopfzeile
-r = fall("p09_deko.helirf.lua", { 800, 480 })
+r = fall("p09_deko.heli.lua", { 800, 480 })
 allgemein("9 p09 800x480", r)
 pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 0, 18 }), "9 p09: " .. grund(r) .. " (erwartet 1 / 0 / 18)")
 do
@@ -540,7 +540,7 @@ do
 end
 
 -- Test 10 (p10): nur Platz 3 zeigt das Symbol
-r = fall("p10_symbol_ohne_eintrag.helirf.lua", { 800, 480 })
+r = fall("p10_symbol_ohne_eintrag.heli.lua", { 800, 480 })
 allgemein("10 p10 800x480", r)
 pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 0, 3 }), "10 p10: " .. grund(r) .. " (erwartet 1 / 0 / 3)")
 do
@@ -552,9 +552,9 @@ do
 end
 
 -- Test 11 (p11, Format 1): Felder überlesen, Bild wie dieselbe Datei ohne Format-2-Felder
-r = fall("p11_format1.helirf.lua", { 800, 480 })
+r = fall("p11_format1.heli.lua", { 800, 480 })
 allgemein("11 p11 800x480", r)
-local r11b = fall("p11_format1_ohne.helirf.lua", { 800, 480 })
+local r11b = fall("p11_format1_ohne.heli.lua", { 800, 480 })
 do
   local alle0 = true
   for _, x in ipairs(r.platzRet) do if x[1] ~= 0 or x[2] ~= true then alle0 = false end end
@@ -569,7 +569,7 @@ end
 
 -- Test 12 (p12) in beiden Fenstern, Lua-Speicher gemessen; Test 17 Teil 2: erstes paint nach S.start
 for _, fe in ipairs({ { 800, 480 }, { 784, 316 } }) do
-  r = fall("p12_voll.helirf.lua", fe, 800, { profil = (os.getenv("FORMAT2_PROFIL") and fe[1] == 800) and 120 or nil })
+  r = fall("p12_voll.heli.lua", fe, 800, { profil = (os.getenv("FORMAT2_PROFIL") and fe[1] == 800) and 120 or nil })
   local name = string.format("12 p12 %dx%d", fe[1], fe[2])
   allgemein(name, r)
   pruefe(r.zustand == "geladen" and gleich(r.z, { 20, 0, 0 }), name .. ": " .. grund(r) .. " (erwartet 20 / 0 / 0)")
@@ -584,18 +584,18 @@ for _, fe in ipairs({ { 800, 480 }, { 784, 316 } }) do
 end
 
 -- Test 16 (p16)
-r = fall("p16_wertanpassungen.helirf.lua", { 800, 480 })
+r = fall("p16_wertanpassungen.heli.lua", { 800, 480 })
 allgemein("16 p16 800x480", r)
 pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 0 }) and r.maxW < GRENZE, "16 p16: " .. grund(r))
 
 -- Test 17 (p17): Texte nach wenigen Bildern da
-r = fall("p17_schmaltexte.helirf.lua", { 800, 480 }, 800, { texte = 24 })
+r = fall("p17_schmaltexte.heli.lua", { 800, 480 }, 800, { texte = 24 })
 allgemein("17 p17 800x480", r)
 pruefe(r.zustand == "geladen" and (r.maxPStudio or 0) < GRENZE_PAINT and r.dekoTexteVoll ~= nil and r.dekoTexteVoll <= 15,
   "17 p17: " .. grund(r) .. ", alle 24 Texte " .. tostring(r.dekoTexteVoll) .. " Bilder nach dem Ende von S.schritt (höchstens 15)")
 
 -- Regel 7.2: je 60 Einträge in werte, grenzen, einstellungen -> ab dem 49. verworfen plus Hinweis
-r = fall("l72_listen.helirf.lua", { 800, 480 })
+r = fall("l72_listen.heli.lua", { 800, 480 })
 allgemein("7.2 l72 800x480", r)
 do
   local gefunden = {}
@@ -614,7 +614,7 @@ do
   local def = neueUmgebung(800)
   E.tele = true
   E.sensoren = { E.quelle(4, 150, 0x0A00, 0) }
-  r = lauf(def, F2 .. "a75_stumm.helirf.lua", { 800, 480 }, { bilder = 300, nachlauf = 300 })
+  r = lauf(def, F2 .. "a75_stumm.heli.lua", { 800, 480 }, { bilder = 300, nachlauf = 300 })
   allgemein("7.5 a75 800x480", r)
   pruefe(r.zustand == "geladen" and E.toene >= 1 and E.vib == 0,
     string.format("7.5 a75: Alarm ohne Ansage und Vibration: %d Töne, %d Vibrationen, %d Zahlen, %d Dateien (Ton erwartet)", E.toene, E.vib,
@@ -624,8 +624,8 @@ end
 -- Test 13: Modellwechsel 10 × hin und her (p12 20 × 64 px, p06 20 × 24 px): Speicher und Masken wachsen nicht
 do
   local def = neueUmgebung(800)
-  kopiere(F2 .. "p12_voll.helirf.lua", kennungDatei("Heli Studio"))
-  kopiere(F2 .. "p06_100_symbole.helirf.lua", kennungDatei("Heli Zwei (B)"))
+  kopiere(F2 .. "p12_voll.heli.lua", kennungDatei("Heli Studio"))
+  kopiere(F2 .. "p06_100_symbole.heli.lua", kennungDatei("Heli Zwei (B)"))
   local speicher, lebend, maxLebend, absturz = {}, {}, 0, nil
   for i = 1, 10 do
     local m = i % 2 == 1 and "Heli Studio" or "Heli Zwei (B)"
@@ -665,6 +665,6 @@ end
 print("\nMessungen (Befehle je Aufruf, höchstens):")
 for _, m in ipairs(messungen) do print("  " .. m) end
 os.execute("rm -rf '" .. tmp .. "'")
-print(string.format("\nHeli RF %s. Hinweise: %d", version, hinweise))
+print(string.format("\nHeli %s. Hinweise: %d", version, hinweise))
 print(fehlerZahl == 0 and "ERGEBNIS: kein Fehler" or ("ERGEBNIS: " .. fehlerZahl .. " Fehler"))
 os.exit(fehlerZahl == 0 and 0 or 1)

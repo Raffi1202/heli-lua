@@ -1,4 +1,4 @@
--- Heli RF: Sensorsuche im Ethos-Simulator 26.2 mit echten Quellen (per Lua angelegt). Kein Teil des Widgets.
+-- Heli: Sensorsuche im Ethos-Simulator 26.2 mit echten Quellen (per Lua angelegt). Kein Teil des Widgets.
 
 local function frame(phys, app, v)
   simulator.injectSPortFrame({ module = 0, band = 0, rx = 0, physId = phys, primId = 0x10, appId = app, value = v })
@@ -23,7 +23,7 @@ for i = 1, 100 - #L do L[#L + 1] = { "Fueller " .. i, 0x5200 + i, 0x10, UNIT_VOL
 for _, s in ipairs(L) do neu(s[1], s[2], s[3], s[4]) end
 for _ = 1, 20 do frame(0x10, 0xF101, 80) frame(0x0A, 0x0B70, 45) simulator.sleep(0.05) end
 local function lade(n)
-  for _, p in ipairs({ "/scripts/helirf/" .. n, "scripts/helirf/" .. n, n }) do
+  for _, p in ipairs({ "/scripts/heli/" .. n, "scripts/heli/" .. n, n }) do
     local f = loadfile(p)
     if f then return f end
   end

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Heli RF: Studio-Prüfungen nach Lua-Studio-Format v1, Abschnitt 12, im Ethos-Simulator (X18RS-EU, 26.2.0).
+"""Heli: Studio-Prüfungen nach Lua-Studio-Format v1, Abschnitt 12, im Ethos-Simulator (X18RS-EU, 26.2.0).
 
 Aufruf (aus dem Repo-Ordner):
   python3 test/studio_dateien.py                      zuerst: Testdateien in test/studio erzeugen
@@ -11,11 +11,11 @@ Optionen:  --port N (8801–8805; 8765/8766 sind tabu)
            --basis DIR   Arbeitsordner für das Simulator-Dateisystem (Standard: neuer Temp-Ordner; nur eigener Ordner)
            --bilder DIR  Ablage der Bilder (Standard: <basis>/bilder)
 
-Je Fall: eigenes Dateisystem aus modell-leer.json (Hilfswerkzeuge, ETHOS_LUA_WERKZEUGE), Heli RF aus src/helirf (bzw. Tag v1.9.1),
-Studio-Datei direkt in den Root-Ordner nach scripts/studio/<Kennung>.helirf.lua (nicht über writeFile des Plugins,
-das kleine Dateien falsch schreibt), Modell «Heli Studio» (Kennung Heli_Studio) mit Heli RF als einzigem Widget
+Je Fall: eigenes Dateisystem aus modell-leer.json (Hilfswerkzeuge, ETHOS_LUA_WERKZEUGE), Heli aus src/heli (bzw. Tag v1.9.1),
+Studio-Datei direkt in den Root-Ordner nach scripts/studio/<Kennung>.heli.lua (nicht über writeFile des Plugins,
+das kleine Dateien falsch schreibt), Modell «Heli Studio» (Kennung Heli_Studio) mit Heli als einzigem Widget
 (800 × 480 = full_screen_borderless, 784 × 316 = full_screen). Danach: Lua-Log ohne Fehler, Zustand aus
-<Kennung>.helirf.info.json (Abschnitt 14), Hinweis-Zeilen im Log, Alarm «Zellenspannung» (Ansage im Log), Lua-Speicher
+<Kennung>.heli.info.json (Abschnitt 14), Hinweis-Zeilen im Log, Alarm «Zellenspannung» (Ansage im Log), Lua-Speicher
 per Makro (collectgarbage nach vollem Aufräumen, luaRamAvailable) und genau ein Bild.
 
 Testwerte kommen über einen Haken nach der Zeile STELLE in kern.lua (wie bilder.py). Fehlt die Stelle, laufen die
@@ -25,7 +25,7 @@ import urllib.error, base64, hashlib, json, os, re, shutil, signal, subprocess, 
 
 HIER = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HIER)
-SKRIPT = os.path.join(REPO, "src", "helirf")
+SKRIPT = os.path.join(REPO, "src", "heli")
 STUDIO = os.path.join(HIER, "studio")
 ANGRIFFE = os.path.join(HIER, "studio-messen", "dateien")
 def umgebung(name, was):
@@ -58,7 +58,7 @@ ZELLE_TIEF = WERTE + " v.zelle=3.20"
 ZELLE_GUT = WERTE + " v.zelle=3.92"
 CFG_DUMP = ('if not TESTCFG then TESTCFG=true local t={} for k,x in pairs(c) do if type(x)=="number" then '
             't[#t+1]=k.."="..x end end table.sort(t) print("TESTCFG "..table.concat(t," ")) end')
-FEHLER_LOG = re.compile(r"Heli RF: Fehler|error|traceback|attempt to|stack overflow|not enough memory|too much|"
+FEHLER_LOG = re.compile(r"Heli: Fehler|error|traceback|attempt to|stack overflow|not enough memory|too much|"
                         r"instruction|CPU limit|killed", re.I)
 
 
@@ -141,7 +141,7 @@ class Sim:
     def modell(self, name, groesse):
         m = self.get("getModelJson")["model"]
         m["name"] = name
-        m["screens"] = [{"key": LAYOUT[groesse], "widgets": [{"key": "helirf", "title": False}]}]
+        m["screens"] = [{"key": LAYOUT[groesse], "widgets": [{"key": "heli", "title": False}]}]
         m["mainScreenIndex"] = 0
         m["preflightChecks"].update(analogsChecks=0, failsafeCheck=0, fsCheck=0, switches=0)
         r = self.post("applyModelJson", {"model": m})
@@ -171,18 +171,18 @@ def grundstand(root, quelle):
         z = os.path.join(root, p.split("/", 3)[3])
         os.makedirs(os.path.dirname(z), exist_ok=True)
         open(z, "wb").write(base64.b64decode(inhalt))
-    ziel = os.path.join(root, "scripts", "helirf")
+    ziel = os.path.join(root, "scripts", "heli")
     if quelle == "src":
         shutil.copytree(SKRIPT, ziel, ignore=shutil.ignore_patterns(".*", "*.luac"))
     else:                                                  # Git-Tag, z. B. v1.9.1
         os.makedirs(ziel)
-        a = subprocess.run(["git", "-C", REPO, "archive", quelle, "src/helirf"], capture_output=True, check=True).stdout
+        a = subprocess.run(["git", "-C", REPO, "archive", quelle, "src/heli"], capture_output=True, check=True).stdout
         subprocess.run(["tar", "-x", "-C", ziel, "--strip-components", "2"], input=a, check=True)
     os.makedirs(os.path.join(root, "scripts", "studio"), exist_ok=True)
 
 
 def haken(root, lua):
-    p = os.path.join(root, "scripts", "helirf", "kern.lua")
+    p = os.path.join(root, "scripts", "heli", "kern.lua")
     t = open(p, encoding="utf-8").read()
     if STELLE not in t:
         return False
@@ -190,7 +190,7 @@ def haken(root, lua):
     return True
 
 
-def studio_pfad(root, kennung=KENNUNG, endung=".helirf.lua"):
+def studio_pfad(root, kennung=KENNUNG, endung=".heli.lua"):
     return os.path.join(root, "scripts", "studio", kennung + endung)
 
 
@@ -210,7 +210,7 @@ def lies(pfad):
 
 
 def info(root, kennung=KENNUNG):
-    t = lies(studio_pfad(root, kennung, ".helirf.info.json"))
+    t = lies(studio_pfad(root, kennung, ".heli.info.json"))
     if t is None:
         return None
     try:
@@ -275,35 +275,35 @@ def faelle():
     fall("keine_datei", datei=None, zustand="fehlt", alarm=True, hinweis=False)
     for g in ((800, 480), (784, 316)):
         s = "%d" % g[0]
-        fall("gueltig_" + s, datei="gueltig.helirf.lua", groesse=g, zustand="geladen", fehler=0, werte=ZELLE_GUT)
-        fall("voll_" + s, datei="voll.helirf.lua", groesse=g, zustand="geladen", fehler=0, werte=ZELLE_GUT, speicher=True)
-    fall("format99", datei="format99.helirf.lua", zustand="zuNeu", alarm=True)
-    fall("abgeschnitten", datei="abgeschnitten.helirf.lua", zustand="kaputt", alarm=True)
-    fall("falsche_typen", datei="falsche_typen.helirf.lua", groesse=(800, 480), zustand="geladen", fehler=">0", alarm=True,
+        fall("gueltig_" + s, datei="gueltig.heli.lua", groesse=g, zustand="geladen", fehler=0, werte=ZELLE_GUT)
+        fall("voll_" + s, datei="voll.heli.lua", groesse=g, zustand="geladen", fehler=0, werte=ZELLE_GUT, speicher=True)
+    fall("format99", datei="format99.heli.lua", zustand="zuNeu", alarm=True)
+    fall("abgeschnitten", datei="abgeschnitten.heli.lua", zustand="kaputt", alarm=True)
+    fall("falsche_typen", datei="falsche_typen.heli.lua", groesse=(800, 480), zustand="geladen", fehler=">0", alarm=True,
          zeilen=True)
-    fall("falsche_typen_oben", datei="falsche_typen_oben.helirf.lua", zustand="geladen", fehler=">0", alarm=True, zeilen=True)
-    fall("grenzen_fehlt", datei="grenzen_fehlt.helirf.lua", zustand="geladen", fehler=0, alarm=True)
-    fall("grenzen_aus", datei="grenzen_aus.helirf.lua", zustand="geladen", fehler=0, alarm=False)
-    fall("grenzen_warnung_false", datei="grenzen_warnung_false.helirf.lua", zustand="geladen", fehler=0, alarm=True)
-    fall("grenzen_richtung", datei="grenzen_richtung.helirf.lua", zustand="geladen", fehler=">0", alarm=True, zeilen=True)
-    fall("grenzen_ohne_stufen", datei="grenzen_ohne_stufen.helirf.lua", zustand="geladen", fehler=0, alarm=False)
+    fall("falsche_typen_oben", datei="falsche_typen_oben.heli.lua", zustand="geladen", fehler=">0", alarm=True, zeilen=True)
+    fall("grenzen_fehlt", datei="grenzen_fehlt.heli.lua", zustand="geladen", fehler=0, alarm=True)
+    fall("grenzen_aus", datei="grenzen_aus.heli.lua", zustand="geladen", fehler=0, alarm=False)
+    fall("grenzen_warnung_false", datei="grenzen_warnung_false.heli.lua", zustand="geladen", fehler=0, alarm=True)
+    fall("grenzen_richtung", datei="grenzen_richtung.heli.lua", zustand="geladen", fehler=">0", alarm=True, zeilen=True)
+    fall("grenzen_ohne_stufen", datei="grenzen_ohne_stufen.heli.lua", zustand="geladen", fehler=0, alarm=False)
     # 1.10.1, Befehlsgrenze: grosse gültige Dateien (100 Wert-Anpassungen, 160 Sensor-Grenzen); Zelle: Werkgrenze
-    fall("gross_werte", datei="gross_werte.helirf.lua", zustand="geladen", fehler=0, alarm=True)
-    fall("gross_grenzen", datei="gross_grenzen.helirf.lua", zustand="geladen", fehler=0, alarm=True)
+    fall("gross_werte", datei="gross_werte.heli.lua", zustand="geladen", fehler=0, alarm=True)
+    fall("gross_grenzen", datei="gross_grenzen.heli.lua", zustand="geladen", fehler=0, alarm=True)
     for n in sorted(os.listdir(ANGRIFFE)) if os.path.isdir(ANGRIFFE) else []:
         name = n[:-4]
         soll = "geladen" if name in ANGRIFF_GELADEN else ("zuNeu" if name == "format99" else "kaputt")
         fall("angriff_" + name, datei=os.path.join(ANGRIFFE, n), zustand=soll, alarm=True, werte=ZELLE_TIEF)
-    fall("funke_gueltig", datei="gueltig.helirf.lua", funke="gueltig.helirf.funke.lua", zustand="geladen", fehler=0,
+    fall("funke_gueltig", datei="gueltig.heli.lua", funke="gueltig.heli.funke.lua", zustand="geladen", fehler=0,
          funke_bleibt=True)
-    fall("funke_neu_rest", datei="gueltig.helirf.lua", neu="gueltig.helirf.funke.lua", zustand="geladen", fehler=0,
+    fall("funke_neu_rest", datei="gueltig.heli.lua", neu="gueltig.heli.funke.lua", zustand="geladen", fehler=0,
          nachher_funke=True, nachher_neu=False)
-    fall("funke_neu_neben", datei="gueltig.helirf.lua", funke="gueltig.helirf.funke.lua",
-         neu="gueltig.helirf.funke.lua", zustand="geladen", fehler=0, nachher_funke=True, nachher_neu=False)
-    fall("funke_neu_halb", datei="gueltig.helirf.lua", neu="HALB", zustand="geladen", fehler=0, nachher_funke=False,
+    fall("funke_neu_neben", datei="gueltig.heli.lua", funke="gueltig.heli.funke.lua",
+         neu="gueltig.heli.funke.lua", zustand="geladen", fehler=0, nachher_funke=True, nachher_neu=False)
+    fall("funke_neu_halb", datei="gueltig.heli.lua", neu="HALB", zustand="geladen", fehler=0, nachher_funke=False,
          nachher_neu=False)
-    fall("funke_kaputt", datei="gueltig.helirf.lua", funke="KAPUTT", zustand="geladen", alarm=True)
-    fall("funke_abbruch", datei="gueltig.helirf.lua", funke="gueltig.helirf.funke.lua", zustand="geladen", abbruch=True)
+    fall("funke_kaputt", datei="gueltig.heli.lua", funke="KAPUTT", zustand="geladen", alarm=True)
+    fall("funke_abbruch", datei="gueltig.heli.lua", funke="gueltig.heli.funke.lua", zustand="geladen", abbruch=True)
     fall("modellwechsel", besonders=True, groesse=(800, 480))
     fall("update_191", besonders=True, groesse=(800, 480))
     return F
@@ -331,7 +331,7 @@ def auswerten(fall, root, log, erg, hk):
     erg["info"] = i
     soll = fall.get("zustand")
     if i is None:
-        erg["befunde"].append("Info-Datei %s.helirf.info.json fehlt (Abschnitt 14)" % KENNUNG)
+        erg["befunde"].append("Info-Datei %s.heli.info.json fehlt (Abschnitt 14)" % KENNUNG)
     elif "_kaputt" in i:
         erg["befunde"].append("Info-Datei ist kein gültiges JSON: " + i["_kaputt"])
     else:
@@ -340,7 +340,7 @@ def auswerten(fall, root, log, erg, hk):
         for k in ("format", "lua", "luaVersion", "formate", "modell", "kennung", "funke", "ethos", "fenster", "studioDatei", "sensoren"):
             if k not in i:
                 erg["befunde"].append("Info-Datei: Feld %s fehlt" % k)
-        if i.get("lua") != "helirf" or i.get("kennung") != KENNUNG or i.get("modell") != MODELL:
+        if i.get("lua") != "heli" or i.get("kennung") != KENNUNG or i.get("modell") != MODELL:
             erg["befunde"].append("Info-Datei: lua/kennung/modell = %r/%r/%r" % (i.get("lua"), i.get("kennung"), i.get("modell")))
         b, h = fall["groesse"]
         if not any(f.get("breite") == b and f.get("hoehe") == h for f in i.get("fenster", []) if isinstance(f, dict)):
@@ -372,7 +372,7 @@ def lauf(name, fall, port, basis, bilder):
     erg = {"fall": name, "befunde": [], "notizen": []}
     root = os.path.join(basis, name)
     b, h = fall["groesse"]
-    bild = os.path.join(bilder, "Heli RF - Studio %dx%d %s.png" % (b, h, name))
+    bild = os.path.join(bilder, "Heli - Studio %dx%d %s.png" % (b, h, name))
     sim = Sim(port, root, os.path.join(basis, "_shots"))
     try:
         if name == "modellwechsel":
@@ -386,12 +386,12 @@ def lauf(name, fall, port, basis, bilder):
             schreibe(studio_pfad(root), inhalt(fall["datei"]))
         vorher = lies(studio_pfad(root))
         if fall.get("funke"):
-            schreibe(studio_pfad(root, endung=".helirf.funke.lua"),
+            schreibe(studio_pfad(root, endung=".heli.funke.lua"),
                      b"return { format = 1, a = os }" if fall["funke"] == "KAPUTT" else inhalt(fall["funke"]))
         if fall.get("neu"):
-            t = inhalt("gueltig.helirf.funke.lua")
-            schreibe(studio_pfad(root, endung=".helirf.funke.neu"), t[:len(t) // 2] if fall["neu"] == "HALB" else inhalt(fall["neu"]))
-        funke_vorher = lies(studio_pfad(root, endung=".helirf.funke.lua"))
+            t = inhalt("gueltig.heli.funke.lua")
+            schreibe(studio_pfad(root, endung=".heli.funke.neu"), t[:len(t) // 2] if fall["neu"] == "HALB" else inhalt(fall["neu"]))
+        funke_vorher = lies(studio_pfad(root, endung=".heli.funke.lua"))
         sim.start()
         sim.modell(MODELL, fall["groesse"])
         sim.get("wait", ms=6000)
@@ -409,15 +409,15 @@ def lauf(name, fall, port, basis, bilder):
         if lies(studio_pfad(root)) != vorher:
             erg["befunde"].append("Studio-Datei wurde verändert (darf nur das Studio schreiben)")
         if fall.get("funke_bleibt") or fall.get("abbruch"):
-            if lies(studio_pfad(root, endung=".helirf.funke.lua")) != funke_vorher:
+            if lies(studio_pfad(root, endung=".heli.funke.lua")) != funke_vorher:
                 erg["befunde"].append(".funke.lua wurde ohne Änderung an der Funke verändert")
         if "nachher_funke" in fall:
-            da = lies(studio_pfad(root, endung=".helirf.funke.lua")) is not None
+            da = lies(studio_pfad(root, endung=".heli.funke.lua")) is not None
             if da != fall["nachher_funke"]:
                 erg["befunde"].append(".funke.lua %s, erwartet %s" % ("da" if da else "fehlt", "da" if fall["nachher_funke"] else "fehlt"))
-            elif fall.get("neu") and fall["neu"] != "HALB" and not fall.get("funke") and lies(studio_pfad(root, endung=".helirf.funke.lua")) != inhalt(fall["neu"]):
+            elif fall.get("neu") and fall["neu"] != "HALB" and not fall.get("funke") and lies(studio_pfad(root, endung=".heli.funke.lua")) != inhalt(fall["neu"]):
                 erg["befunde"].append(".funke.lua hat nicht den Inhalt der übernommenen .funke.neu")
-        if "nachher_neu" in fall and (lies(studio_pfad(root, endung=".helirf.funke.neu")) is not None) != fall["nachher_neu"]:
+        if "nachher_neu" in fall and (lies(studio_pfad(root, endung=".heli.funke.neu")) is not None) != fall["nachher_neu"]:
             erg["befunde"].append(".funke.neu ist noch da (muss übernommen oder gelöscht sein, Abschnitt 9)")
     except Exception as e:
         erg["befunde"].append("Abbruch des Treibers: %r" % (e,))
@@ -430,8 +430,8 @@ def modellwechsel(sim, root, erg, bild):
     """Zwei Modelle (A: gueltig, B: voll), zehnmal hin und her; der Lua-Speicher darf nicht wachsen (12.3)."""
     grundstand(root, "src")
     haken(root, ZELLE_GUT)
-    schreibe(studio_pfad(root), inhalt("gueltig.helirf.lua"))
-    schreibe(studio_pfad(root, KENNUNG2), inhalt("voll.helirf.lua"))
+    schreibe(studio_pfad(root), inhalt("gueltig.heli.lua"))
+    schreibe(studio_pfad(root, KENNUNG2), inhalt("voll.heli.lua"))
     sim.start()
     sim.modell(MODELL, (800, 480))
     sim.get("wait", ms=3000)
@@ -500,8 +500,8 @@ def update(sim, root, erg, bild, basis):
     sim.bild(alt_bild)
     sim.ende()
     # gleicher Speicher, neue Version (Widget-Speicher des Modells bleibt)
-    shutil.rmtree(os.path.join(root, "scripts", "helirf"))
-    shutil.copytree(SKRIPT, os.path.join(root, "scripts", "helirf"), ignore=shutil.ignore_patterns(".*", "*.luac"))
+    shutil.rmtree(os.path.join(root, "scripts", "heli"))
+    shutil.copytree(SKRIPT, os.path.join(root, "scripts", "heli"), ignore=shutil.ignore_patterns(".*", "*.luac"))
     hk2 = haken(root, ZELLE_GUT + " " + CFG_DUMP)
     sim.start()
     sim.get("wait", ms=6000)
@@ -553,16 +553,16 @@ def main():
     os.makedirs(bilder, exist_ok=True)
     if subprocess.run(["lsof", "-nP", "-iTCP:%d" % port, "-sTCP:LISTEN"], capture_output=True).stdout:
         sys.exit("Port %d ist belegt" % port)
-    if not os.path.exists(os.path.join(STUDIO, "gueltig.helirf.lua")):
+    if not os.path.exists(os.path.join(STUDIO, "gueltig.heli.lua")):
         sys.exit("test/studio fehlt: zuerst python3 test/studio_dateien.py")
     wahl = a or list(F)
     unbekannt = [n for n in wahl if n not in F]
     if unbekannt:
         sys.exit("unbekannte Fälle: " + ", ".join(unbekannt))
-    print("Heli RF %s, Simulator X18RS-EU 26.2.0, Port %d, Arbeitsordner %s" % (
+    print("Heli %s, Simulator X18RS-EU 26.2.0, Port %d, Arbeitsordner %s" % (
         re.search(r'VERSION = "([^"]+)"', open(os.path.join(SKRIPT, "main.lua")).read()).group(1), port, basis))
     if not os.path.exists(os.path.join(SKRIPT, "studio.lua")):
-        print("HINWEIS: src/helirf/studio.lua fehlt noch: Fälle mit Studio-Datei melden Befunde (Info-Datei fehlt usw.)")
+        print("HINWEIS: src/heli/studio.lua fehlt noch: Fälle mit Studio-Datei melden Befunde (Info-Datei fehlt usw.)")
     alle = []
     for n in wahl:
         t0 = time.time()

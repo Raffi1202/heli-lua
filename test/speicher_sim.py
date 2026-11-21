@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Heli RF: Bleibewert nach dem Modellwechsel im Ethos-Simulator (X18RS-EU, 26.2.0), Auftrag «Speicher freigeben» 21.11.2026.
+"""Heli: Bleibewert nach dem Modellwechsel im Ethos-Simulator (X18RS-EU, 26.2.0), Auftrag «Speicher freigeben» 21.11.2026.
 
 Aufruf (aus dem Repo-Ordner):
   /opt/homebrew/opt/lua@5.4/bin/lua test/format2_dateien.lua     zuerst: Heli-Fassungen nach test/format2/
@@ -7,7 +7,7 @@ Aufruf (aus dem Repo-Ordner):
   python3 test/speicher_sim.py --port 8801 p12                    nur diesen Fall
   python3 test/speicher_sim.py --port 8801 --quelle v1.11.0       Vergleich mit einer älteren Fassung (Git-Tag)
 
-Ablauf je Fall: Simulator mit leerem Modell starten, Speicher messen (M0, Heli RF nie gezeigt). Dann Heli RF zeigen,
+Ablauf je Fall: Simulator mit leerem Modell starten, Speicher messen (M0, Heli nie gezeigt). Dann Heli zeigen,
 zurück auf das leere Modell wechseln und messen (M2). Das Ganze zweimal. Gemessen wird nach zweimal
 collectgarbage("collect"), wie mit einem Messwerkzeug am Sender.
   ohne  : ohne Studio-Datei
@@ -68,10 +68,10 @@ def fall(name, port, basis, quelle, koord):
         sim.start()
         sim.get("wait", ms=3000)
         m0 = messe(sim)
-        erg["zeilen"].append(("M0 leeres Modell, Heli RF nie gezeigt", m0))
-        sim.modell(ss.MODELL, (800, 480))                 # Heli RF ins aktuelle Modell (PA)
+        erg["zeilen"].append(("M0 leeres Modell, Heli nie gezeigt", m0))
+        sim.modell(ss.MODELL, (800, 480))                 # Heli ins aktuelle Modell (PA)
         sim.get("wait", ms=8000)
-        erg["zeilen"].append(("Heli RF aktiv", messe(sim)))
+        erg["zeilen"].append(("Heli aktiv", messe(sim)))
         v = pfad_finden(sim)                               # lädt dabei das leere Modell
         n_probe = len(sim.log())
         sim.get("wait", ms=5000)
@@ -82,16 +82,16 @@ def fall(name, port, basis, quelle, koord):
             erg["zeilen"].append(("Heli B aktiv", messe(sim)))
             lade(sim, v + PL)
         m2 = [messe(sim)]
-        erg["zeilen"].append(("leer nach Heli RF, Runde 1", m2[-1]))
+        erg["zeilen"].append(("leer nach Heli, Runde 1", m2[-1]))
         for runde in (2,):
             lade(sim, v + PA)
-            erg["zeilen"].append(("Heli RF aktiv, Runde %d" % runde, messe(sim)))
+            erg["zeilen"].append(("Heli aktiv, Runde %d" % runde, messe(sim)))
             if name == "zwei":
                 lade(sim, v + PB)
                 erg["zeilen"].append(("Heli B aktiv, Runde %d" % runde, messe(sim)))
             lade(sim, v + PL)
             m2.append(messe(sim))
-            erg["zeilen"].append(("leer nach Heli RF, Runde %d" % runde, m2[-1]))
+            erg["zeilen"].append(("leer nach Heli, Runde %d" % runde, m2[-1]))
         log = sim.log()[n_probe:]
         fehler = [z for z in log if ss.FEHLER_LOG.search(z)]
         if fehler:
@@ -128,7 +128,7 @@ def main():
     basis = opt("--basis") or tempfile.mkdtemp(prefix="heli-speicher-")
     faelle = a or ["ohne", "p12", "zwei"]
     befunde = 0
-    print("Heli RF Speicher nach Modellwechsel, Quelle %s, Arbeitsordner %s" % (quelle, basis))
+    print("Heli Speicher nach Modellwechsel, Quelle %s, Arbeitsordner %s" % (quelle, basis))
     for n in faelle:
         e = fall(n, port, basis, quelle, koord)
         print("\n== %s" % n)

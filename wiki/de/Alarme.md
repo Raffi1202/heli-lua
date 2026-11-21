@@ -2,7 +2,7 @@
 
 # Alarme
 
-> **Vorabversion:** Version 1.12.0 ist im Ethos-Simulator getestet; der Sendertest an der X18RS folgt. Nutzung auf eigene Verantwortung.
+> **Vorabversion:** Version 1.13.0 ist im Ethos-Simulator getestet; der Sendertest an der X18RS folgt. Nutzung auf eigene Verantwortung.
 
 ## Grün, orange, rot
 Fünf Werte werden überwacht, jeder mit zwei Schwellen:
@@ -19,7 +19,7 @@ Fünf Werte werden überwacht, jeder mit zwei Schwellen:
 
 Rot beginnt nach einer Sekunde jenseits der Schwelle und endet mit etwas Abstand. Ohne Wert bleibt eine Überwachung still. Laufen Drehzahlansage oder «Autorotation», kommt höchstens alle 10 s ein Alarm.
 
-![Alarm](../../docs/bilder-simulator/Heli%20RF%20-%20Sim%20800x480%2006%20Alarm.png)
+![Alarm](../../docs/bilder-simulator/Heli%20-%20Sim%20800x480%2006%20Alarm.png)
 
 ## Auch bei Motor aus (neu in 1.12.0)
 Jede Alarmgruppe hat den Haken **Auch bei Motor aus**, ab Werk ein. Ist er weg und steht der Motorschalter auf «Motor aus», schweigt dieser Alarm: kein Ton, keine Vibration, keine Ansage. Die Anzeige wird trotzdem orange bzw. rot, und sobald der Motor wieder ein ist, kommt der Alarm wieder. Ohne Motorschalter wirkt der Haken nicht. In Lua-Studio gibt es dieselbe Einstellung je Grenze (`beiMotorAus`).

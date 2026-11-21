@@ -4,7 +4,13 @@ Die Versionsnummer steht in `src/helirf/main.lua` (`local VERSION`). Sie ist die
 die Suite und hier. Der oberste Abschnitt erscheint in der FrSky Suite als Versionshinweis. Die Stände vor 1.5.0
 sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stammen vom 17.11.2026.
 
-*Older entries in German. From the next version on the changelog is in English.*
+*Older entries (1.12.0 and before) in German.*
+
+## 1.13.0 (21.11.2026)
+
+- **Renamed from «Heli RF» (`helirf`) to «Heli» (`heli`) – breaking: old models must re-add the widget; Studio files must be renamed or re-transferred.** Widget key and folder on the radio `heli`, Studio files `<ID>.heli.lua`, `.heli.funke.lua`, `.heli.info.json`, `"lua": "heli"` in `beschreibung.json` and the info file. Rotorflight stays a supported source.
+- Transition: if `<ID>.heli.lua` is missing but an old `<ID>.helirf.lua` exists, Heli reads it and logs «old studio file found, please re-transfer». Flight data (`daten/<model>.txt`) are read from `scripts/helirf/daten/` if `scripts/heli/daten/` has none (read only); the next save writes them to the new folder. Settings stored in the widget are kept when only the widget key in the model is switched from `helirf` to `heli`; `test/update_test.py` checks reading the settings of every version from 1.5.0 to 1.12.0.
+- Packages `Heli-1.13.0.zip` and `Heli-1.13.0-share.zip`. Docs, wiki and simulator pictures renamed. No other functional change from 1.12.0.
 
 ## 1.12.0 (21.11.2026)
 

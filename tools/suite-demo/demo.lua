@@ -1,4 +1,4 @@
--- Heli RF Demo: Makro für die FrSky Suite (Simulator). Spielt einen Heli-Flug als Schleife ab.
+-- Heli Demo: Makro für die FrSky Suite (Simulator). Spielt einen Heli-Flug als Schleife ab.
 -- Nur zur Vorführung im Simulator, nie Teil des Widgets und nichts für den echten Sender.
 -- Legt fehlende Sensoren im Modell an, speist Telemetrie ein (S.Port), bewegt den Gasknüppel und den Motorschalter SA.
 -- Ablauf: am Boden (Motor aus), Motor ein, Hochlaufen, Schweben, 3D, Regler zu heiss (Alarm), Motor aus mit

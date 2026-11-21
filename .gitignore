@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+._*
+
+# Fertige ZIP (entstehen mit paket.py aus src/ und docs/)
+dist/
+
+# Daten, die das Widget auf dem Sender schreibt (Flugzähler, Flugliste)
+src/*/daten/
+
+# von Ethos übersetzte Skripte
+*.luac
+
+# Modelle und Daten von der Funke gehören nicht ins Repo
+test/testmodell.json
+*.bin
+
+# lokale Notizen
+STAND.md

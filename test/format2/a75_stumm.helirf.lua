@@ -1,0 +1,1 @@
+return { format = 2, ansichten = { { breite = 800, hoehe = 480, plaetze = { { b = 380, h = 120, titel = "\83\116\117\109\109", w = "\115\101\110\115\111\114\58\48\65\48\48\58\48", x = 10, y = 70 } } } }, grenzen = { ["\115\101\110\115\111\114\58\48\65\48\48\58\48"] = { alarm = 100, ansage = false, richtung = "\117\101\98\101\114", vibration = false } } }

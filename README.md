@@ -10,15 +10,15 @@ telemetry, or FrSky sensors). It shows battery %, head speed, current, ESC tempe
 values with two thresholds each (orange display, red with tone, vibration and voice), announces head speed and
 «Autorotation», and keeps a flight list. Display, menu and voice alerts are in English or German.
 
-**Version 1.13.0** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
+**Version 1.13.1** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
 (Ethos 26.2.0); all other radios only in the Ethos simulator. Not yet flown. The alarms are an aid and do not replace
 your own checks.
 
 ## Quick start
 
-1. Download `Heli-1.13.0-share.zip` from **Releases** and unzip it (but not the inner `Heli-1.13.0.zip`).
+1. Download `Heli-1.13.1-share.zip` from **Releases** and unzip it (but not the inner `Heli-1.13.1.zip`).
 2. Connect the radio via USB (mode «Ethos Suite»), open the FrSky Suite.
-3. Suite › **Lua library** › **Install from local ZIP** › `Heli-1.13.0.zip` › **Install scripts**. Restart the radio.
+3. Suite › **Lua library** › **Install from local ZIP** › `Heli-1.13.1.zip` › **Install scripts**. Restart the radio.
 4. Add a screen with layout **Full screen** (or one field with bars for the compact view) and the widget **Heli**.
 5. In the widget menu tap **Search** («Find sensors automatically»), check the sensors, set cells, capacity and battery type.
 
@@ -27,6 +27,7 @@ Manual: `docs/Heli - Manual.pdf` (German: `docs/Heli - Anleitung.pdf`). Test gui
 
 ## What's new
 
+- **1.13.1:** Governor field without governor telemetry shows «no governor»; docs neutral for any heli with telemetry.
 - **1.13.0:** **Renamed from «Heli RF» (`helirf`) – breaking:** old models must re-add the widget (its settings start from the factory values); Studio files must be renamed to `<ID>.heli.lua` or re-transferred with Lua-Studio. An old `<ID>.helirf.lua` is still read once, with the log note «old studio file found, please re-transfer». Flight count and flight list are taken over automatically from `scripts/helirf/daten/` (read only, never deleted), so keep the old folder until each model has been used once. If the widget key in the model file is switched from `helirf` to `heli` instead of re-adding the widget, all settings are kept as well.
 - **1.12.0:** per alarm the setting «Also with motor off» (on by default, also in Lua-Studio): without the tick the
   alarm stays silent while the motor switch is «off»; the display still turns orange/red. After a model change Heli

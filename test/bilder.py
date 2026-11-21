@@ -56,7 +56,7 @@ BILDER = [
     ("13", "Englische Rueckfrage", EN + FRAGE, [0], "seite", []),
     ("30", "Kompakt", DE + GUT + "\n  if not TESTSTUB then TESTSTUB=true w.fluege=14 w.akt={ dauer=154, nr=15 } end", [4, 5, 6], "seite", []),
     ("31", "Kompakt Drehzahl verloren", DE + ROT + " v.gov=6 v.scharf=true", [4], "seite", []),
-    ("32", "Kompakt Englisch ohne Rotorflight", EN + GUT + " v.gov=nil v.scharf=false", [4], "seite", []),
+    ("32", "Kompakt Englisch ohne Governor", EN + GUT + " v.gov=nil v.scharf=false", [4], "seite", []),
     ("34", "Kompakt Englisch", EN + GUT + "\n  if not TESTSTUB then TESTSTUB=true w.fluege=14 w.akt={ dauer=154, nr=15 } end", [4], "seite", []),
     ("35", "Kompakt Rueckfrage", DE + FRAGE, [4], "seite", []),
     ("33", "Kompakt Flugliste", DE + LISTE, [4], "seite", []),

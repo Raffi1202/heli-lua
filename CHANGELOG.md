@@ -6,6 +6,13 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.13.1 (21.11.2026)
+
+- Governor field without governor telemetry now shows «no governor» / «kein Governor» (was a system name).
+- Docs: Heli is described as a widget for any heli with telemetry (any flybarless system, ESC with telemetry or FrSky
+  sensors); no system names any more. Manuals (PDF) and packages `Heli-1.13.1.zip` / `Heli-1.13.1-share.zip` rebuilt.
+  No other functional change.
+
 ## 1.13.0 (21.11.2026)
 
 - **Renamed from «Heli RF» (`helirf`) to «Heli» (`heli`) – breaking: old models must re-add the widget; Studio files must be renamed or re-transferred.** Widget key and folder on the radio `heli`, Studio files `<ID>.heli.lua`, `.heli.funke.lua`, `.heli.info.json`, `"lua": "heli"` in `beschreibung.json` and the info file.

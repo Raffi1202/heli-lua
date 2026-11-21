@@ -4,7 +4,7 @@
 
 **Welche Sender?** Ein Paket für alle: 800 × 480 (X20-Familie, X18R, X18RS), 640 × 360 (X14), 480 × 320 (X18, Twin X Lite), 480 × 272 (X10, X12S). Am echten Sender getestet ist nur die X18RS, die anderen im Simulator.
 
-**Brauche ich Rotorflight?** Nein. Nur das Governor-Feld, SCHARF/SICHER und Profil/Rate brauchen Rotorflight-Werte; sonst bleiben diese Stellen leer bzw. folgen dem Motorschalter.
+**Braucht es ein bestimmtes Flybarless-System?** Nein, jedes System oder jeder Regler mit Telemetrie geht. Nur das Governor-Feld, SCHARF/SICHER und Profil/Rate brauchen Governor-Telemetrie vom Flybarless-System; sonst bleiben diese Stellen leer bzw. folgen dem Motorschalter.
 
 **Wie entsteht Akku % ohne %-Sensor?** Aus der Zellenspannung in Ruhe beim Anstecken (nach Akkutyp), danach mit den verbrauchten mAh heruntergezählt. Zellen und Kapazität müssen stimmen.
 

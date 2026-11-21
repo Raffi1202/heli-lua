@@ -8,9 +8,9 @@ Die Einstellungen des Widgets öffnest du über Bildschirme › Bildschirm wähl
 
 ## Sensoren (einmal je Modell)
 1. Heli einschalten, damit Telemetrie läuft.
-2. **Sensoren automatisch suchen › Suchen.** Das Widget füllt jedes leere Sensorfeld, das es erkennt (nach Application ID, nicht nach Namen; eigene Rotorflight-Sensoren nach Name und Einheit).
+2. **Sensoren automatisch suchen › Suchen.** Das Widget füllt jedes leere Sensorfeld, das es erkennt (nach Application ID, nicht nach Namen; eigene Sensoren nach Name und Einheit).
 3. Gruppe **Sensoren** öffnen und jedes Feld kontrollieren. Leere oder falsche Felder von Hand setzen. Die Suche kann sich irren.
-4. **Nur Rotorflight:** In der Rotorflight-Telemetrie *Governor State* und *Arming Flags* einschalten. Heli liest sie direkt (AppID 0x5125 / 0x5122).
+4. **Governor (wahlweise):** Wenn dein Flybarless-System sie sendet, in seiner Telemetrie *Governor State* und *Arming Flags* einschalten. Heli liest sie direkt (AppID 0x5125 / 0x5122).
 
 | Feld | Sensor |
 |---|---|
@@ -22,7 +22,7 @@ Die Einstellungen des Widgets öffnest du über Bildschirme › Bildschirm wähl
 | Zellenspannung | je Zelle; ein Zellensensor (FLVSS) geht auch; leer geht, wenn *Zellen* eingestellt ist |
 | Verbrauch mAh | verbrauchte Kapazität |
 | RSSI | Empfangsbalken |
-| PID-Profil, Raten-Profil | nicht nötig (z. B. Rotorflight) |
+| PID-Profil, Raten-Profil | nicht nötig |
 
 ## Weitere Gruppen
 - **Akku:** Zellen, Kapazität, Akkutyp (LiPo, LiHV, Li-Ion). Nötig für die %-Anzeige ohne %-Sensor.

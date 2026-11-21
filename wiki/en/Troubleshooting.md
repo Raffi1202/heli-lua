@@ -12,7 +12,7 @@ All Lua scripts on the radio share one Lua memory, about **2048 KB on the X18RS*
 | One value `--` or nonsense | Set the field under Sensors by hand. |
 | «SET CELLS» / cell voltage `--` | Set Cells under Battery. |
 | Battery % `--` or wrong | Set Cells and Capacity; clear «Battery %» if a % sensor shows wrong values. |
-| Governor «--», «Rotorflight only» | Enable Governor State and Arming Flags in Rotorflight. Normal without Rotorflight. |
+| Governor «--», «--» | Enable Governor State and Arming Flags in the flybarless system. Normal if the system does not send them. |
 | ESC temperature stops at 100 °C | Increase the sensor maximum in Ethos (range −30 to 100 °C). |
 
 ## Alarms and announcements

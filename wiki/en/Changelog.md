@@ -11,7 +11,7 @@ Full details: [CHANGELOG.md](../../CHANGELOG.md) (German).
 | 1.11.0 | Lua-Studio format 2: symbols, bold unit, decoration. |
 | 1.10.1 | Studio file sensors on the radio, large Studio files in parts. |
 | 1.10.0 | Studio file from Lua-Studio. |
-| 1.9.1 | Rotorflight governor and arming flags read directly. |
+| 1.9.1 | Governor and arming flags read directly. |
 | 1.9.0 | Compact view, Governor field with ARMED/SAFE. |
 
 ---

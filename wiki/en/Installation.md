@@ -2,7 +2,7 @@
 
 # Installation
 
-**You need:** a FrSky radio with Ethos (26.1 or later) and a colour screen, a computer with the FrSky Suite and the USB cable, and a heli with telemetry via the FrSky receiver (Rotorflight, FrSky sensors via FBUS/S.Port or a telemetry ESC). Discover the sensors in the model first (Model › Telemetry › Discover new sensors).
+**You need:** a FrSky radio with Ethos (26.1 or later) and a colour screen, a computer with the FrSky Suite and the USB cable, and a heli with telemetry via the FrSky receiver (any flybarless system or ESC with telemetry, or FrSky sensors via S.Port/FBUS). Discover the sensors in the model first (Model › Telemetry › Discover new sensors).
 
 ## With the FrSky Suite
 1. Unpack `Heli-1.13.0-share.zip`. It contains the manuals, `LIES MICH.txt` and the package `Heli-1.13.0.zip`. **Do not unpack the package.**

@@ -5,8 +5,8 @@
 > **Configure on your PC with [Lua-Studio](https://github.com/Raffi1202/lua-studio)** – arrange the screen, choose values, alarms and symbols, then transfer to the radio. Download: [latest release](https://github.com/Raffi1202/lua-studio/releases/latest) · [Wiki](https://github.com/Raffi1202/lua-studio/tree/main/wiki)
 
 **Heli** is a Lua widget (full screen, or compact with the Ethos header and footer) for FrSky radios with Ethos
-(26.1 or newer) and a colour display, for any helicopter with telemetry (Rotorflight, FrSky sensors or an ESC with
-telemetry). It shows battery %, head speed, current, ESC temperature, BEC, cell voltage and used capacity, watches five
+(26.1 or newer) and a colour display, for **any helicopter with telemetry** (any flybarless system or ESC that sends
+telemetry, or FrSky sensors). It shows battery %, head speed, current, ESC temperature, BEC, cell voltage and used capacity, watches five
 values with two thresholds each (orange display, red with tone, vibration and voice), announces head speed and
 «Autorotation», and keeps a flight list. Display, menu and voice alerts are in English or German.
 
@@ -27,14 +27,14 @@ Manual: `docs/Heli - Manual.pdf` (German: `docs/Heli - Anleitung.pdf`). Test gui
 
 ## What's new
 
-- **1.13.0:** **Renamed from «Heli RF» (`helirf`) – breaking:** old models must re-add the widget (its settings start from the factory values); Studio files must be renamed to `<ID>.heli.lua` or re-transferred with Lua-Studio. An old `<ID>.helirf.lua` is still read once, with the log note «old studio file found, please re-transfer». Flight count and flight list are taken over automatically from `scripts/helirf/daten/` (read only, never deleted), so keep the old folder until each model has been used once. If the widget key in the model file is switched from `helirf` to `heli` instead of re-adding the widget, all settings are kept as well. Rotorflight remains a supported source.
+- **1.13.0:** **Renamed from «Heli RF» (`helirf`) – breaking:** old models must re-add the widget (its settings start from the factory values); Studio files must be renamed to `<ID>.heli.lua` or re-transferred with Lua-Studio. An old `<ID>.helirf.lua` is still read once, with the log note «old studio file found, please re-transfer». Flight count and flight list are taken over automatically from `scripts/helirf/daten/` (read only, never deleted), so keep the old folder until each model has been used once. If the widget key in the model file is switched from `helirf` to `heli` instead of re-adding the widget, all settings are kept as well.
 - **1.12.0:** per alarm the setting «Also with motor off» (on by default, also in Lua-Studio): without the tick the
   alarm stays silent while the motor switch is «off»; the display still turns orange/red. After a model change Heli
   frees almost all of its Lua memory (simulator: 4–5 KB stay). A Studio limit without thresholds no longer switches an
   alarm off. Not yet tested on the radio.
 - **1.11.0:** Lua-Studio format 2 – symbols in the boxes, bold unit, decoration. Ran on the X18RS with a full file.
 - **1.10.0 / 1.10.1:** Studio file from Lua-Studio: own views per model, value adjustment, settings and limits.
-- **1.9:** compact view, Rotorflight governor state with ARMED/SAFE, voice alert «headspeed lost».
+- **1.9:** compact view, Governor state of the flybarless system with ARMED/SAFE, voice alert «headspeed lost».
 
 Details: [CHANGELOG.md](CHANGELOG.md).
 

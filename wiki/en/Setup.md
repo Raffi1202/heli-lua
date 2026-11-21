@@ -8,9 +8,9 @@ Open the widget's settings via Screens › choose the screen › tap into the wi
 
 ## Sensors (once per model)
 1. Switch on the heli so that telemetry is running.
-2. **Find sensors automatically › Search.** The widget fills every empty sensor field it recognises (by Application ID, not by name; custom Rotorflight sensors by name and unit).
+2. **Find sensors automatically › Search.** The widget fills every empty sensor field it recognises (by Application ID, not by name; custom sensors by name and unit).
 3. Open the group **Sensors** and check every field. Set empty or wrong fields by hand. The search can be wrong.
-4. **Rotorflight only:** enable *Governor State* and *Arming Flags* in the Rotorflight telemetry. Heli reads them directly (AppID 0x5125 / 0x5122).
+4. **Governor (optional):** if your flybarless system sends them, enable *Governor State* and *Arming Flags* in its telemetry. Heli reads them directly (AppID 0x5125 / 0x5122).
 
 | Field | Sensor |
 |---|---|
@@ -22,7 +22,7 @@ Open the widget's settings via Screens › choose the screen › tap into the wi
 | Cell voltage | per cell; a cell sensor (FLVSS) works too; empty works if *Cells* is set |
 | Used capacity mAh | capacity used |
 | RSSI | signal bars |
-| PID profile, Rate profile | optional (e.g. Rotorflight) |
+| PID profile, Rate profile | optional |
 
 ## Other groups
 - **Battery:** Cells, Capacity, Battery type (LiPo, LiHV, Li-Ion). Needed for the % display without a % sensor.

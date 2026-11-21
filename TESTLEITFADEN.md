@@ -12,7 +12,7 @@ template «Fehler / Bug»; English is fine.*
 
 - FrSky-Sender mit Ethos **26.1 oder neuer** und Farbdisplay. Am echten Sender getestet ist bisher nur die **X18RS**
   mit Ethos 26.2.0. Andere Sender laufen im Simulator; dein Test auf einem anderen Sender hilft besonders.
-- Ein Heli mit Telemetrie über einen FrSky-Empfänger: Flybarless mit Telemetrie (z. B. Rotorflight), FrSky-Sensoren
+- Ein Heli mit Telemetrie über einen FrSky-Empfänger: jedes Flybarless-System mit Telemetrie, FrSky-Sensoren
   oder ein Regler mit Telemetrie. Mindestens Akkuspannung und Drehzahl; Strom, Verbrauch, Reglertemperatur,
   BEC-Spannung und Zellensensor sind willkommen, aber freiwillig.
 - Am Modell: die Sensoren schon gesucht (Modell › Telemetrie › Sensoren suchen).
@@ -67,19 +67,19 @@ Notiere dir für die Meldung: Sender, Ethos-Version (System › Info) und welche
 - **Erwartet:** Neben jedem Feld steht die Kennung in Klammern (z. B. «[0B50/0A]»). Passen mehrere Sensoren, steht
   «n Sensoren passen, gewählt: … – bitte prüfen».
 - [ ] Jedes Feld kontrollieren: Steht bei **Akkuspannung** wirklich der Flugakku (nicht die Empfängerspannung)?
-  Bei Rotorflight: nicht die Spannung der Steuerplatine?
+  Bei Flybarless-Systemen: nicht die Spannung der Steuerplatine?
 - [ ] Ein Feld leeren und nochmals suchen.
 - **Erwartet:** Nur das leere Feld wird neu gefüllt, deine anderen Felder bleiben.
 
-### 4b. Nur mit Rotorflight: Governor und SCHARF/SICHER (Kapitel 4 und 5)
-- [ ] In Rotorflight (Configurator › Telemetrie) die Werte **Governor State** und **Arming Flags** einschalten.
+### 4b. Nur wenn das Flybarless-System sie sendet: Governor und SCHARF/SICHER (Kapitel 4 und 5)
+- [ ] Im Flybarless-System (Telemetrie) die Werte **Governor State** und **Arming Flags** einschalten.
 - [ ] Heli scharf schalten (ohne Rotorblätter!), Motor hochlaufen lassen.
 - **Erwartet:** Im Feld GOVERNOR erst HOCHLAUF (orange), dann AKTIV (grün); die Pille wechselt von SICHER auf SCHARF.
 
 ### 5. Anzeige mit Livewerten (Kapitel 5)
 - [ ] Menü schliessen, Werte ansehen.
 - **Erwartet:** Drehzahl, Strom, Reglertemperatur, BEC, Verbrauch und Akkuspannung stimmen mit Modell › Telemetrie
-  überein. Oben rechts Profil/Rate (nur mit Rotorflight o. ä.), Empfangsbalken (nur mit RSSI-Sensor).
+  überein. Oben rechts Profil/Rate (nur wenn das Flybarless-System sie sendet), Empfangsbalken (nur mit RSSI-Sensor).
 
 ### 6. Akku (Kapitel 4 und 7)
 - [ ] Menü › **Akku**: Zellen, Kapazität und Akkutyp deines Akkus einstellen. Vollen Akku anstecken.

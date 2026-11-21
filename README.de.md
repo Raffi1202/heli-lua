@@ -4,8 +4,8 @@
 
 > **Am PC einrichten mit [Lua-Studio](https://github.com/Raffi1202/lua-studio)**: Bildschirm einteilen, Werte, Alarme und Symbole wählen, auf die Funke übertragen.
 
-Lua-Widget für FrSky-Sender mit Ethos (ab 26.1) und Farbdisplay, für alle Helis mit Telemetrie (z. B. Rotorflight,
-FrSky-Sensoren oder ein Regler mit Telemetrie). Es zeigt die Telemetrie im Vollbild oder kompakt mit den Ethos-Leisten, den Rotorflight-Governor mit SCHARF/SICHER, überwacht fünf Werte in zwei
+Lua-Widget für FrSky-Sender mit Ethos (ab 26.1) und Farbdisplay, für **jeden Heli mit Telemetrie** (jedes Flybarless-System
+oder jeder Regler, der Telemetrie sendet, oder FrSky-Sensoren). Es zeigt die Telemetrie im Vollbild oder kompakt mit den Ethos-Leisten, den Governor mit SCHARF/SICHER (wenn das Flybarless-System ihn als Telemetrie sendet), überwacht fünf Werte in zwei
 Stufen, sagt Drehzahl und «Autorotation» an und führt eine Flugliste. Anzeige, Menü und Ansagen deutsch und englisch.
 
 **Neu in 1.13.0:** **Umbenannt von «Heli RF» (`helirf`), nicht rückwärtskompatibel:** In vorhandenen Modellen das Widget neu auswählen (die Einstellungen beginnen mit den Werkswerten); Studio-Dateien in `<Kennung>.heli.lua` umbenennen oder mit Lua-Studio neu übertragen. Eine alte `<Kennung>.helirf.lua` wird noch gelesen, mit dem Hinweis «old studio file found, please re-transfer» im Log. Flugzähler und Flugliste übernimmt Heli automatisch aus `scripts/helirf/daten/` (nur lesen, nie löschen); den alten Ordner darum stehen lassen, bis jedes Modell einmal benutzt wurde. Wird im Modell nur der Widget-Schlüssel von `helirf` auf `heli` umgestellt statt das Widget neu zu wählen, bleiben auch alle Einstellungen.
@@ -86,7 +86,7 @@ Ein Paket für alle Sender: Das Widget misst die Fenstergrösse selbst. Ohne Ber
 ## Was es kann
 
 - **Anzeige (Seite 1):** vier Tachos (Akku %, Drehzahl, Strom, Reglertemperatur; Bogen 270°, unten offen), darunter
-  MAX = höchster gemessener Wert mit diesem Akku. Feld Governor (Rotorflight) mit SCHARF/SICHER und Flugzähler. Kompaktansicht im Layout mit Leisten. Flugmodus (aus Ethos), BEC-Spannung,
+  MAX = höchster gemessener Wert mit diesem Akku. Feld Governor (wenn das Flybarless-System ihn sendet) mit SCHARF/SICHER und Flugzähler. Kompaktansicht im Layout mit Leisten. Flugmodus (aus Ethos), BEC-Spannung,
   Zellenspannung (je mit TIEF = tiefster Wert), verbrauchte mAh mit Knopf zum Zurücksetzen.
 - **Überwachung in zwei Stufen** für Reglertemperatur, Akku %, Zellenspannung, BEC-Spannung, Verbrauch:
   gut = grün, erste Schwelle = orange (nur Anzeige), zweite Schwelle = rot mit Umrandung, Warnton, Vibration und
@@ -150,7 +150,7 @@ ethos-tools-Plugin (`run_wasm.js`, Umgebungsvariable `ETHOS_PLUGIN`). Kurz:
 - **Syntax:** `luac -p src/heli/*.lua` (Lua 5.4).
 - **Studio-Testdateien:** `python3 test/studio_dateien.py` erzeugt `test/studio/` neu und prüft jede Datei mit der
   Referenz-Ladefunktion (Lua-Studio-Format v1).
-- **Sensorsuche:** `lua test/suche_test.lua` (Lua 5.4, feste Fälle (a)–(g) der Vorgaben Sensorzuordnung, Rotorflight); im
+- **Sensorsuche:** `lua test/suche_test.lua` (Lua 5.4, feste Fälle (a)–(g) der Vorgaben Sensorzuordnung, Flybarless-Sensoren); im
   Simulator 26.2 das Makro `test/suche_makro.lua` (Schritt `makro` in `simulator.cjs`), Ausgabe «TEST …» im Log.
 - **Zufallstest:** `python3 test/zufallstest.py` (800 × 480) und `python3 test/zufallstest.py klein` (640 × 360,
   480 × 320, 480 × 272 und Mini-Feld), mit `abbild` zusammen mit allen Skripten des Senders. Muss «BESTANDEN» melden.

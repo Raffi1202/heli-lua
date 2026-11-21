@@ -12,7 +12,7 @@ Alle Lua-Skripte auf dem Sender teilen sich einen Lua-Speicher, an der **X18RS r
 | ein Wert `--` oder unsinnig | Feld unter Sensoren von Hand setzen. |
 | «ZELLEN?» / Zellenspannung `--` | Unter Akku die Zellen einstellen. |
 | Akku % `--` oder falsch | Zellen und Kapazität einstellen; Feld «Akku %» leeren, wenn ein %-Sensor Falsches zeigt. |
-| Governor «--», «nur mit Rotorflight» | In Rotorflight Governor State und Arming Flags einschalten. Ohne Rotorflight normal. |
+| Governor «--», «--» | Im Flybarless-System Governor State und Arming Flags einschalten. Normal, wenn das System sie nicht sendet. |
 | Reglertemperatur bleibt bei 100 °C | In Ethos das Maximum des Sensors erhöhen (Bereich −30 bis 100 °C). |
 
 ## Alarme und Ansagen

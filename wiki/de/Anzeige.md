@@ -6,7 +6,7 @@
 
 Vollbild: oben Modellname, Uhrzeit, Profil/Rate, Empfang, Senderakku; Tachos für Akku %, Drehzahl, Strom und Reglertemperatur (jeweils MAX = höchster Wert mit diesem Akku); Felder für Governor mit SCHARF/SICHER und Flugzähler (antippen = Flugliste), Flugmodus, BEC-Spannung und Zellenspannung (TIEF = tiefster Wert) und Verbrauch mit **AUF 0**. `--` heisst: keine Telemetrie oder kein Sensor zugewiesen.
 
-**Governor (Rotorflight):** AUS, LEERLAUF, HOCHLAUF, WIEDERANLAUF, BAILOUT, BYPASS, AKTIV, HOLD, AUTOROTATION, DREHZAHL VERLOREN (rot, Ton, Vibration, Ansage). Ohne Rotorflight-Werte steht «--» und «nur mit Rotorflight». SCHARF/SICHER kommt aus den Arming Flags, sonst vom Motorschalter.
+**Governor (wenn das Flybarless-System ihn als Telemetrie sendet):** AUS, LEERLAUF, HOCHLAUF, WIEDERANLAUF, BAILOUT, BYPASS, AKTIV, HOLD, AUTOROTATION, DREHZAHL VERLOREN (rot, Ton, Vibration, Ansage). Ohne Governor-Telemetrie steht «--» und «--». SCHARF/SICHER kommt aus den Arming Flags, sonst vom Motorschalter.
 
 ## Kompaktansicht
 Im Layout mit Leisten zeichnet das Widget oben eine schmale Leiste (Flugzeit, SCHARF/SICHER, Profil/Rate, Empfang), vier Tachos und acht Felder: Governor, Zelle, Verbraucht (antippen = auf 0), BEC, Flugmodus, Empfang, Leistung und Flüge. Die Grösse erkennt es selbst.

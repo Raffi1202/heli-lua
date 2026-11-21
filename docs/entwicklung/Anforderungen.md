@@ -44,7 +44,7 @@ Vom 17.11.2026:
 
 | Datum | Entscheid | Grund |
 |---|---|---|
-| 17.11.2026 | Eigenes Widget statt fertiger Rotorflight-Suite | keines der Themes der Suite passte |
+| 17.11.2026 | Eigenes Widget statt fertiger Widget-Sammlung | keines der Themes der Suite passte |
 | 17.11.2026 | Drehzahlansage nur über 300 U/min | sonst sagt sie am Boden mit Gas aus dauernd «null» |
 | 17.11.2026 | Ein Flug zählt ab 30 s; pausiert und Akku 30 s weg = beendet | kurze Läufe am Boden sollen nicht zählen (einstellbar) |
 | 17.11.2026 | Rückfragen auf der Seite selbst gezeichnet | Alarme und Ansagen laufen weiter, während die Frage offen ist |

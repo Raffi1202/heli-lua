@@ -8,7 +8,7 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 ## 1.13.0 (21.11.2026)
 
-- **Renamed from «Heli RF» (`helirf`) to «Heli» (`heli`) – breaking: old models must re-add the widget; Studio files must be renamed or re-transferred.** Widget key and folder on the radio `heli`, Studio files `<ID>.heli.lua`, `.heli.funke.lua`, `.heli.info.json`, `"lua": "heli"` in `beschreibung.json` and the info file. Rotorflight stays a supported source.
+- **Renamed from «Heli RF» (`helirf`) to «Heli» (`heli`) – breaking: old models must re-add the widget; Studio files must be renamed or re-transferred.** Widget key and folder on the radio `heli`, Studio files `<ID>.heli.lua`, `.heli.funke.lua`, `.heli.info.json`, `"lua": "heli"` in `beschreibung.json` and the info file.
 - Transition: if `<ID>.heli.lua` is missing but an old `<ID>.helirf.lua` exists, Heli reads it and logs «old studio file found, please re-transfer». Flight data (`daten/<model>.txt`) are read from `scripts/helirf/daten/` if `scripts/heli/daten/` has none (read only); the next save writes them to the new folder. Settings stored in the widget are kept when only the widget key in the model is switched from `helirf` to `heli`; `test/update_test.py` checks reading the settings of every version from 1.5.0 to 1.12.0.
 - Packages `Heli-1.13.0.zip` and `Heli-1.13.0-share.zip`. Docs, wiki and simulator pictures renamed. No other functional change from 1.12.0.
 
@@ -80,7 +80,7 @@ Korrekturen am Studio-Teil nach dem Sendertest von Elektro 0.3.2 (dieselben Schw
   die Sensorliste jetzt mit der Kategorie als Zahl (wie die Sensorsuche) und sucht Studio-Sensoren darin über AppID,
   Teilwert und Physical ID, in Stücken über mehrere Aufrufe. Vorher hätten Studio-Plätze mit Sensoren am Sender «---»
   gezeigt, Sensor-Grenzen nie ausgelöst und die Info-Datei keine Sensoren enthalten. Kanäle wie bisher.
-- **Rotorflight-Rückfall:** Eigene Sensoren mit den AppIDs 0x5125/0x5122 sucht Heli RF ebenfalls in der Sensorliste
+- **Governor-Rückfall:** Eigene Sensoren mit den AppIDs 0x5125/0x5122 sucht Heli RF ebenfalls in der Sensorliste
   (alle 30 s, solange nicht beide gefunden sind; vorher alle 5 s). Der Hauptweg über die S.Port-Rahmen bleibt unverändert.
 - **Befehlsgrenze:** Grosse gültige Studio-Dateien brauchten bis 24 726 Befehle in einem Aufruf (160 Sensor-Grenzen;
   100 Wert-Anpassungen 14 452), im Betrieb 16 795 je Aufruf. Werte, Grenzen und Zusammenführen laufen jetzt in Stücken
@@ -112,9 +112,9 @@ Korrekturen am Studio-Teil nach dem Sendertest von Elektro 0.3.2 (dieselben Schw
 ## 1.9.1 (20.11.2026)
 
 - Behoben: Governor und SCHARF/SICHER blieben am Sender leer (X18RS: per Lua angelegte DIY-Sensoren bekamen keine
-  Werte, im Simulator schon). Heli RF liest die Rotorflight-Rahmen 0x5125 und 0x5122 jetzt direkt aus der Telemetrie
-  (`sport.getSensor` mit `popFrame`, wie Rotorflight selbst), unabhängig von der Physical ID. Es muss kein Sensor
-  mehr angelegt werden; der Menüknopf «Rotorflight: Governor + Scharf › Anlegen» fällt weg. Von Hand angelegte
+  Werte, im Simulator schon). Heli RF liest die Governor-Rahmen 0x5125 und 0x5122 jetzt direkt aus der Telemetrie
+  (`sport.getSensor` mit `popFrame`), unabhängig von der Physical ID. Es muss kein Sensor
+  mehr angelegt werden; der Menüknopf «Governor + Scharf › Anlegen» fällt weg. Von Hand angelegte
   Sensoren mit diesen AppIDs gelten weiter, wenn keine Rahmen kommen. Simulator 26.2: `test/rf_makro.lua`.
 - Am Sender (X18RS, 1.9.0) geprüft: Kompaktansicht mit Livewerten, keine «Max instructions».
 
@@ -124,11 +124,11 @@ Korrekturen am Studio-Teil nach dem Sendertest von Elektro 0.3.2 (dieselben Schw
   erkennt sie am Seitenverhältnis (Höhe unter halber Breite). Oben eine schmale Leiste mit Flugzeit, SCHARF/SICHER,
   Profil/Rate und Empfang, darunter vier Tachos und acht Felder (Governor, Zelle, Verbraucht, BEC, Flugmodus,
   Empfang, Leistung, Flüge). Statt «nur im Vollbild» steht nur noch in sehr kleinen Feldern «Feld zu klein».
-- Neu: Feld **Governor** an der Stelle des Heli-Bilds: Zustand des Rotorflight-Governors (AppID 0x5125, Zustände 0–9
-  nach Rotorflight-Firmware) mit Pille SCHARF/SICHER (Arming-Flags 0x5122, Bit 0; ohne Rotorflight folgt die Pille
+- Neu: Feld **Governor** an der Stelle des Heli-Bilds: Zustand des Governors im Flybarless-System (AppID 0x5125, Zustände 0–9
+  nach Firmware des Flybarless-Systems) mit Pille SCHARF/SICHER (Arming-Flags 0x5122, Bit 0; ohne diese Werte folgt die Pille
   dem Motorschalter). Bei «Drehzahl verloren» (Fallback) roter Rahmen, Ton, Vibration und die neue Ansage
   `drehzahl_verloren` (höchstens alle 10 s; ein kurzer Telemetrie-Ausfall löst sie nicht erneut aus).
-- Neu im Menü (Sensoren): Knopf «Rotorflight: Governor + Scharf › Anlegen» legt die beiden Sensoren an, die Ethos
+- Neu im Menü (Sensoren): Knopf «Governor + Scharf › Anlegen» legt die beiden Sensoren an, die Ethos
   nicht selbst anlegt (nur auf Knopfdruck, keine doppelten). Im Simulator 26.2 geprüft: eingespeiste Werte kommen an,
   unabhängig von der Physical ID (`test/rf_makro.lua`).
 - Heli-Bild (heli.png, heli_m.png, heli_k.png) entfernt: kein Bildspeicher mehr nötig.
@@ -153,14 +153,14 @@ Korrekturen am Studio-Teil nach dem Sendertest von Elektro 0.3.2 (dieselben Schw
 - Automatische Sensorsuche nach den gemeinsamen «Vorgaben Sensorzuordnung»: FrSky-Sensoren werden an AppID und
   Teilwert erkannt (gemeinsame Tabelle `kennung.lua`), nicht mehr am Namen. Je Feld gilt eine feste Rangfolge, z. B.
   Akkuspannung ESC → Spannung (0x0210) → RB-35 Bat1 → Bat1 → RB → RB-25 → D-Hub; BEC: BEC-Spannung → Empf.-Batt. →
-  RB-Ausgang; Reglertemperatur: ESC Temp. vor Temp. 1; Drehzahl: Rotorflight «Headspeed» → Drehzahl (0x0500) → ESC U/min.
-- Rotorflight-Belegung beachtet: 0x0900 (Spannung der Steuerplatine) nie als Akku, 0x0910 (Ø-Zelle) als Zellenspannung,
+  RB-Ausgang; Reglertemperatur: ESC Temp. vor Temp. 1; Drehzahl: «Headspeed» → Drehzahl (0x0500) → ESC U/min.
+- Abweichende Belegung bei Flybarless-Systemen beachtet: 0x0900 (Spannung der Steuerplatine) nie als Akku, 0x0910 (Ø-Zelle) als Zellenspannung,
   0x0222/0x0229 (BEC-Strom) nie als Akkustrom, 0x0600 als Akku-%. Ein 0x0600-Wert über 100 (Betaflight/INAV: mAh)
   gilt nicht als Akku-%.
 - Mehrere passende Sensoren (Instanzen oder gleiche AppID auf mehreren Physical IDs): Wahl nach gültigem Wert, dann
   tiefster Instanz, dann Standard-Physical-ID; im Menü steht «n Sensoren passen, gewählt: … – bitte prüfen».
 - Im Menü steht neben jedem Sensorfeld AppID und Physical ID (z. B. «[0B50/0A]»).
-- Sensoren ohne Kennung (Rotorflight-DIY 0x5xxx, berechnete Sensoren, ELRS/CRSF): wie bisher über Name und Einheit.
+- Sensoren ohne Kennung (eigene Sensoren 0x5xxx, berechnete Sensoren, ELRS/CRSF): wie bisher über Name und Einheit.
   Per Lua angelegte Sensoren ohne Teilwert werden bei gepackten AppIDs über die Einheit zugeordnet.
 - Speicher: Die Suche (`suche.lua`, `kennung.lua`) wird nur während der Suche geladen und danach freigegeben.
   Speicherformat unverändert (5): gespeicherte Zuordnungen und Einstellungen bleiben.
@@ -205,7 +205,7 @@ Korrekturen am Studio-Teil nach dem Sendertest von Elektro 0.3.2 (dieselben Schw
   Summe seiner Zellen (z. B. 15,94 V statt 3,98 V), und Zellenanzeige und Zellenalarm stimmten nicht. Ein anderer
   Sensor über 5 V gilt als Gesamtspannung und wird durch die eingestellte Zellenzahl geteilt.
 - Automatische Sensorsuche: «LiPo» (FLVSS) wird als Zellenspannung erkannt (nicht mehr als Akkuspannung),
-  «Kraftstoff» (deutscher Ethos-Name des Fuel-Sensors, bei Rotorflight die Restladung) als Akku %.
+  «Kraftstoff» (deutscher Ethos-Name des Fuel-Sensors, bei Flybarless-Systemen oft die Restladung) als Akku %.
   Befund aus dem Telemetrie-Simulator (Ethos 26.2.0).
 - Anleitung: Hinweis zur Reglertemperatur, die Ethos bei 100 °C begrenzt.
 
@@ -279,4 +279,4 @@ Korrekturen am Studio-Teil nach dem Sendertest von Elektro 0.3.2 (dieselben Schw
 
 ## 1.0.0
 - Erste Fassung: Vollbild-Anzeige, Warnung Reglertemperatur ab 80 °C, Drehzahlansage bei Gas −25 %,
-  Flugzähler, automatische Sensorsuche (Rotorflight und übliche FrSky-Namen), Anpassung an 480 × 320.
+  Flugzähler, automatische Sensorsuche (Flybarless-Sensoren und übliche FrSky-Namen), Anpassung an 480 × 320.

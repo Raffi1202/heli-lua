@@ -6,7 +6,7 @@
 
 Full screen: model name, time, profile/rate, signal, radio battery at the top; gauges for battery %, head speed, current and ESC temperature (each with MAX = highest value with this battery); fields for Governor with ARMED/SAFE and flight count (tap = flight list), flight mode, BEC voltage and cell voltage (LOW = lowest value) and used mAh with **RESET**. `--` means: no telemetry or no sensor assigned.
 
-**Governor (Rotorflight):** OFF, IDLE, SPOOLUP, RECOVERY, BAILOUT, BYPASS, ACTIVE, HOLD, AUTOROTATION, LOST HEADSPEED (red, tone, vibration, announcement). Without Rotorflight values it shows «--» and «Rotorflight only». ARMED/SAFE comes from the arming flags, otherwise from the motor switch.
+**Governor (if the flybarless system sends it as telemetry):** OFF, IDLE, SPOOLUP, RECOVERY, BAILOUT, BYPASS, ACTIVE, HOLD, AUTOROTATION, LOST HEADSPEED (red, tone, vibration, announcement). Without governor telemetry it shows «--» and «--». ARMED/SAFE comes from the arming flags, otherwise from the motor switch.
 
 ## Compact view
 In the layout with bars the widget draws a narrow top bar (flight time, ARMED/SAFE, profile/rate, signal), four gauges and eight fields: Governor, Cell, Used (tap = reset), BEC, Flight mode, Signal, Power and Flights. The size is detected automatically.

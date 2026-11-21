@@ -2,7 +2,7 @@
 
 # Installation
 
-**Du brauchst:** einen FrSky-Sender mit Ethos (26.1 oder neuer) und Farbbildschirm, einen Computer mit der FrSky Suite und das USB-Kabel, dazu einen Heli mit Telemetrie über den FrSky-Empfänger (Rotorflight, FrSky-Sensoren über FBUS/S.Port oder ein Telemetrie-Regler). Die Sensoren vorher im Modell suchen (Modell › Telemetrie › Neue Sensoren suchen).
+**Du brauchst:** einen FrSky-Sender mit Ethos (26.1 oder neuer) und Farbbildschirm, einen Computer mit der FrSky Suite und das USB-Kabel, dazu einen Heli mit Telemetrie über den FrSky-Empfänger (jedes Flybarless-System oder jeder Regler mit Telemetrie, oder FrSky-Sensoren über S.Port/FBUS). Die Sensoren vorher im Modell suchen (Modell › Telemetrie › Neue Sensoren suchen).
 
 ## Mit der FrSky Suite
 1. `Heli-1.13.0-share.zip` entpacken. Darin liegen die Anleitungen, `LIES MICH.txt` und das Paket `Heli-1.13.0.zip`. **Das Paket nicht entpacken.**

@@ -14,7 +14,7 @@ englisch en-US-Wavenet-F. Vorne und hinten keine Stille, weil direkt danach die 
 | `alarm_bec` | BEC-Spannung | BEC voltage | BEC als Wort gesprochen («Beck»), nicht buchstabiert (Wahl des Auftraggebers) | BEC-Spannung im roten Bereich, danach die Zahl mit «Volt» |
 | `alarm_verbrauch` | Verbrauch | Capacity used | – | Verbrauch im roten Bereich, danach die Zahl mit «Milliamperestunden» |
 | `autorotation` | Autorotation | Autorotation | – | nach Motor aus per Motorschalter bei drehendem Rotor, alle 3 s, bis der Rotor steht |
-| `drehzahl_verloren` | Achtung! Drehzahl verloren | Warning! Headspeed lost | «Headspeed» englisch | Rotorflight-Governor wechselt auf «Fallback» (Drehzahlsignal fehlt), einmal beim Wechsel, ohne Zahl (seit 1.9.0) |
+| `drehzahl_verloren` | Achtung! Drehzahl verloren | Warning! Headspeed lost | «Headspeed» englisch | Governor wechselt auf «Fallback» (Drehzahlsignal fehlt), einmal beim Wechsel, ohne Zahl (seit 1.9.0) |
 
 Zahlen und Einheiten spricht Ethos selbst in der Sprache des Senders (`system.playNumber`). Die Drehzahlansage ist
 nur eine Zahl ohne Datei. Fehlt eine Datei, bleibt beim Alarm Ton und Zahl, bei «Autorotation» kommen drei kurze Töne.

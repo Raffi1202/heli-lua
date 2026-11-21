@@ -201,7 +201,8 @@ function L.wecke(w, now, H)
     if w.akt ~= nil then S.zx = {} end
     S.flug = w.akt
   end
-  local a = w.fensterJetzt and S.ansichten[w.fensterJetzt]
+  local wh = w.fensterJetzt
+  local a = wh and (S.ansichten[wh] or (S.skaliert and S.skaliert[wh]))
   if a == nil then return end
   for i, q in ipairs(a.plaetze) do
     if q.zusatz ~= "keine" or q.darst == "kurve" then

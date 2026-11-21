@@ -6,6 +6,7 @@ Full details: [CHANGELOG.md](../../CHANGELOG.md) (German).
 
 | Version | Main changes |
 |---|---|
+| 1.14.0 | The Studio layout is always found: the widget searches `SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/`; if the file name does not match the model, choose the file in the widget menu under «Studio layout» (the choice wins over the model name). If no view matches the window size exactly, the view with the most similar aspect ratio is scaled to fit (5 s note «Studio: view 800x480 adapted»); decoration is left out in a scaled view, places that get too small become a number or are left out. A broken file or a missing view shows a note line at the bottom. New info-file fields studioQuelle, studioWahl, ansichtGenutzt, angepasst, hinweis. Storage format 7 (battery type shares a slot), settings from 1.5.0–1.13.1 are kept. |
 | 1.13.1 | Governor field shows «no governor» without governor telemetry; docs for any heli with telemetry. |
 | 1.13.0 | Renamed from «Heli RF» to «Heli» (key and folder `heli`, Studio file `<ID>.heli.lua`) – breaking, see [Upgrading](Installation.md#upgrading-from-heli-rf). |
 | 1.12.0 | «Also with motor off» per alarm (menu and Lua-Studio), memory freed after a model change, a Studio entry without thresholds no longer switches an alarm off. Pre-release. |

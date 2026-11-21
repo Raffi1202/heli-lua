@@ -3,7 +3,7 @@
 local K = {}
 local floor, max, min = math.floor, math.max, math.min
 
-local FORMAT = 6                 -- Kennung des Speicherformats (bei geänderter Reihenfolge erhöhen)
+local FORMAT = 7                 -- Kennung des Speicherformats (bei geänderter Reihenfolge erhöhen)
 local DT_BILD = 0.2              -- Bild höchstens alle 0,2 s neu zeichnen
 local MAX_FLUEGE = 20            -- so viele Flüge bleiben in der Liste
 
@@ -18,6 +18,7 @@ local QUELLEN = {
 }
 
 -- Zahlen: Name, ab Werk, kleinster, grösster Wert (Reihenfolge = Reihenfolge im Speicher, Neues nur ans Ende)
+local OHNE_PLATZ = { mAus = true, akkutyp = true }   -- ab Format 7 ohne eigenen Platz im storage
 local ZAHLEN = {
   { "zellen", 0, 0, 14 }, { "kapaz", 0, 0, 30000 },
   { "rpmMax", 2400, 500, 6000 }, { "aMax", 250, 10, 500 }, { "tMax", 100, 50, 150 },
@@ -40,14 +41,17 @@ local ZAHLEN = {
   { "akkutyp", 1, 1, 3 },
   -- ab Format 6: «auch bei Motor aus» je Alarm als Bitmaske (1 Reglertemp., 2 Akku %, 4 Zelle, 8 BEC, 16 Verbrauch),
   -- gesetztes Bit = Alarm kommt auch bei Motorschalter aus (ab Werk alle). Im storage kein eigener Platz (fasst nur ~51
-  -- Werte): steckt im Platz von swAus, gespeichert als swAus + 4 × (31 − mAus). Muss der letzte Eintrag bleiben.
+  -- Werte): steckt im Platz von swAus, gespeichert als swAus + 4 × (31 − mAus).
   { "mAus", 31, 0, 31 },
+  -- ab Format 7: gewählte Studio-Datei als Kennzahl des Pfads (0 = automatisch nach Modellname). Dafür steckt akkutyp
+  -- im Platz von autoSek (autoSek + 32 × (akkutyp − 1)); akkutyp und mAus haben keinen eigenen Platz.
+  { "studio", 0, 0, 16777215 },
 }
 -- Ältere Speicherformate werden weiter gelesen: Zahl der Quellen und Zahlen je Format
 -- Zellen-Alarm ab Werk je Akkutyp in 1/100 V: { orange, rot }. LiPo und LiHV 3,60 / 3,50 V, Li-Ion 3,10 / 3,00 V.
 local ZELLE_WERK = { { 360, 350 }, { 360, 350 }, { 310, 300 } }
 
-local ALT = { [1] = { 13, 15 }, [2] = { 13, 27 }, [3] = { 14, 28 }, [4] = { 14, 34 }, [5] = { 13, 35 } }
+local ALT = { [1] = { 13, 15 }, [2] = { 13, 27 }, [3] = { 14, 28 }, [4] = { 14, 34 }, [5] = { 13, 35 }, [6] = { 13, 35 } }
 -- Ab Format 5 belegt das alte, unbenutzte Feld «Akku-Profil» keinen Speicherplatz mehr (dafür der Akkutyp): Ethos
 -- speichert nur rund 51 Werte je Widget (gemessen 26.1.2). Format 5: fmt + 13 Quellen + 35 Zahlen + ende = 50.
 -- Format 6: «mAus» teilt sich den Platz mit swAus, weiter 50 Werte (1 Reserve; für mehr Einstellungen eine eigene Datei).
@@ -77,7 +81,9 @@ local TEXT = {
     tief = "LOW", nullen = "RESET", zEin = "SET CELLS", zEin2 = "in menu", fluege = "Flights", flug = "Flight", profil = "Profile", rate = "Rate",
     gov = "GOVERNOR", kopfRpm = "Head", scharf = "ARMED", sicher = "SAFE", empfang = "SIGNAL", zeit = "FLIGHT TIME",
     fluegeK = "FLIGHTS", laeuft = "running", pause = "paused", nurRf = "no governor", klein = "zone too small",
-    studioKaputt = "Studio file broken - default", studioZuNeu = "Studio file too new - update the Lua",
+    studioKaputt = "Studio file broken - default", sKaputt = "Studio: file faulty (%s)", sSyntax = "syntax",
+    sZuNeu = "too new, update the Lua", sKeine = "Studio: no matching view", sAngepasst = "Studio: view %s adapted",
+    sWeg = ", %d left out", studioZuNeu = "Studio file too new - update the Lua",
     studioFehler = "Studio file: %s errors", funkeVerworfen = "Changes on the radio discarded", funkeNicht = "Change not saved",
     symFehlen = "Studio: %s symbols missing", leistung = "POWER", govN = { [0] = "OFF", "IDLE", "SPOOLUP", "RECOVERY", "ACTIVE", "HOLD", "LOST HEADSPEED", "AUTOROTATION", "BAILOUT", "BYPASS" } },
   { akku = "AKKU", rpm = "DREHZAHL", strom = "STROM", temp = "REGLERTEMP.", uRpm = "U/MIN", uA = "AMPERE",
@@ -85,7 +91,9 @@ local TEXT = {
     tief = "TIEF", nullen = "AUF 0", zEin = "ZELLEN?", zEin2 = "im Menü", fluege = "Flüge", flug = "Flug", profil = "Profil", rate = "Rate",
     gov = "GOVERNOR", kopfRpm = "Kopf", scharf = "SCHARF", sicher = "SICHER", empfang = "EMPFANG", zeit = "FLUGZEIT",
     fluegeK = "FLÜGE", laeuft = "läuft", pause = "Pause", nurRf = "kein Governor", klein = "Feld zu klein",
-    studioKaputt = "Studio-Datei kaputt - Standard", studioZuNeu = "Studio-Datei zu neu - Lua aktualisieren",
+    studioKaputt = "Studio-Datei kaputt - Standard", sKaputt = "Studio: Datei fehlerhaft (%s)", sSyntax = "Syntax",
+    sZuNeu = "zu neu, Lua aktualisieren", sKeine = "Studio: keine passende Ansicht", sAngepasst = "Studio: Ansicht %s angepasst",
+    sWeg = ", %d weggelassen", studioZuNeu = "Studio-Datei zu neu - Lua aktualisieren",
     studioFehler = "Studio-Datei: %s Fehler", funkeVerworfen = "Änderungen an der Funke verworfen", funkeNicht = "Änderung nicht gespeichert",
     symFehlen = "Studio: %s Symbole fehlen", leistung = "LEISTUNG", govN = { [0] = "AUS", "LEERLAUF", "HOCHLAUF", "WIEDERANLAUF", "AKTIV", "HOLD", "DREHZAHL VERLOREN", "AUTOROTATION", "BAILOUT", "BYPASS" } },
 }
@@ -371,7 +379,7 @@ function K.lies(w)
   local fmt = hol("fmt")
   local nq, nz
   if fmt == FORMAT then
-    nq, nz = #quellenSpeicher(fmt), #ZAHLEN - 1          -- mAus steckt im Platz von swAus
+    nq, nz = #quellenSpeicher(fmt), #ZAHLEN - 2          -- mAus und akkutyp ohne eigenen Platz
   elseif fmt ~= nil and ALT[fmt] then
     nq, nz = ALT[fmt][1], ALT[fmt][2]
   else
@@ -385,8 +393,19 @@ function K.lies(w)
     return
   end
   for i, f in ipairs(quellenSpeicher(fmt)) do c[f[1]] = istQuelle(q[i]) and q[i] or nil end
-  for i, f in ipairs(ZAHLEN) do
-    if i <= nz then c[f[1]] = gut(z[i]) end           -- neuere Zahlen bleiben auf dem Werkswert
+  if fmt >= 7 then
+    local j = 0
+    for _, f in ipairs(ZAHLEN) do
+      if not OHNE_PLATZ[f[1]] then j = j + 1 c[f[1]] = gut(z[j]) end
+    end
+    if c.autoSek then                                   -- autoSek + 32 × (akkutyp − 1) zerlegen
+      local roh = floor(c.autoSek + 0.5)
+      c.autoSek, c.akkutyp = roh % 32, 1 + roh // 32
+    end
+  else
+    for i, f in ipairs(ZAHLEN) do
+      if i <= nz then c[f[1]] = gut(z[i]) end         -- neuere Zahlen bleiben auf dem Werkswert
+    end
   end
   if fmt >= 6 and c.swAus then                          -- swAus + 4 × (31 − mAus) zerlegen
     local roh = floor(c.swAus + 0.5)
@@ -423,7 +442,9 @@ function K.schreibe(w)
   for i, f in ipairs(ZAHLEN) do
     local x = e[f[1]] or f[2]
     if f[1] == "swAus" then x = x + 4 * (31 - (e.mAus or 31)) end   -- mAus im selben Platz
-    if f[1] ~= "mAus" then pcall(storage.write, "z" .. i, x) end
+    if f[1] == "autoSek" then x = x + 32 * ((e.akkutyp or 1) - 1) end   -- akkutyp im selben Platz
+    if f[1] == "studio" then x = c.studio or 0 end      -- Wahl der Studio-Datei gilt immer aus dem Widget
+    if not OHNE_PLATZ[f[1]] then pcall(storage.write, "z" .. i, x) end
   end
   pcall(storage.write, "ende", FORMAT)
 end
@@ -1024,6 +1045,74 @@ local function symStart(w, roh)
 end
 
 -- Hinweis: Band unten (8 s), danach «!» oben rechts bis zum nächsten Modellwechsel; Text auch ins Log
+-- ===== Fenstergrösse ohne genau passende Ansicht: ähnlichstes Seitenverhältnis, proportional umrechnen (einmal je Grösse) =====
+local DARST_MIN = { zahl = { 90, 50 }, ring = { 110, 110 }, balken_w = { 140, 40 }, balken_s = { 50, 110 },
+  kurve = { 180, 90 }, status = { 120, 40 } }   -- wie studio.lua M.DARST (Bezug Breite 800)
+
+local function kopfHoehe(B, H)                  -- eigene Kopfzeile, die über den Plätzen liegt (wie in zeichnen)
+  if H < B * 0.5 then return 34 * min(B / 784, H / 316) end
+  return 58 * min(B / 800, H / 480)
+end
+
+local function ansichtFuer(w, wh)
+  local S = w.studio
+  if not S or not wh then return nil end
+  return S.ansichten[wh] or (S.skaliert and S.skaliert[wh]) or nil
+end
+
+local function skaliere(Q, B, H)
+  local ks0, kt0 = kopfHoehe(Q.breite, Q.hoehe), kopfHoehe(B, H)
+  local kx, ky = B / Q.breite, (H - kt0) / (Q.hoehe - ks0)
+  local A = { breite = B, hoehe = H, plaetze = {}, roh = Q.roh, weg = 0,
+    deko = { kx = kx, ky = ky, ks0 = ks0, kt0 = kt0, B = B, H = H } }
+  for _, q in ipairs(Q.plaetze) do
+    local y0 = math.max(q.y, ks0)
+    local n = {}
+    for k, v in pairs(q) do if k ~= "r" then n[k] = v end end
+    n.x, n.y = floor(q.x * kx + 0.5), floor(kt0 + (y0 - ks0) * ky + 0.5)
+    n.b, n.h = floor(q.b * kx), floor((q.y + q.h - y0) * ky)
+    if n.x + n.b > B then n.b = B - n.x end
+    if n.y + n.h > H then n.h = H - n.y end
+    local function passt(d) local m = DARST_MIN[d] return n.b >= floor(m[1] * B / 800 + 0.5) and n.h >= floor(m[2] * B / 800 + 0.5) end
+    if not passt(n.darst) and n.darst ~= "status" and passt("zahl") then n.darst = "zahl" end
+    if passt(n.darst) and n.h > 0 then A.plaetze[#A.plaetze + 1] = n else A.weg = A.weg + 1 end
+  end
+  return A
+end
+
+-- im wakeup: für die aktuelle Fenstergrösse die genutzte Ansicht bestimmen, bei Bedarf umrechnen, Hinweise setzen
+local function studioUmrechnen(w, now)
+  local S, wh = w.studio, w.fensterJetzt
+  S.skaliert, S.keine = S.skaliert or {}, S.keine or {}
+  if S.ansichten[wh] then
+    if w.ansichtGenutzt ~= wh then w.ansichtGenutzt, w.angepasst, w.infoOffen = wh, false, true end
+    return
+  end
+  if S.skaliert[wh] or S.keine[wh] then return end
+  local B, H = wh:match("^(%d+)x(%d+)$")
+  B, H = tonumber(B), tonumber(H)
+  local T = TEXT[sprache(w.cfg)]
+  local best, bd, bf = nil, nil, nil
+  for _, Q in pairs(S.ansichten) do
+    local d = math.abs(math.log((Q.breite / Q.hoehe) / (B / H)))
+    local fl = Q.breite * Q.hoehe
+    if best == nil or d < bd - 1e-9 or (math.abs(d - bd) <= 1e-9 and fl > bf) then best, bd, bf = Q, d, fl end
+  end
+  if best == nil or not B then
+    S.keine[wh] = true
+    w.sFest, w.sAusruf, w.ansichtGenutzt, w.angepasst, w.infoOffen = T.sKeine, true, "", false, true
+    print("Heli: " .. T.sKeine)
+    return
+  end
+  local A = skaliere(best, B, H)
+  S.skaliert[wh] = A
+  local quelle = best.breite .. "x" .. best.hoehe
+  w.ansichtGenutzt, w.angepasst, w.infoOffen = quelle, true, true
+  local t = string.format(T.sAngepasst, best.breite .. "x" .. best.hoehe) .. (A.weg > 0 and string.format(T.sWeg, A.weg) or "")
+  w.sHinweis, w.sHinweisBis, w.sAusruf, w.sNurKurz = t, now + 5, true, true
+  print("Heli: " .. t .. " -> " .. wh)
+end
+
 local function studioHinweis(w, text, now)
   w.sHinweis, w.sHinweisBis, w.sAusruf = text, now + STUDIO_HINWEIS_S, true
   print("Heli: " .. text)
@@ -1072,7 +1161,8 @@ local function studioWecke(w, now)
     local J = STUDIO.schritt(w, STUDIO_H)
     if J == nil then return true end
     w.studioFertig, w.infoOffen, w.studioZustand, w.studioFehler = true, true, J.zustand, nil
-    w.sHinweis, w.sAusruf = nil, nil
+    w.sHinweis, w.sAusruf, w.sFest, w.sNurKurz = nil, nil, nil, nil
+    w.studioQuelle, w.studioWahl, w.ansichtGenutzt, w.angepasst = J.quelle, J.wahl, nil, false
     symFrei(w)
     local okL, eL = true, nil
     if J.zustand == "geladen" then okL, eL = pcall(lauf) end
@@ -1086,8 +1176,10 @@ local function studioWecke(w, now)
     else
       if not okL then print("Heli: studiolauf.lua nicht ladbar: " .. tostring(eL)) end
       studioWeg(w)
-      if J.zustand == "kaputt" then studioHinweis(w, T.studioKaputt, now)
-      elseif J.zustand == "zuNeu" then studioHinweis(w, T.studioZuNeu, now) end
+      if J.zustand == "kaputt" or J.zustand == "zuNeu" then          -- Datei gefunden, aber Standardanzeige: fester Hinweis
+        w.sFest, w.sAusruf = string.format(T.sKaputt, J.zustand == "zuNeu" and T.sZuNeu or T.sSyntax), true
+        print("Heli: " .. w.sFest)
+      end
     end
     return true
   end
@@ -1136,10 +1228,14 @@ function K.wecke(w)
   if not w.studioFertig or w.studio or w.infoOffen or STUDIO then schwer = studioWecke(w, now) end
   -- Plätze der sichtbaren Studio-Ansicht vorbereiten (paint zeichnet nur), je Aufruf höchstens 4
   if not schwer and w.studio and ANSICHT and ZS and w.seite ~= 2 then
-    local a = w.fensterJetzt and w.studio.ansichten[w.fensterJetzt]
+    local a = ansichtFuer(w, w.fensterJetzt)
     if a then ANSICHT.vorbereiten(w, ZS, a, lauf(), 4) end
   end
-  if w.sHinweis and now >= w.sHinweisBis then w.sHinweis = nil end
+  if w.sHinweis and now >= w.sHinweisBis then
+    w.sHinweis = nil
+    if w.sNurKurz then w.sAusruf, w.sNurKurz = w.sFest ~= nil, nil end   -- «angepasst»: danach nichts mehr
+  end
+  if not schwer and w.studio and w.fensterJetzt then studioUmrechnen(w, now) end
   if w.tSchreib and now >= w.tSchreib then
     w.tSchreib = nil
     schreibeDaten(w)
@@ -1544,10 +1640,10 @@ end
 -- Studio-Hinweis: ein Band unten, 24 Pixel hoch, dunkel, über den Plätzen; danach «!» oben rechts
 local function studioBand(w, W, H, oben)
   if not w.sAusruf then return end
-  if w.sHinweis then
+  if w.sHinweis or w.sFest then
     lcd.color(lcd.RGB(0, 0, 0))
     lcd.drawFilledRectangle(0, H - 24, W, 24)
-    textPx(W / 2, H - 12, w.sHinweis, 17, C.orange, CENTERED, true, W - 8)
+    textPx(W / 2, H - 12, w.sHinweis or w.sFest, 17, C.orange, CENTERED, true, W - 8)
   else
     local r = 9
     lcd.color(C.orange)
@@ -1609,7 +1705,7 @@ local function zeichnen(w)
   lcd.drawFilledRectangle(0, 0, W, H)
   ZW, w.nZiele = w, 0
   -- Ansicht der Studio-Datei für genau diese Fenstergrösse (ersetzt Seite 1 bzw. die Kompaktansicht unter der Leiste)
-  local A = w.studio and w.seite ~= 2 and w.studio.ansichten[wh]
+  local A = w.studio and w.seite ~= 2 and ansichtFuer(w, wh)
   if klein and w.seite ~= 2 then
     if A then
       local k = min(W / 784, H / 316)
@@ -2035,6 +2131,27 @@ function K.menue(w)
         end)
     end
   end })
+
+  -- Studio-Layout: Liste nur hier beim Öffnen des Menüs bauen (alle *.heli.lua der Suchorte), 0 = automatisch
+  local okM, MS = pcall(studioLaden)
+  local wahl = { { tr("automatisch (Modellname)", "automatic (model name)"), 0 } }
+  local da = (c.studio or 0) == 0
+  if okM then
+    local okD, l = pcall(MS.dateien)
+    for _, e in ipairs(okD and l or {}) do
+      wahl[#wahl + 1] = { e.name:sub(1, -(#MS.LUA + 6)) .. " (" .. tostring(e.ort) .. ")", e.z }
+      if e.z == c.studio then da = true end
+    end
+  end
+  if not da then wahl[#wahl + 1] = { tr("(Datei fehlt)", "(file missing)"), c.studio } end
+  form.addChoiceField(form.addLine(tr("Studio-Layout", "Studio layout")), nil, wahl,
+    function() return c.studio or 0 end, function(x)
+      c.studio = x
+      if w.cfgWidget then w.cfgWidget.studio = x end
+      K.schreibe(w)
+      if w.studio then studioWeg(w) end                 -- eigene Werte zurück, dann neu laden
+      w.studioFertig, w.studioJob, w.funkeOffen, w.sFest, w.sAusruf = false, nil, false, nil, nil
+    end)
 
   local p = gruppe(tr("Sensoren", "Sensors"))
   for _, f in ipairs(QUELLEN) do

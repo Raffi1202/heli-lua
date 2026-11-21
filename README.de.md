@@ -8,6 +8,8 @@ Lua-Widget für FrSky-Sender mit Ethos (ab 26.1) und Farbdisplay, für **jeden H
 oder jeder Regler, der Telemetrie sendet, oder FrSky-Sensoren). Es zeigt die Telemetrie im Vollbild oder kompakt mit den Ethos-Leisten, den Governor mit SCHARF/SICHER (wenn das Flybarless-System ihn als Telemetrie sendet), überwacht fünf Werte in zwei
 Stufen, sagt Drehzahl und «Autorotation» an und führt eine Flugliste. Anzeige, Menü und Ansagen deutsch und englisch.
 
+**Neu in 1.14.0:** Studio-Layout wird immer gefunden: Suche in `SCRIPTS:/studio/`, `SD:/scripts/studio/` und `RADIO:/scripts/studio/`; passt der Dateiname nicht zum Modell, im Widget-Menü unter «Studio-Layout» die Datei wählen (die Wahl gewinnt). Passt keine Ansicht genau zur Fenstergrösse, wird die mit dem ähnlichsten Seitenverhältnis umgerechnet (5 s Hinweis «Studio: Ansicht 800x480 angepasst»); der Schmuck fällt in einer umgerechneten Ansicht weg, zu kleine Plätze werden Zahl oder entfallen. Kaputte Datei oder fehlende Ansicht: Hinweiszeile unten.
+
 **Neu in 1.13.0:** **Umbenannt von «Heli RF» (`helirf`), nicht rückwärtskompatibel:** In vorhandenen Modellen das Widget neu auswählen (die Einstellungen beginnen mit den Werkswerten); Studio-Dateien in `<Kennung>.heli.lua` umbenennen oder mit Lua-Studio neu übertragen. Eine alte `<Kennung>.helirf.lua` wird noch gelesen, mit dem Hinweis «old studio file found, please re-transfer» im Log. Flugzähler und Flugliste übernimmt Heli automatisch aus `scripts/helirf/daten/` (nur lesen, nie löschen); den alten Ordner darum stehen lassen, bis jedes Modell einmal benutzt wurde. Wird im Modell nur der Widget-Schlüssel von `helirf` auf `heli` umgestellt statt das Widget neu zu wählen, bleiben auch alle Einstellungen.
 
 **Neu in 1.12.0:** Je Alarm die Einstellung **«Auch bei Motor aus»** (ab Werk ein, auch in Lua-Studio wählbar): Ohne
@@ -24,16 +26,16 @@ geprüft (nur Mac-Prüfstand und Simulator).
 (bis 16 Kästchen je Ansicht mit Zahl, Ring, Balken, Verlauf oder Status), passt Werte an und setzt Einstellungen und
 Grenzwerte. Dafür liegt je Modell eine Studio-Datei auf dem Sender. **Ohne diese Datei läuft alles wie in 1.9.1.**
 
-**Version 1.13.1** · Vorabversion (public beta) · Lizenz GPL-3.0
+**Version 1.14.0** · Vorabversion (public beta) · Lizenz GPL-3.0
 
 ![Heli auf 800 × 480](docs/bilder-simulator/Heli%20-%20Sim%20800x480%2004%20Normal.png)
 
 ## Schnellstart in 5 Schritten
 
-1. Unter **Releases** (rechts auf der Repo-Seite) die Datei `Heli-1.13.1-share.zip` herunterladen und
-   entpacken. Das Paket `Heli-1.13.1.zip` darin **nicht** entpacken.
+1. Unter **Releases** (rechts auf der Repo-Seite) die Datei `Heli-1.14.0-share.zip` herunterladen und
+   entpacken. Das Paket `Heli-1.14.0.zip` darin **nicht** entpacken.
 2. Sender einschalten, per USB anschliessen, am Sender **Ethos Suite** wählen, die FrSky Suite öffnen.
-3. Suite › **Lua-Bibliothek** › **Von lokaler ZIP installieren** › `Heli-1.13.1.zip` › **Skripte installieren**.
+3. Suite › **Lua-Bibliothek** › **Von lokaler ZIP installieren** › `Heli-1.14.0.zip` › **Skripte installieren**.
    Danach Sender trennen und neu starten.
 4. Am Sender: Bildschirme › **+** › Layout **Vollbild** › ins Feld tippen › Widget **Heli**.
 5. Heli einschalten, im Widget-Menü in der Zeile «Sensoren automatisch suchen» auf **Suchen** tippen, die Zuordnung kontrollieren und unter

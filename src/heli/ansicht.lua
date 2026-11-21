@@ -363,7 +363,7 @@ function A.zeichne(w, Z, ans, s, ziel)
   local SY = w.sym
   if SY then                                            -- Format 2: Schmuck nach dem Hintergrund, vor den Plätzen
     SY.bildAnfang()
-    if ans.roh then SY.deko(ans.roh, 0, 0, C.titel) end
+    if ans.roh and not ans.deko then SY.deko(ans.roh, 0, 0, C.titel) end   -- umgerechnete Ansicht: ohne Schmuck
   end
   local P = ans.plaetze
   for i = 1, #P do

@@ -11,6 +11,43 @@ local M = {}
 local floor = math.floor
 
 M.ORDNER = "SCRIPTS:/studio/"
+-- Suchorte der Studio-Datei (Reihenfolge = Vorrang). .funke.lua und Info-Datei bleiben immer in M.ORDNER.
+M.ORTE = { "SCRIPTS:/studio/", "SD:/scripts/studio/", "RADIO:/scripts/studio/" }
+
+-- Kennzahl einer gewählten Datei (vollständiger Pfad) für den Widget-Speicher: 1 … 2^24 − 1, 0 = automatisch
+function M.kennzahl(pfad)
+  local h = 5381
+  for i = 1, #pfad do h = (h * 33 + pfad:byte(i)) % 16777213 end
+  return h + 1
+end
+
+-- Alle *.heli.lua (ohne .funke.lua) der Suchorte; Orte mit gleicher Dateiliste wie SCRIPTS: zählen nur einmal.
+-- Nur beim Öffnen des Menüs oder einmal beim Laden aufrufen (nie in jedem wakeup).
+function M.dateien()
+  local liste, erste = {}, nil
+  local endung = "." .. M.LUA .. ".lua"
+  for i, ort in ipairs(M.ORTE) do
+    local ok, l = pcall(system.listFiles, ort)
+    if ok and type(l) == "table" then
+      local namen = {}
+      for _, e in ipairs(l) do
+        local n = type(e) == "table" and e.name or e
+        if type(n) == "string" and #n > #endung and n:sub(-#endung) == endung and not n:find("%.funke%.lua$") then
+          namen[#namen + 1] = n
+        end
+      end
+      table.sort(namen)
+      local schluessel = table.concat(namen, "|")
+      if i == 1 then erste = schluessel end
+      if i == 1 or schluessel ~= erste or schluessel == "" then
+        for _, n in ipairs(namen) do
+          liste[#liste + 1] = { pfad = ort .. n, name = n, ort = ort:match("^(%u+):"), z = M.kennzahl(ort .. n) }
+        end
+      end
+    end
+  end
+  return liste
+end
 M.LUA = "heli"
 M.FORMAT = 2           -- höchstes Format, das diese Version liest (Format 2 seit 1.11.0)
 M.FORMATE = { 1, 2 }   -- für die Info-Datei
@@ -464,17 +501,53 @@ end
 function M.schritt(w, H)
   local J = w.studioJob
   if J == nil then
-    J = { stufe = 1, fehler = 0, k = M.kennung() }
-    J.basis = M.ORDNER .. J.k .. "." .. M.LUA
+    J = { stufe = 1, fehler = 0, k = M.kennung(), ort = 0, wahl = "auto" }
+    J.basis = M.ORDNER .. J.k .. "." .. M.LUA             -- .funke.lua immer hier
     J.datei = J.k .. "." .. M.LUA .. ".lua"
     w.studioJob = J
     return nil
   end
-  if J.stufe == 1 then                                   -- Studio-Datei laden
-    local d, grund = studioLaden(J.basis .. ".lua", M.FORMAT)
-    if not d and grund == "fehlt" then                   -- Übergang 1.13.0: alte Studio-Datei von «Heli RF» (helirf)
+  if J.stufe == 1 and J.ort == 0 then                    -- 1. ausdrückliche Wahl im Menü (gewinnt)
+    J.ort = 1
+    local z = w.cfg and w.cfg.studio or 0
+    if z ~= 0 then
+      for _, e in ipairs(M.dateien()) do
+        if e.z == z then J.gewaehlt = e break end
+      end
+      if J.gewaehlt then
+        J.wahl, J.quelle, J.datei = "menue", J.gewaehlt.pfad, J.gewaehlt.name
+        local d, grund = studioLaden(J.quelle, M.FORMAT)
+        if d then J.d, J.stufe = d, 2 return nil end
+        J.zustand = grund
+        print("Heli: Studio-Datei " .. J.quelle .. ": " .. tostring(grund))
+        w.studioJob = nil
+        return J
+      end
+      print("Heli: gewählte Studio-Datei nicht gefunden, automatisch")
+    end
+    return nil
+  end
+  if J.stufe == 1 and J.ort <= #M.ORTE then             -- 2. <Kennung>.heli.lua, je Aufruf ein Ort
+    local pfad = M.ORTE[J.ort] .. J.k .. "." .. M.LUA .. ".lua"
+    J.ort = J.ort + 1
+    local d, grund = studioLaden(pfad, M.FORMAT)
+    if grund == "fehlt" then return nil end
+    J.quelle = pfad
+    if not d then
+      J.zustand = grund
+      print("Heli: Studio-Datei " .. pfad .. ": " .. tostring(grund))
+      w.studioJob = nil
+      return J
+    end
+    J.d, J.stufe = d, 2
+    return nil
+  end
+  if J.stufe == 1 then                                   -- nirgends gefunden
+    local d, grund = nil, "fehlt"
+    if true then                   -- Übergang 1.13.0: alte Studio-Datei von «Heli RF» (helirf)
       local alt, gAlt = studioLaden(M.ORDNER .. J.k .. ".helirf.lua", M.FORMAT)
       if gAlt ~= "fehlt" then
+        J.quelle = M.ORDNER .. J.k .. ".helirf.lua"
         print("Heli: old studio file found (" .. J.k .. ".helirf.lua), please re-transfer with Lua-Studio")
         d, grund = alt, gAlt
       end
@@ -856,7 +929,10 @@ function M.infoSchritt(w, version, formate, H)
     .. ',\n "funke": ' .. jtext(ver.board) .. ',\n "ethos": ' .. jtext(ver.version)
     .. ',\n "fenster": [' .. table.concat(fenster, ", ") .. '],\n "studioDatei": ' .. jtext(st)
     .. ((st == "geladen" and (w.studioFehler or 0) > 0) and (',\n "fehler": ' .. w.studioFehler) or "")
-    .. ',\n "sensoren": [\n  ' .. table.concat(I.s, ",\n  ") .. '\n ]\n}\n'
+    .. ',\n "sensoren": [\n  ' .. table.concat(I.s, ",\n  ") .. '\n ]'
+    .. ',\n "studioQuelle": ' .. jtext(w.studioQuelle or "") .. ',\n "studioWahl": ' .. jtext(w.studioWahl or "auto")
+    .. ',\n "ansichtGenutzt": ' .. jtext(w.ansichtGenutzt or "") .. ',\n "angepasst": ' .. tostring(w.angepasst == true)
+    .. ',\n "hinweis": ' .. jtext(w.sFest or "") .. '\n}\n'
   w.infoJob = nil
   if t == w.infoAlt then return true end               -- nichts geändert: nicht schreiben (SD-Karte schonen)
   pcall(os.mkdir, "SCRIPTS:/studio")

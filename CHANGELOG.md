@@ -6,6 +6,10 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.14.0 (22.11.2026)
+
+- The Studio layout is always found: the widget searches `SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/`; if the file name does not match the model, choose the file in the widget menu under «Studio layout» (the choice wins over the model name). If no view matches the window size exactly, the view with the most similar aspect ratio is scaled to fit (5 s note «Studio: view 800x480 adapted»); decoration is left out in a scaled view, places that get too small become a number or are left out. A broken file or a missing view shows a note line at the bottom. New info-file fields studioQuelle, studioWahl, ansichtGenutzt, angepasst, hinweis. Storage format 7 (battery type shares a slot), settings from 1.5.0–1.13.1 are kept.
+
 ## 1.13.1 (21.11.2026)
 
 - Governor field without governor telemetry now shows «no governor» / «kein Governor» (was a system name).

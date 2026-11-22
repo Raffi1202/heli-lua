@@ -6,6 +6,10 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.14.2 (22.11.2026)
+
+- Box header (from radio test): no large bold unit any more – «bold» is shown like «unit at value» (small); if the title already contains the unit (e.g. «Battery %»), the unit is left out; next to a symbol the title is as high as the symbol (at most a third of the box). Same rule as Electric 0.7.3.
+
 ## 1.14.1 (22.11.2026)
 
 - Studio notes («view adapted», «file faulty», «no matching view») now appear in the widget's own header (instead of the model name, compact: instead of profile/rate) and no longer cover the bottom row of values. Fix: after returning to a window size with an exact view, «adapted» is reset. Info file: `hinweis` now also carries the «view adapted» text. Remaining system names removed from code comments and test names (`test/governor_makro.lua`). New Mac test: commands for scaled views (640x360, 480x320, 630x258, 472x210).

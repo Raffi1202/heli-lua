@@ -183,6 +183,10 @@ local function titelEinruecken(q, r, ein)
     e.x = floor(q.x + (tx + b - pad) / 2)
     e.breit = floor(max(8, b - tx - pad))
   end
+  -- 1.14.2 (wie Electric 0.7.3): Symbol nie grösser als der Titeltext, Titel so hoch wie das Symbol (höchstens 1/3 Platz)
+  e.px0 = e.px0 or e.px
+  if ein > 8 then e.px = min(ein - 8, max(e.px0, q.h * 0.33)) else e.px = e.px0 end
+  e.ym = q.y + r.pad + e.px / 2
   e.text, e.f = nil, nil
   r.einT = ein
 end
@@ -215,8 +219,19 @@ local function vorbereitePlatz(w, Z, q, ST, s)
   -- Format 2: Einheit des Werts für die Referenz (nil bei Flugzeit und Status); neben dem Wert nur bei einheitZeigen = true
   local amWert = true
   if roh then
-    roh._einheit = (not zt and q.darst ~= "status" and eh ~= "") and eh or nil
-    amWert = roh.einheitZeigen ~= false and roh.einheitZeigen ~= "fett"
+    -- 1.14.2 (Sendertest 22.11., wie Electric 0.7.3): keine grosse, fette Einheit im Kopf. «fett» gilt wie «Einheit am
+    -- Wert» (klein); steht die Einheit schon im Titel (z. B. «Akku %»), entfällt sie ganz.
+    local rk = q.rohK
+    if rk == nil then
+      rk = {}
+      for k, v in pairs(roh) do rk[k] = v end
+      if rk.einheitZeigen == "fett" then rk.einheitZeigen = true end
+      q.rohK = rk
+    end
+    rk._einheit = nil
+    amWert = rk.einheitZeigen ~= false
+    local tt = q.titel or name
+    if eh ~= "" and type(tt) == "string" and tt:find(eh, 1, true) then amWert = false end
   end
   local fehlt = (q.art == "sensor" or q.art == "kanal") and w.studio.quellen[q.w] == false
   local wz = fehlt and "---" or (x == nil and "--") or (zt and zeit(x)) or zahl(Z, x, dez)
@@ -293,7 +308,7 @@ local function zeichnePlatz(w, q, C, i)
   if not (r.leer or r.fertig) then return end
   local SY = w.sym
   if SY and q.roh then                                  -- Format 2: Symbol und fette Einheit, Titel rückt ein
-    local ein = SY.platz(q.roh, q.x, q.y, r.symF or r.cF)
+    local ein = SY.platz(q.rohK or q.roh, q.x, q.y, r.symF or r.cF)
     if ein ~= (r.ein or 0) then r.ein = ein end
   end
   if r.leer then return end

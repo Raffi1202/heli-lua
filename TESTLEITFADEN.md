@@ -1,4 +1,4 @@
-# Testleitfaden Heli 1.14.2
+# Testleitfaden Heli 1.14.3
 
 Danke, dass du Heli testest! Arbeite die Testfälle der Reihe nach durch und hake ab, was so klappt wie beschrieben.
 Klappt etwas nicht, melde es (ganz unten steht, wie). Ein Testfall dauert meistens ein bis zwei Minuten.
@@ -17,8 +17,8 @@ template «Fehler / Bug»; English is fine.*
   BEC-Spannung und Zellensensor sind willkommen, aber freiwillig.
 - Am Modell: die Sensoren schon gesucht (Modell › Telemetrie › Sensoren suchen).
 - Computer mit der FrSky Suite und das USB-Kabel des Senders.
-- Die Datei `Heli-1.14.2-share.zip` aus dem GitHub-Release (Seite «Releases» rechts im Repo). Darin liegen das
-  Paket `Heli-1.14.2.zip`, die Anleitung (deutsch und englisch) und eine Datei `LIES MICH.txt`.
+- Die Datei `Heli-1.14.3-share.zip` aus dem GitHub-Release (Seite «Releases» rechts im Repo). Darin liegen das
+  Paket `Heli-1.14.3.zip`, die Anleitung (deutsch und englisch) und eine Datei `LIES MICH.txt`.
 - Die Anleitung `Heli - Anleitung.pdf`. Die Testfälle verweisen auf ihre Kapitel.
 - Nur für Testfall 16 (Studio-Datei): die Testdateien aus diesem Repo, Ordner `test/studio/` (auf GitHub
   herunterladen), und den Sender als USB-Laufwerk (am Sender beim Anschliessen **USB-Laufwerk** bzw. «SD-Karte»
@@ -40,7 +40,7 @@ Notiere dir für die Meldung: Sender, Ethos-Version (System › Info) und welche
 
 ### 1. Installieren (Anleitung Kapitel 2)
 - [ ] Sender per USB anschliessen, am Sender **Ethos Suite** wählen. In der FrSky Suite: **Lua-Bibliothek** ›
-  **Von lokaler ZIP installieren** › `Heli-1.14.2.zip` (nicht entpacken) › **Skripte installieren**. Sender neu starten.
+  **Von lokaler ZIP installieren** › `Heli-1.14.3.zip` (nicht entpacken) › **Skripte installieren**. Sender neu starten.
 - **Erwartet:** Die Suite meldet keinen Fehler, «Heli» steht in der Liste der installierten Skripte. Nach dem
   Neustart erscheint keine Fehlermeldung.
 
@@ -270,7 +270,7 @@ Voraussetzung: Motorschalter zugewiesen (Testfall 7), Zellenspannung kommt an (o
 
 Ideen und Wünsche bitte mit der Vorlage **«Wunsch / Idee»**. Bitte keine Modelldateien anhängen.
 
-## Bekannte Grenzen von 1.14.2
+## Bekannte Grenzen von 1.14.3
 
 - 1.13.0: umbenannt von «Heli RF» (`helirf`) in «Heli» (`heli`). In vorhandenen Modellen das Widget neu auswählen;
   eine alte Studio-Datei `<Kennung>.helirf.lua` wird noch gelesen (Hinweis im Log).

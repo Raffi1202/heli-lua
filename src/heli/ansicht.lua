@@ -191,6 +191,20 @@ local function titelEinruecken(q, r, ein)
   r.einT = ein
 end
 
+-- 1.14.3: Steht die Einheit schon im Titel? Nur als eigenes Wort: davor Anfang, Leerzeichen oder Klammer auf, danach Ende,
+-- Leerzeichen, Klammer zu oder «%». So zählt «A» in «Akku» nicht, «%» in «Akku %» und «V» in «Akku (V)» schon.
+local function einheitImTitel(eh, t)
+  if type(eh) ~= "string" or eh == "" or type(t) ~= "string" then return false end
+  local i = 1
+  while true do
+    local a, b = t:find(eh, i, true)
+    if not a then return false end
+    local v, n = t:sub(a - 1, a - 1), t:sub(b + 1, b + 1)
+    if (v == "" or v:find("^[%s%(%[]")) and (n == "" or n:find("^[%s%)%]%%]")) then return true end
+    i = a + 1
+  end
+end
+
 -- Einen Platz vorbereiten (aus wakeup)
 local function vorbereitePlatz(w, Z, q, ST, s)
   local r = q.r
@@ -231,7 +245,7 @@ local function vorbereitePlatz(w, Z, q, ST, s)
     rk._einheit = nil
     amWert = rk.einheitZeigen ~= false
     local tt = q.titel or name
-    if eh ~= "" and type(tt) == "string" and tt:find(eh, 1, true) then amWert = false end
+    if einheitImTitel(eh, tt) then amWert = false end
   end
   local fehlt = (q.art == "sensor" or q.art == "kanal") and w.studio.quellen[q.w] == false
   local wz = fehlt and "---" or (x == nil and "--") or (zt and zeit(x)) or zahl(Z, x, dez)

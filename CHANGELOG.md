@@ -6,6 +6,10 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.14.3 (22.11.2026)
+
+- «Unit already in the title» now only counts the unit as a word of its own (before it: start, space or opening bracket; after it: end, space, closing bracket or %), so «A» in «Akku» no longer hides the unit.
+
 ## 1.14.2 (22.11.2026)
 
 - Box header (from radio test): no large bold unit any more – «bold» is shown like «unit at value» (small); if the title already contains the unit (e.g. «Battery %»), the unit is left out; next to a symbol the title is as high as the symbol (at most a third of the box). Same rule as Electric 0.7.3.

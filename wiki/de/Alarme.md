@@ -2,7 +2,7 @@
 
 # Alarme
 
-> **Vorabversion:** Version 1.14.2 ist im Ethos-Simulator getestet; der Sendertest an der X18RS folgt. Nutzung auf eigene Verantwortung.
+> **Vorabversion:** Version 1.14.3 ist im Ethos-Simulator getestet; der Sendertest an der X18RS folgt. Nutzung auf eigene Verantwortung.
 
 ## Grün, orange, rot
 Fünf Werte werden überwacht, jeder mit zwei Schwellen:

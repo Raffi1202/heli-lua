@@ -2,7 +2,7 @@
 
 # Alarms
 
-> **Pre-release:** version 1.14.2 is tested in the Ethos simulator; the transmitter test on the X18RS follows. Use at your own risk.
+> **Pre-release:** version 1.14.3 is tested in the Ethos simulator; the transmitter test on the X18RS follows. Use at your own risk.
 
 ## Green, orange, red
 Five values are monitored, each with two thresholds:

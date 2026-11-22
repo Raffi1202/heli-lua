@@ -6,6 +6,7 @@ Alle Einzelheiten: [CHANGELOG.md](../../CHANGELOG.md).
 
 | Version | Wichtigste Änderungen |
 |---|---|
+| 1.14.3 | «Einheit steht schon im Titel» zählt nur als eigenes Wort (Grenzen: Anfang/Ende, Leerzeichen, Klammer, %), «A» in «Akku» blendet die Einheit nicht mehr aus. |
 | 1.14.2 | Platzkopf: keine grosse, fette Einheit mehr («fett» wie «Einheit am Wert»), Einheit entfällt, wenn sie schon im Titel steht; Titel so hoch wie das Symbol (höchstens ein Drittel des Platzes). Wie Electric 0.7.3. |
 | 1.14.1 | Studio-Hinweise stehen in der eigenen Kopfzeile statt unten und verdecken keine Werte mehr. Info-Datei: «hinweis» enthält auch den Anpass-Text; Systemnamen aus Kommentaren und Testnamen entfernt; Mac-Test für umgerechnete Ansichten. |
 | 1.14.0 | Studio-Layout wird immer gefunden: Suche in `SCRIPTS:/studio/`, `SD:/scripts/studio/` und `RADIO:/scripts/studio/`; passt der Dateiname nicht zum Modell, im Widget-Menü unter «Studio-Layout» die Datei wählen (die Wahl gewinnt). Passt keine Ansicht genau zur Fenstergrösse, wird die mit dem ähnlichsten Seitenverhältnis umgerechnet (5 s Hinweis «Studio: Ansicht 800x480 angepasst»); der Schmuck fällt in einer umgerechneten Ansicht weg, zu kleine Plätze werden Zahl oder entfallen. Kaputte Datei oder fehlende Ansicht: Hinweiszeile unten. |

@@ -2,7 +2,7 @@
 -- Diese Datei meldet nur das Widget an. Die Arbeit steckt in kern.lua und wird erst beim ersten Gebrauch geladen.
 -- NAME, VERSION und INFO liest auch das Paket-Skript für die FrSky Suite.
 local NAME = "Heli"
-local VERSION = "1.14.2"
+local VERSION = "1.14.3"
 local INFO = "Vollbild-Anzeige für Helis: Tachos, Alarme in zwei Stufen, Drehzahl- und Autorotation-Ansage, Flugliste, Einstellungsdatei für Lua-Studio. Deutsch und Englisch."
 local K = nil
 local gemeldet = {}

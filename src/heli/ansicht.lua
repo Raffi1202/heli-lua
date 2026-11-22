@@ -320,7 +320,7 @@ local function zeichnePlatz(w, q, C, i)
   if not (r.leer or r.fertig) then return end
   local SY = w.sym
   if SY and q.roh then                                  -- Format 2: Symbol und fette Einheit, Titel rückt ein
-    local ein = SY.platz(q.rohK or q.roh, q.x, q.y, r.symF or r.cF, floor(r.titel.px), q.y + r.pad)   -- 1.14.4: Symbol auf Titelhöhe
+    local ein = SY.platz(q.rohK or q.roh)                -- 1.15.0: ohne Symbole, gibt 0 zurück
     if ein ~= (r.ein or 0) then r.ein = ein end
   end
   if r.leer then return end
@@ -390,7 +390,6 @@ function A.zeichne(w, Z, ans, s, ziel)
   local SY = w.sym
   if SY then                                            -- Format 2: Schmuck nach dem Hintergrund, vor den Plätzen
     SY.bildAnfang()
-    if SY.symbole then SY.symbole(w.symbole ~= false) end   -- 1.14.4: «Symbole anzeigen» aus dem Menü
     if ans.roh and not ans.deko then SY.deko(ans.roh, 0, 0, C.titel) end   -- umgerechnete Ansicht: ohne Schmuck
   end
   local P = ans.plaetze

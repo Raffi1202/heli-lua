@@ -6,6 +6,10 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.15.0 (22.11.2026)
+
+- Symbols removed completely (decision after the radio test): no symbol masks are loaded or drawn, the menu line «Show symbols» is gone; symbols in older Studio files and «symbole=» in data files are silently ignored. Decoration lines/frames/texts stay. Mac: p12_voll paint 5 994 → 4 463 commands, Lua memory with the file 657 → 617 KB.
+
 ## 1.14.4 (22.11.2026)
 
 - Symbols as large as the text: titles keep the normal size; the symbol in the box header uses the largest mask (12/16/24 px from Lua-Studio 0.10.6) not higher than the title, centred on the title line (shared reference studio_symbole.lua, as Electric 0.7.5). New menu line «Show symbols» (default on), stored in the model's data file.

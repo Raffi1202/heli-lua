@@ -6,6 +6,7 @@ Alle Einzelheiten: [CHANGELOG.md](../../CHANGELOG.md).
 
 | Version | Wichtigste Änderungen |
 |---|---|
+| 1.15.0 | Symbole ganz entfernt (Entscheid nach Sendertest), Menüzeile «Symbole anzeigen» weg; alte Symbole und «symbole=» still überlesen. paint p12_voll 5 994 → 4 463, Speicher 657 → 617 KB. |
 | 1.14.4 | Symbole so gross wie der Text (kleinere Masken 12/16 px aus Lua-Studio 0.10.6), Titel normal gross; Menüzeile «Symbole anzeigen» (Werk ein, in der Datendatei). |
 | 1.14.3 | «Einheit steht schon im Titel» zählt nur als eigenes Wort (Grenzen: Anfang/Ende, Leerzeichen, Klammer, %), «A» in «Akku» blendet die Einheit nicht mehr aus. |
 | 1.14.2 | Platzkopf: keine grosse, fette Einheit mehr («fett» wie «Einheit am Wert»), Einheit entfällt, wenn sie schon im Titel steht; Titel so hoch wie das Symbol (höchstens ein Drittel des Platzes). Wie Electric 0.7.3. |

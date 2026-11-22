@@ -488,32 +488,31 @@ allgemein("ohne Studio-Datei 800x480", r0)
 -- Tests 1–5, 15 (p01)
 local r = fall("p01_kaputte_png.heli.lua", { 800, 480 })
 allgemein("1–5,15 p01 800x480", r)
-pruefe(r.zustand == "geladen" and gleich(r.z, { 2, 8, 0 }), "1–5,15 p01: " .. grund(r) .. " (erwartet 2 / 8 / 0)")
+pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 0 }), "1–5,15 p01: " .. grund(r) .. " (erwartet 0 / 0 / 0)")
 do
-  local nur = #r.masken == 2
-  for _, p in ipairs(r.masken) do if not (p:find("/akku_48.png", 1, true) or p:find("/uhr_48.png", 1, true)) then nur = false end end
-  pruefe(nur, "1–5,15 p01: loadMask nur für akku_48 und uhr_48 (" .. #r.masken .. " Aufrufe: " .. table.concat(r.masken, ", "):gsub("SCRIPTS:/studio/symbole/", "") .. ")")
+  local nur = #r.masken == 0                          -- 1.15.0: Symbole entfernt, keine Symboldatei geöffnet
+  pruefe(nur, "1–5,15 p01: keine Symboldatei geöffnet (" .. #r.masken .. " Aufrufe: " .. table.concat(r.masken, ", "):gsub("SCRIPTS:/studio/symbole/", "") .. ")")
   local n = 0
   for _, z in ipairs(r.log) do if z:find("^Studio%-Symbol") then n = n + 1 end end
-  pruefe(n >= 8, "1–5,15 p01: je kaputter Datei eine Zeile print (" .. n .. " Zeilen «Studio-Symbol»)")
-  pruefe(logHat(r, "8 Symbole fehlen", "8 symbols missing"), "1 p01: Hinweis «Studio: 8 Symbole fehlen»")
+  pruefe(n == 0, "1–5,15 p01: keine Zeile «Studio-Symbol» (" .. n .. ")")
+  pruefe(not logHat(r, "8 Symbole fehlen", "8 symbols missing"), "1 p01: kein Symbol-Hinweis mehr")
 end
 
 -- Test 15 mit Displaybreite 640 (X14): alle 48-px-Dateien abgewiesen ausser fremdkante_48 (38 × 38)
 r = fall("p01_kaputte_png.heli.lua", { 630, 258 }, 640)
 allgemein("15 p01 B=640 630x258", r)
-pruefe(gleich(r.z, { 1, 9, 0 }), "15 p01 bei 640 px: " .. grund(r) .. " (erwartet 1 / 9 / 0)")
+pruefe(gleich(r.z, { 0, 0, 0 }), "15 p01 bei 640 px: " .. grund(r) .. " (erwartet 0 / 0 / 0)")
 
 -- Test 6 (p06)
 r = fall("p06_100_symbole.heli.lua", { 800, 480 })
 allgemein("6 p06 800x480", r)
-pruefe(r.zustand == "geladen" and gleich(r.z, { 20, 0, 80 }), "6 p06: " .. grund(r) .. " (erwartet 20 / 0 / 80)")
-pruefe(logHat(r, "Symbol", "symbol"), "6 p06: Hinweis zu den verworfenen Einträgen im Log")
+pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 0 }), "6 p06: " .. grund(r) .. " (erwartet 0 / 0 / 0)")
+pruefe(not logHat(r, "Symbole fehlen", "symbols missing"), "6 p06: Symbole still überlesen")
 
 -- Test 7 (p07)
 r = fall("p07_namen.heli.lua", { 800, 480 })
 allgemein("7 p07 800x480", r)
-pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 1, 9 }), "7 p07: " .. grund(r) .. " (erwartet 1 / 1 / 9)")
+pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 0 }), "7 p07: " .. grund(r) .. " (erwartet 0 / 0 / 0)")
 do
   local gut = true
   for _, p in ipairs(r.geoeffnet) do
@@ -527,29 +526,29 @@ end
 -- Test 8 (p08)
 r = fall("p08_px.heli.lua", { 800, 480 })
 allgemein("8 p08 800x480", r)
-pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 0, 7 }), "8 p08: " .. grund(r) .. " (erwartet 1 / 0 / 7)")
+pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 0 }), "8 p08: " .. grund(r) .. " (erwartet 0 / 0 / 0)")
 
 -- Test 9 (p09): gezeichnet 8 Rahmen, 2 Texte, 1 Linie, 1 Symbol, nichts in der Kopfzeile
 r = fall("p09_deko.heli.lua", { 800, 480 })
 allgemein("9 p09 800x480", r)
-pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 0, 18 }), "9 p09: " .. grund(r) .. " (erwartet 1 / 0 / 18)")
+pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 15 }), "9 p09: " .. grund(r) .. " (erwartet 0 / 0 / 15)")
 do
   local d, unter = r.dk, true
   for _, y in ipairs(r.dkY) do if y < (RES["800x480"] or 0) then unter = false end end
-  pruefe(d.rahmen == 8 and d.text == 2 and d.linie == 1 and d.symbol == 1 and unter,
-    string.format("9 p09: letztes Bild Schmuck %d Rahmen, %d Texte, %d Linie, %d Symbol (erwartet 8/2/1/1), unter der Kopfzeile %s",
+  pruefe(d.rahmen == 8 and d.text == 2 and d.linie == 1 and d.symbol == 0 and unter,
+    string.format("9 p09: letztes Bild Schmuck %d Rahmen, %d Texte, %d Linie, %d Symbol (erwartet 8/2/1/0), unter der Kopfzeile %s",
       d.rahmen, d.text, d.linie, d.symbol, tostring(unter)))
 end
 
 -- Test 10 (p10): nur Platz 3 zeigt das Symbol
 r = fall("p10_symbol_ohne_eintrag.heli.lua", { 800, 480 })
 allgemein("10 p10 800x480", r)
-pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 0, 3 }), "10 p10: " .. grund(r) .. " (erwartet 1 / 0 / 3)")
+pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 0 }), "10 p10: " .. grund(r) .. " (erwartet 0 / 0 / 0)")
 do
   local ein = 0
   for _, x in ipairs(r.platzRet) do if (x[1] or 0) > 0 then ein = ein + 1 end end
-  pruefe(#r.platzRet == 4 and ein == 1 and r.platzMasken == 1,
-    string.format("10 p10: S.platz %d× im letzten Bild, %d mit Einrückung, %d Masken gezeichnet (erwartet 4 / 1 / 1)", #r.platzRet, ein, r.platzMasken))
+  pruefe(#r.platzRet == 4 and ein == 0 and r.platzMasken == 0,
+    string.format("10 p10: S.platz %d× im letzten Bild, %d mit Einrückung, %d Masken gezeichnet (erwartet 4 / 0 / 0)", #r.platzRet, ein, r.platzMasken))
   pruefe(logHat(r, "Studio"), "10 p10: Hinweis im Log")
 end
 
@@ -582,7 +581,7 @@ for _, fe in ipairs({ { 800, 480 }, { 784, 316 } }) do
   r = fall("p12_voll.heli.lua", fe, 800, { profil = (os.getenv("FORMAT2_PROFIL") and fe[1] == 800) and 120 or nil })
   local name = string.format("12 p12 %dx%d", fe[1], fe[2])
   allgemein(name, r)
-  pruefe(r.zustand == "geladen" and gleich(r.z, { 20, 0, 0 }), name .. ": " .. grund(r) .. " (erwartet 20 / 0 / 0)")
+  pruefe(r.zustand == "geladen" and gleich(r.z, { 0, 0, 0 }), name .. ": " .. grund(r) .. " (erwartet 20 / 0 / 0)")
   pruefe(r.ersteNachStart ~= nil and r.ersteNachStart < GRENZE_PAINT, name .. ": erstes paint nach S.start " .. tostring(r.ersteNachStart) .. " Befehle (Test 17)")
   pruefe(r.bildAnfangN > 0 and r.dekoN > 0, name .. ": S.bildAnfang und S.deko in paint aufgerufen (" .. r.bildAnfangN .. " / " .. r.dekoN .. ")")
   local w = r.w
@@ -641,7 +640,7 @@ do
     local m = i % 2 == 1 and "Heli Studio" or "Heli Zwei (B)"
     local rr = lauf(def, nil, { 800, 480 }, { modell = m, weiter = true, behalten = true })
     if rr.absturz and not absturz then absturz = rr.absturz end
-    local erw = i % 2 == 1 and { 20, 0, 0 } or { 20, 0, 80 }
+    local erw = { 0, 0, 0 }                              -- 1.15.0: Symbole entfernt
     if not gleich(rr.z, erw) and not absturz then absturz = "Wechsel " .. i .. ": Zähler " .. txt(rr.z) end
     rr = nil
     collectgarbage("collect") collectgarbage("collect")

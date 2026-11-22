@@ -6,6 +6,7 @@ Alle Einzelheiten: [CHANGELOG.md](../../CHANGELOG.md).
 
 | Version | Wichtigste Änderungen |
 |---|---|
+| 1.14.4 | Symbole so gross wie der Text (kleinere Masken 12/16 px aus Lua-Studio 0.10.6), Titel normal gross; Menüzeile «Symbole anzeigen» (Werk ein, in der Datendatei). |
 | 1.14.3 | «Einheit steht schon im Titel» zählt nur als eigenes Wort (Grenzen: Anfang/Ende, Leerzeichen, Klammer, %), «A» in «Akku» blendet die Einheit nicht mehr aus. |
 | 1.14.2 | Platzkopf: keine grosse, fette Einheit mehr («fett» wie «Einheit am Wert»), Einheit entfällt, wenn sie schon im Titel steht; Titel so hoch wie das Symbol (höchstens ein Drittel des Platzes). Wie Electric 0.7.3. |
 | 1.14.1 | Studio-Hinweise stehen in der eigenen Kopfzeile statt unten und verdecken keine Werte mehr. Info-Datei: «hinweis» enthält auch den Anpass-Text; Systemnamen aus Kommentaren und Testnamen entfernt; Mac-Test für umgerechnete Ansichten. |

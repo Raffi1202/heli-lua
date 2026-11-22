@@ -306,14 +306,14 @@ local function liesDaten()
       offen = { nr = r[1], dauer = r[2] or 0, mah = r[3], rpm = r[4], a = r[5], t = r[6], z = r[7], bec = r[8], proz = r[9], pause = true }
     end
   end
-  return floor(n), floor(m), liste, offen
+  return floor(n), floor(m), liste, offen, not text:find("\nsymbole=0") -- 1.14.4: «Symbole anzeigen» (Werk ein)
 end
 
 local FORM = { "%.0f", "%.0f", "%.0f", "%.0f", "%.0f", "%.0f", "%.2f", "%.1f", "%.0f" }
 
 local function schreibeDaten(w)
   if os and os.mkdir then pcall(os.mkdir, "daten") end
-  local z = { "fluege=" .. ganz(w.fluege), "mahnull=" .. ganz(w.mahNull) }
+  local z = { "fluege=" .. ganz(w.fluege), "mahnull=" .. ganz(w.mahNull), "symbole=" .. (w.symbole == false and "0" or "1") }
   for _, r in ipairs(w.liste) do
     local e = {}
     for i = 1, 9 do e[i] = gut(r[i]) and string.format(FORM[i], r[i]) or "" end
@@ -339,7 +339,7 @@ function K.neu()
     cfg = standard(), v = {}, tB = 0, tRpm = -1000, seite = 1, liste = {}, ziele = {}, nZiele = 0,
     tStill = nil, tTeleWeg = nil, al = {}, tAlarmFrei = -1000, nSuche = 0, tSuche = -1000, fluege = 0, mahNull = 0, version = K.VERSION, autoOffen = true,
   }
-  w.fluege, w.mahNull, w.liste, w.akt = liesDaten()
+  w.fluege, w.mahNull, w.liste, w.akt, w.symbole = liesDaten()
   if w.mahNull > 0 then w.mahHoch = w.mahNull end
   w.v.al, w.v.st = {}, {}
   for _, a in ipairs(ALARME) do w.al[a[1]] = { an = false, t = -1000 } end
@@ -2158,6 +2158,10 @@ function K.menue(w)
       if w.studio then studioWeg(w) end                 -- eigene Werte zurück, dann neu laden
       w.studioFertig, w.studioJob, w.funkeOffen, w.sFest, w.sAusruf = false, nil, false, nil, nil
     end)
+
+  -- 1.14.4: Symbole der Studio-Ansicht an der Funke abschaltbar; gespeichert in der Datendatei (Widget-Speicher voll)
+  form.addBooleanField(form.addLine(tr("Symbole anzeigen", "Show symbols")), nil, function() return w.symbole ~= false end,
+    function(x) w.symbole = x schreibeDaten(w) end)
 
   local p = gruppe(tr("Sensoren", "Sensors"))
   for _, f in ipairs(QUELLEN) do

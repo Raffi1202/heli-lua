@@ -183,10 +183,8 @@ local function titelEinruecken(q, r, ein)
     e.x = floor(q.x + (tx + b - pad) / 2)
     e.breit = floor(max(8, b - tx - pad))
   end
-  -- 1.14.2 (wie Electric 0.7.3): Symbol nie grösser als der Titeltext, Titel so hoch wie das Symbol (höchstens 1/3 Platz)
-  e.px0 = e.px0 or e.px
-  if ein > 8 then e.px = min(ein - 8, max(e.px0, q.h * 0.33)) else e.px = e.px0 end
-  e.ym = q.y + r.pad + e.px / 2
+  -- 1.14.4: Titel immer in normaler Titelgrösse (die Vergrösserung neben dem Symbol aus 1.14.2 entfällt); das Symbol
+  -- wird in der Referenz studio_symbole.lua auf die Titelhöhe verkleinert.
   e.text, e.f = nil, nil
   r.einT = ein
 end
@@ -322,7 +320,7 @@ local function zeichnePlatz(w, q, C, i)
   if not (r.leer or r.fertig) then return end
   local SY = w.sym
   if SY and q.roh then                                  -- Format 2: Symbol und fette Einheit, Titel rückt ein
-    local ein = SY.platz(q.rohK or q.roh, q.x, q.y, r.symF or r.cF)
+    local ein = SY.platz(q.rohK or q.roh, q.x, q.y, r.symF or r.cF, floor(r.titel.px), q.y + r.pad)   -- 1.14.4: Symbol auf Titelhöhe
     if ein ~= (r.ein or 0) then r.ein = ein end
   end
   if r.leer then return end
@@ -392,6 +390,7 @@ function A.zeichne(w, Z, ans, s, ziel)
   local SY = w.sym
   if SY then                                            -- Format 2: Schmuck nach dem Hintergrund, vor den Plätzen
     SY.bildAnfang()
+    if SY.symbole then SY.symbole(w.symbole ~= false) end   -- 1.14.4: «Symbole anzeigen» aus dem Menü
     if ans.roh and not ans.deko then SY.deko(ans.roh, 0, 0, C.titel) end   -- umgerechnete Ansicht: ohne Schmuck
   end
   local P = ans.plaetze

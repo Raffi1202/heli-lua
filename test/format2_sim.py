@@ -78,6 +78,17 @@ def symbole(root, koord):
     for n in sorted(os.listdir(quelle)):
         if n.endswith(".png"):
             ss.schreibe(os.path.join(ziel, n), open(os.path.join(quelle, n), "rb").read())
+    if os.environ.get("HELI_KLEINE_MASKEN"):              # ab 1.14.4: name_12/name_16 wie von Lua-Studio 0.10.6 (aus der grössten Stufe)
+        import re, subprocess
+        gross = {}
+        for n in os.listdir(ziel):
+            m = re.match(r"^(.+)_(\d+)\.png$", n)
+            if m and int(m.group(2)) >= 24 and int(m.group(2)) > gross.get(m.group(1), (0, ""))[0]:
+                gross[m.group(1)] = (int(m.group(2)), n)
+        for name, (_, n) in gross.items():
+            for px in (12, 16):
+                subprocess.run(["sips", "-z", str(px), str(px), os.path.join(ziel, n), "--out", os.path.join(ziel, "%s_%d.png" % (name, px))],
+                               capture_output=True, check=False)   # kaputte Test-PNG: still auslassen
 
 
 def datei(name):

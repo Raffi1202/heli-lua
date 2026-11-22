@@ -41,7 +41,7 @@
 <body>
 
 <h1>Heli</h1>
-<div class="unter">Display for helis on FrSky radios with Ethos · Manual · Version 1.14.3 · As of 21.11.2026<br><span class="klein">German version: «Heli - Anleitung.pdf». The screenshots show the German display; with the language set to English the labels are in English (chapter 7, «Language»).</span></div>
+<div class="unter">Display for helis on FrSky radios with Ethos · Manual · Version 1.14.4 · As of 21.11.2026<br><span class="klein">German version: «Heli - Anleitung.pdf». The screenshots show the German display; with the language set to English the labels are in English (chapter 7, «Language»).</span></div>
 
 <div class="bild" style="width:80%;margin-left:auto;margin-right:auto">
   <img src="../bilder-simulator/Heli - Sim 800x480 04 Normal.png" alt="Heli in flight">
@@ -62,15 +62,15 @@
 </ul>
 
 <h2>2. Installing</h2>
-<p>You have received the file <code>Heli-1.14.3-share.zip</code>. The widget is put on the radio with the FrSky Suite; this way every file ends up in the right place.</p>
+<p>You have received the file <code>Heli-1.14.4-share.zip</code>. The widget is put on the radio with the FrSky Suite; this way every file ends up in the right place.</p>
 <ol>
-  <li>Unpack the ZIP for sharing. It contains this manual, a file <code>LIES MICH.txt</code> and the package <code>Heli-1.14.3.zip</code>. <b>Do not unpack this package.</b></li>
+  <li>Unpack the ZIP for sharing. It contains this manual, a file <code>LIES MICH.txt</code> and the package <code>Heli-1.14.4.zip</code>. <b>Do not unpack this package.</b></li>
   <li>Switch on the radio and connect it to the computer via USB. On the radio, choose <b>Ethos Suite</b>.</li>
   <li>On the computer, open the FrSky Suite and wait until it shows the radio.</li>
-  <li>In the Suite, open <b>Lua library</b>, choose <b>Install from local ZIP</b>, select <code>Heli-1.14.3.zip</code> and click <b>Install scripts</b>. «Heli» then appears in the list of installed scripts.</li>
+  <li>In the Suite, open <b>Lua library</b>, choose <b>Install from local ZIP</b>, select <code>Heli-1.14.4.zip</code> and click <b>Install scripts</b>. «Heli» then appears in the list of installed scripts.</li>
   <li>Disconnect the radio from the computer and restart it.</li>
 </ol>
-<div class="kasten"><b>Important:</b> The radio must be connected via USB before you click «Install scripts»; otherwise the Suite stops at «Start installing the script …». Do not delete an old <code>heli</code> folder on the radio beforehand: the Suite overwrites it, and it contains the flight list. <b>Without the Suite</b> it also works by hand: unpack <code>Heli-1.14.3.zip</code>, connect the radio as a USB drive and copy the folder <code>heli</code> including its subfolder <code>audio</code> into the radio's <code>scripts</code> folder (overwrite an existing folder, do not delete it). You then have <code>scripts/heli/main.lua</code>. <b>Radios with an SD card:</b> Ethos loads the scripts either from the internal memory or from the SD card, depending on a setting on the radio. The Suite follows it. By hand: copy to where the other Lua scripts are; if in doubt, to the SD card (<code>SD:/scripts/heli</code>). On an X18RS with Ethos 26.2.0, only the SD card loaded. The radio does not need the file <code>ethos_lua_manifest.json</code>.</div>
+<div class="kasten"><b>Important:</b> The radio must be connected via USB before you click «Install scripts»; otherwise the Suite stops at «Start installing the script …». Do not delete an old <code>heli</code> folder on the radio beforehand: the Suite overwrites it, and it contains the flight list. <b>Without the Suite</b> it also works by hand: unpack <code>Heli-1.14.4.zip</code>, connect the radio as a USB drive and copy the folder <code>heli</code> including its subfolder <code>audio</code> into the radio's <code>scripts</code> folder (overwrite an existing folder, do not delete it). You then have <code>scripts/heli/main.lua</code>. <b>Radios with an SD card:</b> Ethos loads the scripts either from the internal memory or from the SD card, depending on a setting on the radio. The Suite follows it. By hand: copy to where the other Lua scripts are; if in doubt, to the SD card (<code>SD:/scripts/heli</code>). On an X18RS with Ethos 26.2.0, only the SD card loaded. The radio does not need the file <code>ethos_lua_manifest.json</code>.</div>
 
 <h2>3. Setting up the screen</h2>
 <ol>

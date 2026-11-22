@@ -6,6 +6,10 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.14.4 (22.11.2026)
+
+- Symbols as large as the text: titles keep the normal size; the symbol in the box header uses the largest mask (12/16/24 px from Lua-Studio 0.10.6) not higher than the title, centred on the title line (shared reference studio_symbole.lua, as Electric 0.7.5). New menu line «Show symbols» (default on), stored in the model's data file.
+
 ## 1.14.3 (22.11.2026)
 
 - «Unit already in the title» now only counts the unit as a word of its own (before it: start, space or opening bracket; after it: end, space, closing bracket or %), so «A» in «Akku» no longer hides the unit.

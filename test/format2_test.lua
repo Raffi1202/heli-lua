@@ -517,9 +517,11 @@ pruefe(r.zustand == "geladen" and gleich(r.z, { 1, 1, 9 }), "7 p07: " .. grund(r
 do
   local gut = true
   for _, p in ipairs(r.geoeffnet) do
-    if p ~= "SCRIPTS:/studio/symbole/aaaaaaaaaaaaaaaaaaaaaaaa_48.png" and p ~= "SCRIPTS:/studio/symbole/akku_48.png" then gut = false print("        geöffnet: " .. p) end
+    -- ab 1.14.4: zu jedem gültigen Namen auch name_12.png / name_16.png (kleine Stufen für den Platzkopf)
+    local n = p:match("^SCRIPTS:/studio/symbole/(.+)_%d+%.png$")
+    if n ~= "aaaaaaaaaaaaaaaaaaaaaaaa" and n ~= "akku" then gut = false print("        geöffnet: " .. p) end
   end
-  pruefe(gut, "7 p07: io.open nur für die zwei gültigen Namen (" .. #r.geoeffnet .. " Aufrufe)")
+  pruefe(gut, "7 p07: io.open nur für die zwei gültigen Namen (mit _12/_16) (" .. #r.geoeffnet .. " Aufrufe)")
 end
 
 -- Test 8 (p08)

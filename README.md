@@ -10,15 +10,15 @@ telemetry, or FrSky sensors). It shows battery %, head speed, current, ESC tempe
 values with two thresholds each (orange display, red with tone, vibration and voice), announces head speed and
 «Autorotation», and keeps a flight list. Display, menu and voice alerts are in English or German.
 
-**Version 1.14.3** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
+**Version 1.14.4** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
 (Ethos 26.2.0); all other radios only in the Ethos simulator. Not yet flown. The alarms are an aid and do not replace
 your own checks.
 
 ## Quick start
 
-1. Download `Heli-1.14.3-share.zip` from **Releases** and unzip it (but not the inner `Heli-1.14.3.zip`).
+1. Download `Heli-1.14.4-share.zip` from **Releases** and unzip it (but not the inner `Heli-1.14.4.zip`).
 2. Connect the radio via USB (mode «Ethos Suite»), open the FrSky Suite.
-3. Suite › **Lua library** › **Install from local ZIP** › `Heli-1.14.3.zip` › **Install scripts**. Restart the radio.
+3. Suite › **Lua library** › **Install from local ZIP** › `Heli-1.14.4.zip` › **Install scripts**. Restart the radio.
 4. Add a screen with layout **Full screen** (or one field with bars for the compact view) and the widget **Heli**.
 5. In the widget menu tap **Search** («Find sensors automatically»), check the sensors, set cells, capacity and battery type.
 
@@ -27,6 +27,7 @@ Manual: `docs/Heli - Manual.pdf` (German: `docs/Heli - Anleitung.pdf`). Test gui
 
 ## What's new
 
+- **1.14.4:** Symbols as large as the text: titles keep the normal size; the symbol in the box header uses the largest mask (12/16/24 px from Lua-Studio 0.10.6) not higher than the title, centred on the title line (shared reference studio_symbole.lua, as Electric 0.7.5). New menu line «Show symbols» (default on), stored in the model's data file.
 - **1.14.3:** «Unit already in the title» now only counts the unit as a word of its own (before it: start, space or opening bracket; after it: end, space, closing bracket or %), so «A» in «Akku» no longer hides the unit.
 - **1.14.2:** Box header (from radio test): no large bold unit any more – «bold» is shown like «unit at value» (small); if the title already contains the unit (e.g. «Battery %»), the unit is left out; next to a symbol the title is as high as the symbol (at most a third of the box). Same rule as Electric 0.7.3.
 - **1.14.1:** Studio notes («view adapted», «file faulty», «no matching view») now appear in the widget's own header (instead of the model name, compact: instead of profile/rate) and no longer cover the bottom row of values. Fix: after returning to a window size with an exact view, «adapted» is reset. Info file: `hinweis` now also carries the «view adapted» text. Remaining system names removed from code comments and test names (`test/governor_makro.lua`). New Mac test: commands for scaled views (640x360, 480x320, 630x258, 472x210).

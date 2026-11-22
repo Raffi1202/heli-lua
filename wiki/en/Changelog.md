@@ -6,6 +6,7 @@ Full details: [CHANGELOG.md](../../CHANGELOG.md) (German).
 
 | Version | Main changes |
 |---|---|
+| 1.16.0 | One layout for all models: `Standard.heli.lua` (same locations as before) applies to every model without its own file. Order: choice in the widget menu, then `<ID>.heli.lua` of the model, then `Standard.heli.lua`, then the built-in display. Menu entry «Default (all models)»; «automatic» shows in brackets what applies. Changes on the radio stay per model (`<ID>.heli.funke.lua`). Info file: studioWahl "standard". A model named «Standard» uses the file as its own model file. |
 | 1.15.1 | Clean-up after the final review: unused «symbols missing» note removed, shared reference studio_symbole.lua as in Electric 0.8.1 (83f4c74), docs: template «With symbols» only until 1.14.4. No functional change. |
 | 1.15.0 | Symbols removed completely (decision after the radio test): no symbol masks are loaded or drawn, the menu line «Show symbols» is gone; symbols in older Studio files and «symbole=» in data files are silently ignored. Decoration lines/frames/texts stay. Mac: p12_voll paint 5 994 → 4 463 commands, Lua memory with the file 657 → 617 KB. |
 | 1.14.4 | Symbols as large as the text: titles keep the normal size; the symbol in the box header uses the largest mask (12/16/24 px from Lua-Studio 0.10.6) not higher than the title, centred on the title line (shared reference studio_symbole.lua, as Electric 0.7.5). New menu line «Show symbols» (default on), stored in the model's data file. |

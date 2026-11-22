@@ -2136,12 +2136,15 @@ function K.menue(w)
 
   -- Studio-Layout: Liste nur hier beim Öffnen des Menüs bauen (alle *.heli.lua der Suchorte), 0 = automatisch
   local okM, MS = pcall(studioLaden)
-  local wahl = { { tr("automatisch (Modellname)", "automatic (model name)"), 0 } }
+  local std = w.studioWahl == "standard"                -- 1.16.0: «automatisch» zeigt, was gerade gilt
+  local wahl = { { std and tr("automatisch (Standard)", "automatic (default)") or tr("automatisch (Modellname)", "automatic (model name)"), 0 } }
   local da = (c.studio or 0) == 0
   if okM then
     local okD, l = pcall(MS.dateien)
     for _, e in ipairs(okD and l or {}) do
-      wahl[#wahl + 1] = { e.name:sub(1, -(#MS.LUA + 6)) .. " (" .. tostring(e.ort) .. ")", e.z }
+      local n = e.name:sub(1, -(#MS.LUA + 6))
+      if n == "Standard" then n = tr("Standard (alle Modelle)", "Default (all models)") end
+      wahl[#wahl + 1] = { n .. " (" .. tostring(e.ort) .. ")", e.z }
       if e.z == c.studio then da = true end
     end
   end

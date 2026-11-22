@@ -41,7 +41,7 @@
 <body>
 
 <h1>Heli</h1>
-<div class="unter">Display for helis on FrSky radios with Ethos · Manual · Version 1.15.1 · As of 21.11.2026<br><span class="klein">German version: «Heli - Anleitung.pdf». The screenshots show the German display; with the language set to English the labels are in English (chapter 7, «Language»).</span></div>
+<div class="unter">Display for helis on FrSky radios with Ethos · Manual · Version 1.16.0 · As of 21.11.2026<br><span class="klein">German version: «Heli - Anleitung.pdf». The screenshots show the German display; with the language set to English the labels are in English (chapter 7, «Language»).</span></div>
 
 <div class="bild" style="width:80%;margin-left:auto;margin-right:auto">
   <img src="../bilder-simulator/Heli - Sim 800x480 04 Normal.png" alt="Heli in flight">
@@ -62,15 +62,15 @@
 </ul>
 
 <h2>2. Installing</h2>
-<p>You have received the file <code>Heli-1.15.1-share.zip</code>. The widget is put on the radio with the FrSky Suite; this way every file ends up in the right place.</p>
+<p>You have received the file <code>Heli-1.16.0-share.zip</code>. The widget is put on the radio with the FrSky Suite; this way every file ends up in the right place.</p>
 <ol>
-  <li>Unpack the ZIP for sharing. It contains this manual, a file <code>LIES MICH.txt</code> and the package <code>Heli-1.15.1.zip</code>. <b>Do not unpack this package.</b></li>
+  <li>Unpack the ZIP for sharing. It contains this manual, a file <code>LIES MICH.txt</code> and the package <code>Heli-1.16.0.zip</code>. <b>Do not unpack this package.</b></li>
   <li>Switch on the radio and connect it to the computer via USB. On the radio, choose <b>Ethos Suite</b>.</li>
   <li>On the computer, open the FrSky Suite and wait until it shows the radio.</li>
-  <li>In the Suite, open <b>Lua library</b>, choose <b>Install from local ZIP</b>, select <code>Heli-1.15.1.zip</code> and click <b>Install scripts</b>. «Heli» then appears in the list of installed scripts.</li>
+  <li>In the Suite, open <b>Lua library</b>, choose <b>Install from local ZIP</b>, select <code>Heli-1.16.0.zip</code> and click <b>Install scripts</b>. «Heli» then appears in the list of installed scripts.</li>
   <li>Disconnect the radio from the computer and restart it.</li>
 </ol>
-<div class="kasten"><b>Important:</b> The radio must be connected via USB before you click «Install scripts»; otherwise the Suite stops at «Start installing the script …». Do not delete an old <code>heli</code> folder on the radio beforehand: the Suite overwrites it, and it contains the flight list. <b>Without the Suite</b> it also works by hand: unpack <code>Heli-1.15.1.zip</code>, connect the radio as a USB drive and copy the folder <code>heli</code> including its subfolder <code>audio</code> into the radio's <code>scripts</code> folder (overwrite an existing folder, do not delete it). You then have <code>scripts/heli/main.lua</code>. <b>Radios with an SD card:</b> Ethos loads the scripts either from the internal memory or from the SD card, depending on a setting on the radio. The Suite follows it. By hand: copy to where the other Lua scripts are; if in doubt, to the SD card (<code>SD:/scripts/heli</code>). On an X18RS with Ethos 26.2.0, only the SD card loaded. The radio does not need the file <code>ethos_lua_manifest.json</code>.</div>
+<div class="kasten"><b>Important:</b> The radio must be connected via USB before you click «Install scripts»; otherwise the Suite stops at «Start installing the script …». Do not delete an old <code>heli</code> folder on the radio beforehand: the Suite overwrites it, and it contains the flight list. <b>Without the Suite</b> it also works by hand: unpack <code>Heli-1.16.0.zip</code>, connect the radio as a USB drive and copy the folder <code>heli</code> including its subfolder <code>audio</code> into the radio's <code>scripts</code> folder (overwrite an existing folder, do not delete it). You then have <code>scripts/heli/main.lua</code>. <b>Radios with an SD card:</b> Ethos loads the scripts either from the internal memory or from the SD card, depending on a setting on the radio. The Suite follows it. By hand: copy to where the other Lua scripts are; if in doubt, to the SD card (<code>SD:/scripts/heli</code>). On an X18RS with Ethos 26.2.0, only the SD card loaded. The radio does not need the file <code>ethos_lua_manifest.json</code>.</div>
 
 <h2>3. Setting up the screen</h2>
 <ol>
@@ -274,10 +274,11 @@
   <li><b>If you change</b> battery, limits or other settings in the menu on the radio, Heli writes this to its own file <code>ID.heli.funke.lua</code>. The Lua-Studio file stays unchanged, and so does the widget storage. Lua-Studio shows the differences and takes them over on request. The sensor assignment stays in the widget.</li>
   <li><b>Menu › Studio file › Reset:</b> the line shows the state (none, loaded, loaded with n errors, broken, too new). With a file, <b>Reset</b> asks «Back to Studio settings?» and after <b>YES, RESET</b> deletes your changes on the radio (the <code>.funke.lua</code>). Without a valid file it asks «Back to defaults?»: factory settings and limits, sensors and flights stay.</li>
   <li><b>Notes:</b> if the file is broken, made for a newer Heli version or contains invalid entries, a dark bar appears at the bottom for 8 seconds («Studio file broken - default», «Studio file too new - update the Lua» or «Studio file: n errors»), then an orange «!» at the top right until the next model change. A broken <code>.funke.lua</code> is discarded («Changes on the radio discarded»); the Studio file still applies. Heli always keeps running, if in doubt with the built-in display. What exactly is wrong is in the log (one line «Heli: Studio-Datei …» per error).</li>
+<p class="kasten"><b>New in 1.16.0:</b> One layout for all models: <code>Standard.heli.lua</code> (same locations as before) applies to every model without its own file. Order: choice in the widget menu, then <code><ID>.heli.lua</code> of the model, then <code>Standard.heli.lua</code>, then the built-in display. Menu entry «Default (all models)»; «automatic» shows in brackets what applies. Changes on the radio stay per model (<code><ID>.heli.funke.lua</code>). Info file: studioWahl "standard". A model named «Standard» uses the file as its own model file.</p>
 <p class="kasten"><b>From 1.15.0 symbols are removed</b> (decision after the radio test): symbols in the boxes and in the decoration and the bold unit are ignored, the unit is shown small at the value. Lines, frames and texts stay. The rest of this section describes 1.11.0–1.14.4.</p>
   <li><b>Format 2 (new in 1.11.0):</b> Heli reads Studio files in format 1 and 2; format 1 files keep working unchanged. With format 2 a box can show a <b>symbol</b> at the top left in the colour of the value (the title then moves to the right) and the <b>unit in bold</b> at the top left instead of next to the value, or no unit at all. In addition there is <b>decoration</b> per view: freely placed symbols, texts, lines and frames, at most 24 per view. Lua-Studio offered the templates «Current look» and «With symbols» (until 1.14.4) (each for 800 × 480 and 784 × 316). Symbols and decoration do not change any limit, announcement or alarm.</li>
   <li><b>«Also with motor off» (new in 1.12.0):</b> In Lua-Studio you can choose for each limit whether the alarm also comes with the motor switch «off» (yes by default). This applies to the five alarms and to the additional limits (sensors, channels). If you change the tick in the widget menu, it is stored in the file <code>.funke.lua</code> like the thresholds.</li>
-  <li><b>Symbol files:</b> no longer used from 1.15.1 (the folder <code>scripts/studio/symbole/</code> can be deleted).</li>
+  <li><b>Symbol files:</b> no longer used from 1.16.0 (the folder <code>scripts/studio/symbole/</code> can be deleted).</li>
   <li><b>File limits:</b> value adjustments, limits and settings take up to 48 entries each; Heli discards further entries with a note.</li>
   <li>For Lua-Studio, Heli writes the file <code>ID.heli.info.json</code> after every model change (model name, radio, sensor list, window sizes). Only Lua-Studio reads it; it is also written without a Studio file.</li>
 </ul>

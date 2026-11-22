@@ -20,3 +20,7 @@ With the PC program Lua-Studio you design the display per model and set settings
 ## Finding the layout (1.14.0)
 
 The Studio layout is always found: the widget searches `SCRIPTS:/studio/`, `SD:/scripts/studio/` and `RADIO:/scripts/studio/`; if the file name does not match the model, choose the file in the widget menu under «Studio layout» (the choice wins over the model name). If no view matches the window size exactly, the view with the most similar aspect ratio is scaled to fit (5 s note in the widget's header, «Studio: view 800x480 adapted»); decoration is left out in a scaled view, places that get too small become a number or are left out. A broken file or a missing view shows a note line at the bottom. New info-file fields studioQuelle, studioWahl, ansichtGenutzt, angepasst, hinweis. Storage format 7 (battery type shares a slot), settings from 1.5.0–1.13.1 are kept.
+
+## One layout for all models (1.16.0)
+
+One layout for all models: `Standard.heli.lua` (same locations as before) applies to every model without its own file. Order: choice in the widget menu, then `<ID>.heli.lua` of the model, then `Standard.heli.lua`, then the built-in display. Menu entry «Default (all models)»; «automatic» shows in brackets what applies. Changes on the radio stay per model (`<ID>.heli.funke.lua`). Info file: studioWahl "standard". A model named «Standard» uses the file as its own model file.

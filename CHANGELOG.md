@@ -6,6 +6,10 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.16.0 (22.11.2026)
+
+- One layout for all models: `Standard.heli.lua` (same locations as before) applies to every model without its own file. Order: choice in the widget menu, then `<ID>.heli.lua` of the model, then `Standard.heli.lua`, then the built-in display. Menu entry «Default (all models)»; «automatic» shows in brackets what applies. Changes on the radio stay per model (`<ID>.heli.funke.lua`). Info file: studioWahl "standard". A model named «Standard» uses the file as its own model file.
+
 ## 1.15.1 (22.11.2026)
 
 - Clean-up after the final review: unused «symbols missing» note removed, shared reference studio_symbole.lua as in Electric 0.8.1 (83f4c74), docs: template «With symbols» only until 1.14.4. No functional change.

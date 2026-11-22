@@ -371,6 +371,26 @@ if studioText then
         end
       end
     end
+    -- 1.16.0 S4: Standard.heli.lua für alle Modelle; eine Änderung am Sender landet in <Kennung>.heli.funke.lua des Modells
+    do
+      local std = tmp .. "/SCRIPTS/studio/Standard.heli.lua"
+      os_remove(ziel)
+      kopiere(repo .. "test/studio/gueltig.heli.lua", std)
+      local J, n, err, w = ganz()
+      pruefe(err == nil and J and J.zustand == "geladen" and J.wahl == "standard" and J.quelle == "SCRIPTS:/studio/Standard.heli.lua",
+        "S4: ohne Modelldatei gilt Standard.heli.lua (studioWahl " .. tostring(J and J.wahl) .. ", " .. tostring(err) .. ", " .. n .. " Befehle)")
+      local okT, text = pcall(M.funkeText, { kapaz = 4321 }, {})
+      pruefe(okT and M.funkeSchreiben(M.kennung(), text), "S4: Änderung am Sender geschrieben")
+      pruefe(io_open(tmp .. "/SCRIPTS/studio/TEST.heli.funke.lua", "r") ~= nil and io_open(tmp .. "/SCRIPTS/studio/Standard.heli.funke.lua", "r") == nil,
+        "S4: TEST.heli.funke.lua geschrieben, keine Standard.heli.funke.lua")
+      local J2 = ganz()
+      pruefe(J2 and J2.wahl == "standard" and J2.zustand == "geladen" and J2.funkeEinst and J2.funkeEinst.kapaz ~= nil,
+        "S4: beim nächsten Laden Standard-Layout plus .funke.lua des Modells (kapaz " .. tostring(J2 and J2.funkeEinst and J2.funkeEinst.kapaz) .. ")")
+      kopiere(repo .. "test/studio/gueltig.heli.lua", ziel)
+      local J3 = ganz()
+      pruefe(J3 and J3.wahl == "auto" and J3.quelle == "SCRIPTS:/studio/TEST.heli.lua", "S2 (Mac): Modelldatei gewinnt vor Standard")
+      os_remove(std) os_remove(tmp .. "/SCRIPTS/studio/TEST.heli.funke.lua")
+    end
     -- .funke.lua: schreiben (erst .neu, prüfen, alte entfernen, umbenennen), Rest-Fälle nach «Strom weg»
     kopiere(repo .. "test/studio/gueltig.heli.lua", ziel)
     local basis = tmp .. "/SCRIPTS/studio/TEST.heli"

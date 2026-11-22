@@ -20,3 +20,7 @@ Mit dem PC-Programm Lua-Studio gestaltest du die Anzeige je Modell und setzt Ein
 ## Layout finden (ab 1.14.0)
 
 Studio-Layout wird immer gefunden: Suche in `SCRIPTS:/studio/`, `SD:/scripts/studio/` und `RADIO:/scripts/studio/`; passt der Dateiname nicht zum Modell, im Widget-Menü unter «Studio-Layout» die Datei wählen (die Wahl gewinnt). Passt keine Ansicht genau zur Fenstergrösse, wird die mit dem ähnlichsten Seitenverhältnis umgerechnet (5 s Hinweis in der eigenen Kopfzeile, «Studio: Ansicht 800x480 angepasst»); der Schmuck fällt in einer umgerechneten Ansicht weg, zu kleine Plätze werden Zahl oder entfallen. Kaputte Datei oder fehlende Ansicht: Hinweiszeile unten.
+
+## Ein Layout für alle Modelle (ab 1.16.0)
+
+Ein Layout für alle Modelle: `Standard.heli.lua` (gleiche Orte wie bisher) gilt für jedes Modell ohne eigene Datei. Reihenfolge: Wahl im Widget-Menü, dann `<Kennung>.heli.lua` des Modells, dann `Standard.heli.lua`, sonst die eingebaute Anzeige. Menüeintrag «Standard (alle Modelle)»; «automatisch» zeigt in Klammern, was gilt. Änderungen am Sender bleiben pro Modell (`<Kennung>.heli.funke.lua`). Ein Modell mit dem Namen «Standard» nutzt die Datei als eigene Modelldatei.

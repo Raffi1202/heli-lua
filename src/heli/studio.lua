@@ -552,9 +552,33 @@ function M.schritt(w, H)
         d, grund = alt, gAlt
       end
     end
+    if not d and grund == "fehlt" and J.k ~= "Standard" then   -- 1.16.0: 3. Standard.heli.lua (für alle Modelle)
+      J.stufe, J.std = 12, 0
+      return nil
+    end
     if not d then
       J.zustand = grund
       if grund ~= "fehlt" then print("Heli: Studio-Datei " .. J.datei .. ": " .. grund) end
+      w.studioJob = nil
+      return J
+    end
+    J.d, J.stufe = d, 2
+    return nil
+  elseif J.stufe == 12 then                              -- Standard.heli.lua, je Aufruf ein Ort (nur beim Laden)
+    J.std = J.std + 1
+    local ort = M.ORTE[J.std]
+    if ort == nil then
+      J.zustand = "fehlt"
+      w.studioJob = nil
+      return J
+    end
+    local pfad = ort .. "Standard." .. M.LUA .. ".lua"
+    local d, grund = studioLaden(pfad, M.FORMAT)
+    if grund == "fehlt" then return nil end
+    J.quelle, J.wahl, J.datei = pfad, "standard", "Standard." .. M.LUA .. ".lua"   -- .funke.lua bleibt beim Modell (J.basis)
+    if not d then
+      J.zustand = grund
+      print("Heli: Studio-Datei " .. pfad .. ": " .. tostring(grund))
       w.studioJob = nil
       return J
     end

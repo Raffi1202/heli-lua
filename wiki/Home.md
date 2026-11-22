@@ -2,7 +2,7 @@
 
 🇬🇧 English · 🇩🇪 Deutsch
 
-Heli is an Ethos widget for helis: full-screen display, alarms in two stages, head speed and «Autorotation» callouts, flight list, Lua-Studio file. Version 1.15.1 (pre-release).
+Heli is an Ethos widget for helis: full-screen display, alarms in two stages, head speed and «Autorotation» callouts, flight list, Lua-Studio file. Version 1.16.0 (pre-release).
 **Tested on a real radio only on the X18RS** (Ethos 26.2.0); all other radios only in the simulator.
 
 ## English
@@ -17,7 +17,7 @@ Heli is an Ethos widget for helis: full-screen display, alarms in two stages, he
 
 ## Deutsch
 
-Heli ist ein Ethos-Widget für Helis: Vollbild-Anzeige, Alarme in zwei Stufen, Ansage von Drehzahl und «Autorotation», Flugliste, Studio-Datei aus Lua-Studio. Version 1.15.1 (Vorabversion).
+Heli ist ein Ethos-Widget für Helis: Vollbild-Anzeige, Alarme in zwei Stufen, Ansage von Drehzahl und «Autorotation», Flugliste, Studio-Datei aus Lua-Studio. Version 1.16.0 (Vorabversion).
 **Am echten Sender getestet nur an der X18RS** (Ethos 26.2.0); alle anderen Sender nur im Simulator.
 
 - [Installation](de/Installation.md)

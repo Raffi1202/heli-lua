@@ -26,16 +26,16 @@ geprüft (nur Mac-Prüfstand und Simulator).
 (bis 16 Kästchen je Ansicht mit Zahl, Ring, Balken, Verlauf oder Status), passt Werte an und setzt Einstellungen und
 Grenzwerte. Dafür liegt je Modell eine Studio-Datei auf dem Sender. **Ohne diese Datei läuft alles wie in 1.9.1.**
 
-**Version 1.15.1** · Vorabversion (public beta) · Lizenz GPL-3.0
+**Version 1.16.0** · Vorabversion (public beta) · Lizenz GPL-3.0
 
 ![Heli auf 800 × 480](docs/bilder-simulator/Heli%20-%20Sim%20800x480%2004%20Normal.png)
 
 ## Schnellstart in 5 Schritten
 
-1. Unter **Releases** (rechts auf der Repo-Seite) die Datei `Heli-1.15.1-share.zip` herunterladen und
-   entpacken. Das Paket `Heli-1.15.1.zip` darin **nicht** entpacken.
+1. Unter **Releases** (rechts auf der Repo-Seite) die Datei `Heli-1.16.0-share.zip` herunterladen und
+   entpacken. Das Paket `Heli-1.16.0.zip` darin **nicht** entpacken.
 2. Sender einschalten, per USB anschliessen, am Sender **Ethos Suite** wählen, die FrSky Suite öffnen.
-3. Suite › **Lua-Bibliothek** › **Von lokaler ZIP installieren** › `Heli-1.15.1.zip` › **Skripte installieren**.
+3. Suite › **Lua-Bibliothek** › **Von lokaler ZIP installieren** › `Heli-1.16.0.zip` › **Skripte installieren**.
    Danach Sender trennen und neu starten.
 4. Am Sender: Bildschirme › **+** › Layout **Vollbild** › ins Feld tippen › Widget **Heli**.
 5. Heli einschalten, im Widget-Menü in der Zeile «Sensoren automatisch suchen» auf **Suchen** tippen, die Zuordnung kontrollieren und unter
@@ -110,7 +110,7 @@ Ein Paket für alle Sender: Das Widget misst die Fenstergrösse selbst. Ohne Ber
   `….heli.info.json` (Sensorliste, Fenstergrössen).
 - **Ab 1.15.0 entfernt:** Symbole (Plätze und Schmuck) werden still überlesen, die Einheit steht klein am Wert; der Rest dieses Absatzes beschreibt 1.11.0–1.14.4.
 - **Lua-Studio-Format 2 (neu in 1.11.0):** je Ansicht bis 24 Schmuck-Elemente (Text, Linie, Rahmen). Bis 1.14.4 gab
-  es zusätzlich Symbole (`symbol`, `symbolPx`, Masken in `scripts/studio/symbole/`) und eine fette Einheit; seit 1.15.1
+  es zusätzlich Symbole (`symbol`, `symbolPx`, Masken in `scripts/studio/symbole/`) und eine fette Einheit; seit 1.16.0
   werden sie still überlesen. `werte`,
   `grenzen` und `einstellungen` gelten bis je 48 Einträge, weitere werden mit Hinweis verworfen. Symbole und Schmuck
   ändern keine Grenze, keine Ansage und keinen Alarm. Format-1-Dateien gelten weiter.

@@ -25,7 +25,7 @@ Alle Lua-Skripte auf dem Sender teilen sich einen Lua-Speicher, an der **X18RS r
 | Alarm still bei Motor aus | Haken «Auch bei Motor aus» entfernt ([Alarme](Alarme.md)). |
 
 ## Weitere Hinweise
-- **Hinweise zur Studio-Datei** («kaputt», «zu neu», «n Fehler», «n Symbole fehlen»): aus Lua-Studio neu übertragen oder Heli aktualisieren; Einzelheiten im Log.
+- **Hinweise zur Studio-Datei** («kaputt», «zu neu», «n Fehler»): aus Lua-Studio neu übertragen oder Heli aktualisieren; Einzelheiten im Log.
 - **Rote Zeile «Heli: …»:** Das Widget hat einen Fehler gemeldet; der Sender läuft weiter. Foto + Meldung.
 - **«Feld zu klein»:** Vollbild oder ein Feld mit Leisten nehmen.
 - **«Heli» fehlt in der Widget-Liste:** Lua-Bibliothek der Suite prüfen, neu starten; von Hand muss `main.lua` in `scripts/heli/` auf dem Laufwerk liegen, von dem der Sender lädt.

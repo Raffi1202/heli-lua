@@ -25,7 +25,7 @@ All Lua scripts on the radio share one Lua memory, about **2048 KB on the X18RS*
 | Alarm silent with motor off | Tick «Also with motor off» removed ([Alarms](Alarms.md)). |
 
 ## Other notes
-- **Studio file notes** («broken», «too new», «n errors», «n symbols missing»): transfer again from Lua-Studio or update Heli; details in the log.
+- **Studio file notes** («broken», «too new», «n errors»): transfer again from Lua-Studio or update Heli; details in the log.
 - **Red line «Heli: …»:** the widget reported an error; the radio keeps running. Photo + report.
 - **«zone too small»:** use Full screen or one field with bars.
 - **«Heli» missing from the widget list:** check the Suite's Lua library, restart; by hand `main.lua` must be in `scripts/heli/` on the drive the radio loads from.

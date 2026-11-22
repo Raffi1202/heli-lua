@@ -2,7 +2,7 @@
 
 🇬🇧 [English](README.md) · Dokumentation: [Wiki (Deutsch)](wiki/de/Installation.md) · [Wiki (English)](wiki/en/Installation.md)
 
-> **Am PC einrichten mit [Lua-Studio](https://github.com/Raffi1202/lua-studio)**: Bildschirm einteilen, Werte, Alarme und Symbole wählen, auf die Funke übertragen.
+> **Am PC einrichten mit [Lua-Studio](https://github.com/Raffi1202/lua-studio)**: Bildschirm einteilen, Werte und Alarme wählen, auf die Funke übertragen.
 
 Lua-Widget für FrSky-Sender mit Ethos (ab 26.1) und Farbdisplay, für **jeden Heli mit Telemetrie** (jedes Flybarless-System
 oder jeder Regler, der Telemetrie sendet, oder FrSky-Sensoren). Es zeigt die Telemetrie im Vollbild oder kompakt mit den Ethos-Leisten, den Governor mit SCHARF/SICHER (wenn das Flybarless-System ihn als Telemetrie sendet), überwacht fünf Werte in zwei
@@ -108,6 +108,7 @@ Ein Paket für alle Sender: Das Widget misst die Fenstergrösse selbst. Ohne Ber
   «Studio-Datei» mit Zustand und **Zurück** («Zurück auf Studio-Stand», ohne Datei «Zurück auf Standard»). Eine kaputte
   oder zu neue Datei ergibt die eingebaute Anzeige und einen Hinweis. Für Lua-Studio schreibt Heli zusätzlich
   `….heli.info.json` (Sensorliste, Fenstergrössen).
+- **Ab 1.15.0 entfernt:** Symbole (Plätze und Schmuck) werden still überlesen, die Einheit steht klein am Wert; der Rest dieses Absatzes beschreibt 1.11.0–1.14.4.
 - **Lua-Studio-Format 2 (neu in 1.11.0):** Plätze mit Symbol (`symbol`, `symbolPx`) und fetter Einheit oben links,
   dazu je Ansicht bis 24 Schmuck-Elemente (Symbol, Text, Linie, Rahmen). Die Symbole sind Graustufen-Masken
   `scripts/studio/symbole/<name>_<px>.png`, die nur Lua-Studio schreibt; höchstens 20 Symbole je Datei. Fehlt eine

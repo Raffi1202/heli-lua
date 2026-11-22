@@ -6,6 +6,10 @@ sind nicht einzeln im Repo, nur hier beschrieben. Alle Versionen bis 1.6.0 stamm
 
 *Older entries (1.12.0 and before) in German.*
 
+## 1.15.1 (22.11.2026)
+
+- Clean-up after the final review: unused «symbols missing» note removed, shared reference studio_symbole.lua as in Electric 0.8.1 (83f4c74), docs: template «With symbols» only until 1.14.4. No functional change.
+
 ## 1.15.0 (22.11.2026)
 
 - Symbols removed completely (decision after the radio test): no symbol masks are loaded or drawn, the menu line «Show symbols» is gone; symbols in older Studio files and «symbole=» in data files are silently ignored. Decoration lines/frames/texts stay. Mac: p12_voll paint 5 994 → 4 463 commands, Lua memory with the file 657 → 617 KB.

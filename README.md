@@ -10,15 +10,15 @@ telemetry, or FrSky sensors). It shows battery %, head speed, current, ESC tempe
 values with two thresholds each (orange display, red with tone, vibration and voice), announces head speed and
 «Autorotation», and keeps a flight list. Display, menu and voice alerts are in English or German.
 
-**Version 1.15.0** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
+**Version 1.15.1** · pre-release (public beta) · License GPL-3.0. Tested on a real radio only on the **X18RS**
 (Ethos 26.2.0); all other radios only in the Ethos simulator. Not yet flown. The alarms are an aid and do not replace
 your own checks.
 
 ## Quick start
 
-1. Download `Heli-1.15.0-share.zip` from **Releases** and unzip it (but not the inner `Heli-1.15.0.zip`).
+1. Download `Heli-1.15.1-share.zip` from **Releases** and unzip it (but not the inner `Heli-1.15.1.zip`).
 2. Connect the radio via USB (mode «Ethos Suite»), open the FrSky Suite.
-3. Suite › **Lua library** › **Install from local ZIP** › `Heli-1.15.0.zip` › **Install scripts**. Restart the radio.
+3. Suite › **Lua library** › **Install from local ZIP** › `Heli-1.15.1.zip` › **Install scripts**. Restart the radio.
 4. Add a screen with layout **Full screen** (or one field with bars for the compact view) and the widget **Heli**.
 5. In the widget menu tap **Search** («Find sensors automatically»), check the sensors, set cells, capacity and battery type.
 
@@ -27,6 +27,7 @@ Manual: `docs/Heli - Manual.pdf` (German: `docs/Heli - Anleitung.pdf`). Test gui
 
 ## What's new
 
+- **1.15.1:** Clean-up after the final review: unused «symbols missing» note removed, shared reference studio_symbole.lua as in Electric 0.8.1 (83f4c74), docs: template «With symbols» only until 1.14.4. No functional change.
 - **1.15.0:** Symbols removed completely (decision after the radio test): no symbol masks are loaded or drawn, the menu line «Show symbols» is gone; symbols in older Studio files and «symbole=» in data files are silently ignored. Decoration lines/frames/texts stay. Mac: p12_voll paint 5 994 → 4 463 commands, Lua memory with the file 657 → 617 KB.
 - **1.14.4:** Symbols as large as the text: titles keep the normal size; the symbol in the box header uses the largest mask (12/16/24 px from Lua-Studio 0.10.6) not higher than the title, centred on the title line (shared reference studio_symbole.lua, as Electric 0.7.5). New menu line «Show symbols» (default on), stored in the model's data file.
 - **1.14.3:** «Unit already in the title» now only counts the unit as a word of its own (before it: start, space or opening bracket; after it: end, space, closing bracket or %), so «A» in «Akku» no longer hides the unit.

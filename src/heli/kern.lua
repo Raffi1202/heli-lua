@@ -85,7 +85,7 @@ local TEXT = {
     sZuNeu = "too new, update the Lua", sKeine = "Studio: no matching view", sAngepasst = "Studio: view %s adapted",
     sWeg = ", %d left out", studioZuNeu = "Studio file too new - update the Lua",
     studioFehler = "Studio file: %s errors", funkeVerworfen = "Changes on the radio discarded", funkeNicht = "Change not saved",
-    symFehlen = "Studio: %s symbols missing", leistung = "POWER", govN = { [0] = "OFF", "IDLE", "SPOOLUP", "RECOVERY", "ACTIVE", "HOLD", "LOST HEADSPEED", "AUTOROTATION", "BAILOUT", "BYPASS" } },
+    leistung = "POWER", govN = { [0] = "OFF", "IDLE", "SPOOLUP", "RECOVERY", "ACTIVE", "HOLD", "LOST HEADSPEED", "AUTOROTATION", "BAILOUT", "BYPASS" } },
   { akku = "AKKU", rpm = "DREHZAHL", strom = "STROM", temp = "REGLERTEMP.", uRpm = "U/MIN", uA = "AMPERE",
     max = "MAX", modus = "FLUGMODUS", bec = "BEC-SPANNUNG", zelle = "ZELLE", mah = "VERBRAUCHT",
     tief = "TIEF", nullen = "AUF 0", zEin = "ZELLEN?", zEin2 = "im Menü", fluege = "Flüge", flug = "Flug", profil = "Profil", rate = "Rate",
@@ -95,7 +95,7 @@ local TEXT = {
     sZuNeu = "zu neu, Lua aktualisieren", sKeine = "Studio: keine passende Ansicht", sAngepasst = "Studio: Ansicht %s angepasst",
     sWeg = ", %d weggelassen", studioZuNeu = "Studio-Datei zu neu - Lua aktualisieren",
     studioFehler = "Studio-Datei: %s Fehler", funkeVerworfen = "Änderungen an der Funke verworfen", funkeNicht = "Änderung nicht gespeichert",
-    symFehlen = "Studio: %s Symbole fehlen", leistung = "LEISTUNG", govN = { [0] = "AUS", "LEERLAUF", "HOCHLAUF", "WIEDERANLAUF", "AKTIV", "HOLD", "DREHZAHL VERLOREN", "AUTOROTATION", "BAILOUT", "BYPASS" } },
+    leistung = "LEISTUNG", govN = { [0] = "AUS", "LEERLAUF", "HOCHLAUF", "WIEDERANLAUF", "AKTIV", "HOLD", "DREHZAHL VERLOREN", "AUTOROTATION", "BAILOUT", "BYPASS" } },
 }
 
 local C = nil                    -- Farben, beim ersten Zeichnen angelegt
@@ -1184,14 +1184,10 @@ local function studioWecke(w, now)
     return true
   end
   if w.studio then lauf().wecke(w, now, STUDIO_H) end
-  if w.symOffen and w.sym then                          -- Format 2: Symbole prüfen und laden in Stücken (nie in paint)
+  if w.symOffen and w.sym then                          -- Format 2: Schmuck prüfen in Stücken (nie in paint; Symbole seit 1.15.0 entfernt)
     local ok, fertig = pcall(w.sym.schritt)
     if not ok or fertig then
       w.symOffen = false
-      local okZ, _, fehlend = pcall(w.sym.zaehler)
-      if okZ and type(fehlend) == "number" and fehlend > 0 then
-        studioHinweis(w, string.format(T.symFehlen, tostring(fehlend)), now)
-      end
     end
     -- kein «schwer»: die Plätze werden daneben schon vorbereitet (zusammen gemessen unter 3500 Befehle je Aufruf)
   end

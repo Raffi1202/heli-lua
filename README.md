@@ -69,6 +69,10 @@ Lua 5.4 syntax check: `luac -p src/heli/*.lua`. Mac tests: `lua test/studio_test
 the format test files come from the Lua-Studio format documentation (`FORMAT2_ORDNER`). Details (German) in
 [README.de.md](README.de.md).
 
+## Support
+
+This project is free. If you would like to support the work, you can do so via PayPal: https://paypal.me/Raffi1202. Thank you!
+
 ## License
 
 GPL-3.0, see [LICENSE](LICENSE).

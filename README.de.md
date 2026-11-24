@@ -173,6 +173,10 @@ Einstellungen müssen die Zahlen in die Datei unter `daten/` wandern. Die Format
 (`test/update_test.py` prüft das Update von jeder Version ab 1.5.0).
 Speicher (Simulator, mit 44 weiteren Skripten): rund 90 KB Lua-Speicher (1.8.1), seit 1.9.0 kein Bild mehr.
 
+## Unterstützen
+
+Dieses Projekt ist kostenlos. Wer die Arbeit unterstützen möchte, kann das über PayPal tun: https://paypal.me/Raffi1202. Vielen Dank!
+
 ## Lizenz
 
 GPL-3.0, siehe [LICENSE](LICENSE).

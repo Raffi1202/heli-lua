@@ -177,6 +177,8 @@ Speicher (Simulator, mit 44 weiteren Skripten): rund 90 KB Lua-Speicher (1.8.1),
 
 Dieses Projekt ist kostenlos. Wer die Arbeit unterstützen möchte, kann das über PayPal tun: https://paypal.me/RaphaelHunziker. Vielen Dank!
 
+[![Spenden mit PayPal](https://img.shields.io/badge/PayPal-Spenden-003087?logo=paypal&logoColor=white)](https://paypal.me/RaphaelHunziker)
+
 ## Lizenz
 
 GPL-3.0, siehe [LICENSE](LICENSE).

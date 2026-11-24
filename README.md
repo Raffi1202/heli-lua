@@ -2,6 +2,10 @@
 
 🇩🇪 [Deutsch](README.de.md) · Documentation: [Wiki (English)](wiki/en/Installation.md) · [Wiki (Deutsch)](wiki/de/Installation.md)
 
+This project is open source and free. If you like it, you can support it with a donation:
+
+<a href="https://paypal.me/RaphaelHunziker"><img src=".github/paypal-donate.png" alt="Donate with PayPal" width="200"></a>
+
 > **Configure on your PC with [Lua-Studio](https://github.com/Raffi1202/lua-studio)** – arrange the screen, choose values and alarms, then transfer to the radio. Download: [latest release](https://github.com/Raffi1202/lua-studio/releases/latest) · [Wiki](https://github.com/Raffi1202/lua-studio/tree/main/wiki)
 
 **Heli** is a Lua widget (full screen, or compact with the Ethos header and footer) for FrSky radios with Ethos
@@ -68,12 +72,6 @@ Lua 5.4 syntax check: `luac -p src/heli/*.lua`. Mac tests: `lua test/studio_test
 `test/bilder.py`) need the ethos-tools plugin (`ETHOS_PLUGIN`) and the helper tools folder (`ETHOS_LUA_WERKZEUGE`);
 the format test files come from the Lua-Studio format documentation (`FORMAT2_ORDNER`). Details (German) in
 [README.de.md](README.de.md).
-
-## Support
-
-This project is free. If you would like to support the work, you can do so via PayPal: https://paypal.me/RaphaelHunziker. Thank you!
-
-[![Donate with PayPal](https://img.shields.io/badge/PayPal-Donate-003087?logo=paypal&logoColor=white)](https://paypal.me/RaphaelHunziker)
 
 ## License
 

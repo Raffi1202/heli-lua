@@ -2,6 +2,10 @@
 
 🇬🇧 [English](README.md) · Dokumentation: [Wiki (Deutsch)](wiki/de/Installation.md) · [Wiki (English)](wiki/en/Installation.md)
 
+Dieses Projekt ist Open Source und kostenlos. Wenn es dir gefällt, kannst du es mit einer Spende unterstützen:
+
+<a href="https://paypal.me/RaphaelHunziker"><img src=".github/paypal-spenden.png" alt="Spenden mit PayPal" width="200"></a>
+
 > **Am PC einrichten mit [Lua-Studio](https://github.com/Raffi1202/lua-studio)**: Bildschirm einteilen, Werte und Alarme wählen, auf die Funke übertragen.
 
 Lua-Widget für FrSky-Sender mit Ethos (ab 26.1) und Farbdisplay, für **jeden Heli mit Telemetrie** (jedes Flybarless-System
@@ -172,12 +176,6 @@ von «Stellung Motor aus»). Neues nur ans Ende; für weitere
 Einstellungen müssen die Zahlen in die Datei unter `daten/` wandern. Die Formate 1 bis 5 werden weiter gelesen
 (`test/update_test.py` prüft das Update von jeder Version ab 1.5.0).
 Speicher (Simulator, mit 44 weiteren Skripten): rund 90 KB Lua-Speicher (1.8.1), seit 1.9.0 kein Bild mehr.
-
-## Unterstützen
-
-Dieses Projekt ist kostenlos. Wer die Arbeit unterstützen möchte, kann das über PayPal tun: https://paypal.me/RaphaelHunziker. Vielen Dank!
-
-[![Spenden mit PayPal](https://img.shields.io/badge/PayPal-Spenden-003087?logo=paypal&logoColor=white)](https://paypal.me/RaphaelHunziker)
 
 ## Lizenz
 

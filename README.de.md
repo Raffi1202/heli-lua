@@ -175,7 +175,7 @@ Speicher (Simulator, mit 44 weiteren Skripten): rund 90 KB Lua-Speicher (1.8.1),
 
 ## Unterstützen
 
-Dieses Projekt ist kostenlos. Wer die Arbeit unterstützen möchte, kann das über PayPal tun: https://paypal.me/Raffi1202. Vielen Dank!
+Dieses Projekt ist kostenlos. Wer die Arbeit unterstützen möchte, kann das über PayPal tun: https://paypal.me/RaphaelHunziker. Vielen Dank!
 
 ## Lizenz
 
